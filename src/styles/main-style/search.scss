@@ -1,0 +1,25 @@
+.search__page {
+  &-heading {
+    padding: 32px 24px;
+    text-align: center;
+    @include style-text(3rem, 600, 4rem, $text-color);
+  }
+
+  &-form {
+    padding-bottom: 3rem;
+    // border-bottom: 1px solid $gray-color-2;
+  }
+
+  &-result {
+    &-list {
+      overflow-x: hidden;
+      list-style: none;
+      overflow-y: auto;
+
+      &-item {
+        padding-block: 1rem;
+        border-top: 1px solid $gray-color-2;
+      }
+    }
+  }
+}

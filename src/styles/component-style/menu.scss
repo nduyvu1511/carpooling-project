@@ -1,0 +1,81 @@
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 1rem);
+  background-color: $white;
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 36px 36px 0px;
+  max-height: calc(100vh - $header-mobile-height);
+  @include responsive(lg-screen) {
+    max-height: calc(100vh - $header-height);
+  }
+}
+
+.navigation {
+  max-height: calc(100vh - $header-mobile-height);
+  overflow-y: auto;
+
+  @include responsive(lg-screen) {
+    max-height: calc(100vh - $header-height);
+  }
+
+  &-item {
+    // padding-block: 0.6rem;
+    border-bottom: 1px solid $gray-color-2;
+
+    & svg:first-child {
+      margin-right: 1.6rem;
+    }
+
+    &-link {
+      @include flex(flex-start, center);
+      padding: 1.6rem 2.4rem;
+      &:hover {
+        background-color: $gray-color-2;
+      }
+    }
+
+    &-title {
+      margin-right: 1.6rem;
+      @include style-text(1.7rem, 500, 2.7rem, $text-color);
+      flex: 1;
+    }
+
+    &-heading {
+      margin-top: 2rem;
+      @include style-text(1.7rem, 600, 1.9rem, $text-color);
+      padding: 1.6rem 2.4rem;
+    }
+
+    &-sm {
+      border: none;
+    }
+  }
+}
+
+.drawer-left {
+  @include fixed(0, unset, 0, $header-mobile-height);
+  background-color: $white;
+  max-width: 400px;
+  width: 100%;
+  @include hidden;
+  transition: all 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  height: 0;
+
+  @include responsive(lg-screen) {
+    top: $header-height;
+  }
+
+  &-active {
+    @include show;
+    height: 100%;
+  }
+}
+
+.drawer-mobile-overlay {
+  @include fixed(0, 0, 0, $header-mobile-height);
+  @include responsive(lg-screen) {
+    height: $header-height;
+  }
+  background-color: rgba(0, 0, 0, 0.3);
+}

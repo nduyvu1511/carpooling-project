@@ -1,0 +1,184 @@
+.search__rides {
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-1;
+  border-radius: 16px;
+  @include responsive(lg-screen) {
+    height: 55px;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  &-inner {
+    flex: 1;
+    padding-top: 1rem;
+    padding-inline: 2rem;
+    display: flex;
+    background-color: $white;
+    border-radius: 16px 16px 0 0;
+    flex-direction: column;
+
+    @include responsive(lg-screen) {
+      padding-inline: 0.3rem;
+      height: 100%;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      border-radius: 16px 0 0 16px;
+      padding-top: 0;
+      padding-block: 0.8rem;
+    }
+  }
+
+  &-item {
+    height: 55px;
+    @include responsive(lg-screen) {
+      height: 100%;
+    }
+  }
+
+  &-from {
+    position: relative;
+    border-bottom: 1px solid $gray-color-2;
+    border-radius: 16px 16px 0 0;
+
+    @include responsive(lg-screen) {
+      border-bottom: 0;
+      flex: 1;
+      border-right: 1px solid $gray-color-2;
+      border-radius: 16px 0 0 16px;
+    }
+  }
+
+  &-to {
+    position: relative;
+    border-bottom: 1px solid $gray-color-2;
+    @include responsive(lg-screen) {
+      flex: 1;
+      border-bottom: 0;
+      border-right: 1px solid $gray-color-2;
+    }
+  }
+
+  & .search__rides-info {
+    display: flex;
+    align-items: center;
+
+    &-calendar {
+      cursor: pointer;
+      height: 100%;
+      @include flex(flex-start, center);
+      position: relative;
+      flex: 1;
+
+      &-btn {
+        width: 100%;
+        height: 100%;
+        @include flex-center;
+
+        @include responsive(lg-screen) {
+          flex: unset;
+          padding-inline: 3rem;
+        }
+      }
+
+      & span {
+        margin-left: 1rem;
+        @include style-text(1.5rem, 500, 2.2rem, $text-color);
+      }
+    }
+
+    &-quantity {
+      cursor: pointer;
+      position: relative;
+      height: 100%;
+      border-left: 1px solid $gray-color-2;
+      @include flex-center;
+
+      min-width: 110px;
+      &-btn {
+        @include flex-center;
+        height: 100%;
+        width: 100%;
+        padding-inline: 2rem;
+
+        @include responsive(md-screen) {
+          min-width: 110px;
+        }
+
+        & svg {
+          margin-right: 0.6rem;
+        }
+
+        & span {
+          flex: 1;
+        }
+      }
+
+      &-box {
+        position: absolute;
+        top: calc(100% + 2rem);
+        right: 0;
+        @include flex(space-between, center);
+        background-color: $white;
+        padding: 3rem 2rem;
+        border-radius: 8px;
+        box-shadow: $shadow-1;
+        width: 370px;
+
+        &-text {
+          @include style-text(1.5rem, 600, 2.5rem, $text-color);
+          white-space: nowrap;
+          margin-right: 3rem;
+        }
+
+        & .input__quantity {
+          border: none;
+
+          &-btn {
+            border-radius: 50%;
+            border: 1px solid $primary-color;
+            width: 25px;
+            height: 25px;
+
+            & svg {
+              fill: $primary-color;
+              font-size: 1.8rem;
+            }
+          }
+
+          &-input {
+            width: 70px;
+            border: none;
+            font-size: 1.4rem;
+            font-weight: 500;
+          }
+        }
+      }
+
+      & span {
+        margin-left: 1rem;
+        @include style-text(1.8rem, 500, 1.8rem, $text-color);
+      }
+    }
+  }
+
+  &-button {
+    & button {
+      height: 100%;
+      background-color: $primary-color;
+      @include flex-center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $white;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 0 0 16px 16px;
+
+      @include responsive(lg-screen) {
+        border-radius: 0 16px 16px 0;
+        width: 160px;
+      }
+    }
+  }
+}

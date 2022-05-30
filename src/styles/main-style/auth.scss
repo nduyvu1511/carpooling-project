@@ -1,0 +1,64 @@
+.resetPassword__page {
+  padding: 1.6rem 2.4rem;
+
+  &-header {
+    padding: 1rem 0 3rem 0;
+    @include flex-center;
+
+    & .page-heading {
+      flex: 1;
+      padding: 0;
+    }
+  }
+
+  &-inner {
+  }
+}
+
+.auth-container {
+  & .auth__inner {
+    & .page-heading {
+    }
+  }
+
+  & .auth__footer {
+    &-buttons {
+      &-item {
+        @include style-text(1.5rem, 500, 2.2rem, $text-color);
+        width: 100%;
+        padding: 16px 24px;
+        @include flex(space-between, center);
+        border-bottom: 1px solid $gray-color-2;
+
+        &:last-child {
+          border: none;
+        }
+
+        &:hover {
+          background-color: $gray-color-2;
+        }
+
+        & svg {
+          font-size: 2rem;
+        }
+
+        & .facebook-icon {
+          fill: #0f91f3;
+        }
+
+        & .phone-icon {
+          fill: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+.auth__inner {
+  & .page-heading {
+  }
+}
+
+.auth__footer {
+  margin-top: 2rem;
+}

@@ -1,0 +1,160 @@
+.calendar {
+  position: absolute;
+  top: 262px;
+  z-index: 10;
+  background-color: $white;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: $shadow-1;
+}
+
+.calendar {
+  //   & .react-calendar {
+  //     background-color: $white;
+  //     height: 100%;
+  //     display: flex;
+  //     flex-direction: column;
+
+  //     & .react-calendar__navigation {
+  //       margin-bottom: 2rem;
+  //       display: flex;
+  //       & .react-calendar__navigation__arrow {
+  //         width: 30px;
+  //       }
+
+  //       & .react-calendar__navigation__label {
+  //         flex: 1;
+  //       }
+
+  //       & button {
+  //         height: 100%;
+  //         background-color: $white;
+  //       }
+
+  //       & .react-calendar__navigation__prev2-button,
+  //       & .react-calendar__navigation__next2-button {
+  //         display: none;
+  //       }
+
+  //       & .react-calendar__navigation__label__labelText {
+  //         @include style-text(1.8rem, 500, 2.8rem, $text-color);
+  //       }
+  //     }
+
+  //     & .react-calendar__viewContainer {
+  //       flex: 1;
+
+  //       & .react-calendar__month-view {
+  //         height: 100%;
+  //         & > div {
+  //           height: 100%;
+
+  //           & > div {
+  //             height: 100%;
+  //             display: flex;
+  //             flex-direction: column;
+  //           }
+  //         }
+
+  //         & .react-calendar__month-view__weekdays {
+  //           margin-bottom: 1.4rem;
+
+  //           &__weekday {
+  //             @include flex(center, start);
+
+  //             & abbr {
+  //               @include style-text(1.5rem, 500, 1.5rem, $text-color);
+  //               text-decoration: none;
+  //             }
+  //           }
+  //         }
+
+  //         & .react-calendar__month-view__days {
+  //           flex: 1;
+
+  //           & .react-calendar__tile {
+  //             background-color: transparent;
+  //             border-radius: 50%;
+  //             @include style-text(1.4rem, 500, 1.4rem, $text-color-2);
+  //             cursor: pointer;
+  //             position: relative;
+
+  //             &::after {
+  //               content: "";
+  //               position: absolute;
+  //               width: 40px;
+  //               height: 40px;
+  //               background-color: rgb(219, 219, 219, 0.5);
+  //               @include center-absolute;
+  //               border-radius: 50%;
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+}
+
+.calendar__modal {
+  position: relative;
+  & .calendar {
+    width: 100%;
+    height: 100%;
+    position: static;
+    transform: unset;
+    box-shadow: none;
+  }
+
+  .modal {
+    &-header {
+      border-bottom: 1px solid $gray-color-2;
+    }
+  }
+}
+
+.css-b62m3t-container {
+  height: 50px;
+  border-radius: 16px;
+  @include style-text(1.6rem, 600, 2.2rem, $text-color);
+  flex: 1;
+
+  & .css-14el2xx-placeholder {
+    color: $text-color-2;
+  }
+
+  & .css-6j8wv5-Input,
+  & .css-qc6sy-singleValue {
+    color: $text-color;
+  }
+
+  & .css-1okebmr-indicatorSeparator {
+    display: none;
+  }
+
+  & .css-1s2u09g-control {
+    height: 50px;
+    border-radius: 16px;
+    background-color: $gray-color-2;
+    padding-inline: 8px;
+    border: 0;
+    &:focus {
+      border: 2px solid $primary-color;
+    }
+  }
+
+  & .css-1pahdxg-control {
+    height: 50px;
+    border-radius: 16px;
+    background-color: $gray-color-2;
+    box-shadow: none;
+    padding-inline: 8px;
+    border: 0;
+    &:focus {
+      border: 2px solid $primary-color;
+    }
+  }
+}

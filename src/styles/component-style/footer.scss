@@ -1,0 +1,53 @@
+.footer {
+  &__top {
+    background-color: $gray-color-2;
+    padding-top: 4.8rem;
+    padding-bottom: 2rem;
+
+    &__inner {
+      grid-gap: 2rem;
+
+      &-item {
+        text-align: center;
+        @include responsive(md-screen) {
+          text-align: left;
+        }
+
+        & .footer-link {
+          display: block;
+          margin-bottom: 1rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          @include style-text(1.4rem, 500, 2.3rem, $text-color);
+        }
+
+        &-socials {
+          & a {
+            margin-right: 1rem;
+            & svg {
+              color: $primary-color;
+            }
+          }
+        }
+      }
+    }
+
+    &-text {
+      display: block;
+      margin-top: 2rem;
+      @include style-text(1.2rem, 600, 1.8rem, $text-color-2);
+    }
+  }
+
+  &__bottom {
+    padding-block: 1.6rem;
+    background-color: $gray-color-1;
+
+    &__inner {
+      & p {
+        @include style-text(1.2rem, 500, 2rem, $text-color-2);
+      }
+    }
+  }
+}

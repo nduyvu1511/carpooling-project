@@ -1,0 +1,189 @@
+.profile-container {
+  padding-bottom: 2rem;
+
+  & .tabs {
+    max-width: $container-width;
+    margin: 0 auto;
+  }
+
+  & .profile__menu {
+    &__user {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid $gray-color-2;
+
+      &-top {
+        @include flex(space-between, center);
+        padding: 1.6rem 2.4rem;
+        &:hover {
+          background-color: $gray-color-2;
+        }
+      }
+
+      &-info {
+        flex: 1;
+        margin-right: 2rem;
+
+        &-name {
+          @include style-text(1.8rem, 600, 2.6rem, $text-color);
+          margin-bottom: 0.4rem;
+          @include limit-line-text(1);
+        }
+
+        &-desc {
+          @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
+          @include limit-line-text(2);
+        }
+      }
+
+      &-avatar {
+        display: flex;
+        align-items: center;
+
+        & .image-container {
+          height: 96px;
+          width: 96px;
+
+          & img {
+            border-radius: 50%;
+          }
+        }
+
+        & svg {
+          margin-left: 2rem;
+        }
+      }
+
+      &-bottom {
+        & .profile__menu-actions {
+          &-item {
+            cursor: pointer;
+            @include flex(flex-start, center);
+            padding: 1.6rem 2.4rem;
+            &:hover {
+              background-color: $gray-color-2;
+            }
+
+            & svg {
+              margin-right: 1.2rem;
+            }
+
+            & span {
+              @include style-text(1.6rem, 500, 2.4rem, $primary-color);
+              flex: 1;
+            }
+          }
+        }
+      }
+    }
+
+    &__item {
+      padding-block: 1rem;
+
+      & .profile__menu-heading {
+        padding: 1.2rem 2.4rem;
+        @include style-text(1.8rem, 600, 2.4rem, $text-color);
+      }
+
+      & .profile__menu-list {
+        &-item {
+          @include flex(flex-start, center);
+          cursor: pointer;
+          padding: 1.6rem 2.4rem;
+
+          &:hover {
+            background-color: $gray-color-2;
+          }
+
+          & svg {
+            margin-right: 1.2rem;
+          }
+
+          &-text {
+            flex: 1;
+            @include style-text(1.6rem, 500, 2.4rem, $primary-color);
+          }
+        }
+      }
+    }
+
+    &__verify {
+      border-bottom: 1px solid $gray-color-2;
+    }
+
+    &__vehicles {
+      & .profile__menu-list {
+        &-item {
+          border: none;
+        }
+      }
+    }
+  }
+
+  & .profile__account {
+    &-list {
+      &-item {
+        cursor: pointer;
+        border-bottom: 1px solid $gray-color-2;
+        @include flex(flex-start, center);
+        padding: 1.6rem 2.4rem;
+
+        &:last-child {
+          border: none;
+        }
+
+        &:hover {
+          background-color: $gray-color-2;
+        }
+
+        &-link {
+          flex: 1;
+          @include style-text(1.6rem, 500, 2.4rem, $text-color);
+        }
+
+        &-primary {
+          & a {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.picture-page {
+  & .picture__inner {
+    display: grid;
+    grid-gap: 2rem;
+
+    @include responsive(lg-screen) {
+      grid-template-columns: 300px 1fr;
+    }
+
+    &-avatar {
+      @include flex-center;
+      flex-direction: column;
+
+      & .image-container {
+        width: 156px;
+        height: 156px;
+        cursor: pointer;
+
+        & img {
+          border-radius: 50%;
+        }
+      }
+    }
+
+    &-action {
+      @include flex-center;
+      flex-direction: column;
+
+      &-heading {
+        margin-bottom: 1rem;
+      }
+
+      &-btn {
+      }
+    }
+  }
+}

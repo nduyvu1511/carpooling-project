@@ -1,0 +1,37 @@
+.rating-container {
+  & .rating-heading {
+    text-align: center;
+    padding: 1.6rem 2.4rem;
+    @include style-text(2.4rem, 600, 3.4rem, $text-color);
+    @include responsive(lg-screen) {
+      font-size: 3rem;
+      line-height: 4rem;
+    }
+  }
+
+  & .rating__empty {
+    @include flex-center;
+    flex-direction: column;
+    padding: 1rem 2.4rem;
+
+    & svg {
+      margin-bottom: 2rem;
+      width: 70%;
+    }
+
+    &-text {
+      text-align: center;
+      @include style-text(2.4rem, 600, 3.4rem, $text-color);
+      @include responsive(lg-screen) {
+        font-size: 3rem;
+        line-height: 4rem;
+      }
+    }
+  }
+
+  & .rating__given {
+  }
+
+  & .rating__received {
+  }
+}

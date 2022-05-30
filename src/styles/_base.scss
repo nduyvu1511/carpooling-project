@@ -1,0 +1,406 @@
+// @font-face {
+//   font-family: "Helvetica Neue";
+//   font-weight: 400;
+//   font-display: swap;
+//   src: local("Helvetica Neue Regular"), local("helvetica-neue-regular"),
+//     url("../shared/assets/fonts/Helvetica/helvetica-neue-regular.ttf")
+//       format("truetype");
+// }
+
+// @font-face {
+//   font-family: "Helvetica Neue";
+//   font-weight: 600;
+//   font-display: swap;
+//   src: local("Helvetica Neue Bold"), local("helveticaneuebold"),
+//     url("../shared/assets/fonts/Helvetica/helveticaneuebold.ttf")
+//       format("truetype");
+// }
+
+// @font-face {
+//   font-family: "Helvetica Neue";
+//   font-weight: 500;
+//   font-display: swap;
+//   src: local("Helvetica Neue Medium"), local("helveticaneuemedium"),
+//     url("../shared/assets/fonts/Helvetica/helveticaneuemedium.ttf")
+//       format("truetype");
+// }
+
+// @font-face {
+//   font-family: "Helvetica Neue";
+//   font-weight: 300;
+//   font-display: swap;
+//   src: local("Helvetica Neue Light"), local("helveticaneuelight"),
+//     url("../shared/assets/fonts/Helvetica/helveticaneuelight.ttf")
+//       format("truetype");
+// }
+
+html,
+body,
+div,
+span,
+button,
+input,
+label,
+textarea,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: "Poppins", sans-serif;
+  vertical-align: baseline;
+}
+html {
+  font-size: 62.5%;
+}
+* {
+  box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  font-size: 1.4rem;
+  color: $text-color;
+}
+
+.header-container {
+  max-width: $header-container-width;
+  width: 100%;
+  padding-inline: 2.4rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+  max-width: $container-width;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: 24px;
+}
+
+.container-fluild {
+  min-width: 100vw;
+  width: 100%;
+}
+
+.content-container {
+  max-width: $content-container-width;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  text-decoration: none;
+  @include style-text(1.4rem, 500, 2.2rem, $text-color);
+}
+
+.image-container {
+  position: relative;
+
+  & img {
+    position: absolute;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@each $val in $numbers {
+  .grid-col-#{$val} {
+    grid-template-columns: repeat($val, 1fr);
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-xxs-#{$val} {
+    @include responsive(xxs-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-xs-#{$val} {
+    @include responsive(xs-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-sm-#{$val} {
+    @include responsive(sm-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-md-#{$val} {
+    @include responsive(md-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-lg-#{$val} {
+    @include responsive(lg-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-xl-#{$val} {
+    @include responsive(xl-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+@each $val in $numbers {
+  .grid-col-2xl-#{$val} {
+    @include responsive(2xl-screen) {
+      grid-template-columns: repeat($val, 1fr);
+    }
+  }
+}
+
+.grid {
+  display: grid;
+}
+
+.btn-reset {
+  background-color: unset;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.btn-primary {
+  padding: 1.6rem 2.4rem;
+  background-color: $primary-color;
+  @include style-text(1.4rem, 500, 1.6rem, $white);
+  white-space: nowrap;
+  border-radius: 48px;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  @include flex-center;
+  min-width: 48px;
+  max-width: 100%;
+  overflow: hidden;
+  user-select: none;
+
+  &:hover {
+    background-color: $primary-color-darker;
+  }
+}
+
+.btn-primary-text {
+  background-color: unset;
+  @include style-text(1.4rem, 600, 1.6rem, $primary-color);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  user-select: none;
+}
+
+.hide-on-mobile {
+  display: none !important;
+  @include responsive(sm-screen) {
+    display: block !important;
+  }
+}
+
+.show-on-mobile {
+  display: block !important;
+  @include responsive(sm-screen) {
+    display: none !important;
+  }
+}
+
+.hide-on-tablet {
+  display: none !important;
+  @include responsive(md-screen) {
+    display: block !important;
+  }
+}
+
+.show-on-tablet {
+  display: block !important;
+  @include responsive(md-screen) {
+    display: none !important;
+  }
+}
+
+.hide-on-tablet-flex {
+  display: none !important;
+  @include responsive(md-screen) {
+    display: flex !important;
+  }
+}
+
+.show-on-tablet-flex {
+  display: flex !important;
+  @include responsive(md-screen) {
+    display: none !important;
+  }
+}
+
+.page-heading {
+  padding: 16px 24px 24px 24px;
+  text-align: center;
+  @include style-text(2rem, 600, 3rem, $text-color);
+
+  @include responsive(sm-screen) {
+    font-size: 2.4rem;
+    line-height: 3.4rem;
+  }
+
+  @include responsive(lg-screen) {
+    font-size: 3rem;
+    line-height: 4rem;
+  }
+}
+
+.px-24 {
+  padding-inline: 12px;
+  @include responsive(sm-screen) {
+    padding-inline: 24px;
+  }
+}
+
+.btn-disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

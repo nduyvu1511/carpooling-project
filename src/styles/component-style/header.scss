@@ -1,0 +1,177 @@
+.header {
+  @include fixed(0, 0, unset, 0);
+  background-color: $white;
+  z-index: 1000;
+  height: $header-mobile-height;
+  // border-bottom: 1px solid $gray-color-2;
+  @include responsive(md-screen) {
+    height: $header-height;
+  }
+
+  &-active {
+  }
+
+  &-container {
+    height: 100%;
+  }
+
+  &__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-left {
+      height: 100%;
+
+      & .header__logo {
+        cursor: pointer;
+        &-wrapper {
+          & a {
+            @include style-text(2.8rem, 600, 2.6rem, $text-color);
+          }
+        }
+      }
+      display: flex;
+      align-items: center;
+
+      & .header__nav-list {
+        margin-left: 2rem;
+        display: none;
+
+        @include responsive(lg-screen) {
+          @include flex(flex-start, center);
+        }
+
+        &-item {
+          &-link {
+            @include style-text(1.5rem, 600, 2.6rem, $primary-color);
+            margin-right: 1.6rem;
+          }
+
+          &:last-child {
+            & a {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+
+    &-right {
+      height: 100%;
+      @include flex(flex-start, center);
+
+      & .header__actions {
+        color: $primary-color;
+        @include flex(flex-start, center);
+        @include responsive(md-screen) {
+          margin-right: 3rem;
+        }
+
+        &-item {
+          @include style-text(1.5rem, 600, 2.6rem, $primary-color);
+          @include flex(flex-start, center);
+          cursor: pointer;
+
+          & svg {
+            color: $primary-color;
+          }
+
+          &:first-child {
+            margin-right: 2rem;
+          }
+
+          &-text {
+            display: none;
+            @include responsive(md-screen) {
+              display: block;
+              margin-left: 0.6rem;
+            }
+          }
+        }
+      }
+    }
+
+    & .header__account {
+      &-sm {
+        cursor: pointer;
+        display: block;
+        @include responsive(md-screen) {
+          display: none;
+        }
+
+        & .menu {
+          left: 0;
+          right: unset;
+        }
+      }
+
+      &-lg {
+        display: none;
+        @include responsive(md-screen) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.header__account__option {
+  cursor: pointer;
+  position: relative;
+  display: none;
+  max-width: 250px;
+  width: 100%;
+  @include responsive(md-screen) {
+    @include flex(flex-start, center);
+  }
+
+  &-sm {
+    @include flex(flex-start, center);
+
+    @include responsive(md-screen) {
+      display: none;
+    }
+  }
+
+  &-name {
+    flex: 1;
+    @include style-text(1.4rem, 600, 2.4rem, $text-color);
+    margin-right: 1.4rem;
+    display: none;
+    @include responsive(md-screen) {
+      display: -webkit-box;
+    }
+    @include limit-line-text(1);
+  }
+
+  &-avatar {
+    width: 32px;
+    height: 32px;
+
+    @include responsive(md-screen) {
+      width: 48px;
+      height: 48px;
+    }
+
+    & img {
+      border-radius: 50%;
+    }
+  }
+
+  &-arrow {
+    margin-left: 1rem;
+    transition: all 0.1s linear;
+
+    &-active {
+      transform: rotate(180deg);
+    }
+  }
+
+  &-menu {
+    & .menu {
+      top: calc(100% + 2rem);
+    }
+  }
+}

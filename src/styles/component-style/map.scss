@@ -1,0 +1,33 @@
+.map-container {
+  width: 100%;
+  height: 100%;
+
+  & .modal {
+    padding-bottom: 0;
+  }
+}
+
+.map-modal {
+  & .modal {
+    padding-bottom: 0;
+  }
+}
+
+.map__modal {
+  width: 100%;
+  height: 100%;
+  background-color: $white;
+
+  &-header {
+    height: 62px;
+    padding-inline: 24px;
+    @include flex(flex-end, center);
+
+    & button {
+    }
+  }
+
+  &-body {
+    height: 100%;
+  }
+}

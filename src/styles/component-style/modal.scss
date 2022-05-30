@@ -1,0 +1,145 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: $white;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2rem;
+  overflow-y: auto;
+
+  &-header {
+    display: flex;
+    padding: 8px 20px;
+    height: 62px;
+
+    &-heading {
+      @include style-text(1.6rem, 600, 2.6rem, $text-color-2);
+    }
+
+    & .input-common {
+      & button {
+        margin-right: 1rem;
+      }
+    }
+
+    &-btn {
+      @include flex-center;
+      margin-right: 2rem;
+      & svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    &-child {
+      flex: 1;
+      display: none;
+      @include flex(flex-center, center);
+    }
+  }
+
+  &-body {
+    flex: 1;
+  }
+
+  // Rides Search
+  & .rides__search-modal {
+    &-list {
+      &-item {
+        border: 1px solid $gray-color-2;
+        &:first-child {
+          border: none;
+        }
+      }
+    }
+  }
+
+  & .input__quantity {
+    border: none;
+    width: 100%;
+    padding-inline: 24px;
+    margin-top: 6rem;
+
+    &-input {
+      flex: 1;
+      @include style-text(7rem, 500, 7.2rem, $text-color-2);
+      width: 100%;
+      height: 100px;
+      border: 0;
+      padding-inline: 2rem;
+    }
+
+    &-btn {
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+      border: 2px solid $primary-color;
+
+      & svg {
+        font-size: 3rem;
+        fill: $primary-color;
+      }
+    }
+  }
+
+  &-small {
+    padding-inline: 12px;
+    margin-top: 12px;
+
+    @include responsive(sm-screen) {
+      padding-inline: 24px;
+      margin-top: 24px;
+    }
+
+    @include responsive(lg-screen) {
+      margin-top: 48px;
+    }
+
+    &-close-btn {
+      @include responsive(xs-screen) {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      // margin-bottom: 2rem;
+      // @include responsive(lg-screen) {
+      //   margin-bottom: 3rem;
+      // }
+
+      & svg {
+      }
+    }
+
+    &-header {
+      position: relative;
+      margin-bottom: 2rem;
+      @include responsive(lg-screen) {
+        margin-bottom: 3rem;
+      }
+      display: flex;
+
+      & h1 {
+        flex: 1;
+        text-align: left;
+        margin-right: 1rem;
+        @include style-text(2rem, 600, 3rem, $text-color);
+
+        @include responsive(xs-screen) {
+          text-align: center;
+          margin-right: 2.4rem;
+        }
+
+        @include responsive(sm-screen) {
+          font-size: 2.4rem;
+          line-height: 3.4rem;
+        }
+
+        @include responsive(lg-screen) {
+          font-size: 3rem;
+          line-height: 4rem;
+        }
+      }
+    }
+  }
+}

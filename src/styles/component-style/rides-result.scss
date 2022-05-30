@@ -1,0 +1,74 @@
+.rides__result {
+  color: $text-color;
+  width: 100%;
+
+  &-list {
+    padding-block: 1rem;
+  }
+}
+
+.rides__result-item {
+  padding: 1.6rem 2rem;
+  @include flex(flex-start, center);
+  cursor: pointer;
+  &:hover {
+    background-color: $gray-color-2;
+  }
+
+  &-inner {
+    flex: 1;
+  }
+
+  &-clock-icon {
+    margin-right: 2rem;
+  }
+
+  &-right-icon {
+    margin-left: 2rem;
+  }
+
+  &-address {
+    flex: 1;
+
+    &-heading {
+      @include style-text(1.8rem, 500, 2.8rem, $text-color);
+      margin-bottom: 0.1rem;
+    }
+
+    &-title {
+      @include style-text(1.5rem, 500, 2rem, $text-color-2);
+    }
+  }
+
+  &-history {
+    @include flex(flex-start, center);
+    flex-wrap: wrap;
+    @include style-text(1.6rem, 500, 2.4rem, $text-color);
+    margin-bottom: 0.2rem;
+
+    & svg {
+      transform: rotate(180deg);
+      margin-inline: 1rem;
+    }
+  }
+
+  &-info {
+    @include flex(flex-start, center);
+    @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
+
+    &-date {
+      margin-right: 1rem;
+    }
+  }
+}
+
+.rides__result-absolute {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 1.6rem);
+  box-shadow: $shadow-1;
+  width: 400px;
+  background-color: $white;
+  border-radius: 1.6rem;
+  z-index: 10;
+}

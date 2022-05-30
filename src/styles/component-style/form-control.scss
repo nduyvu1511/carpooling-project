@@ -1,0 +1,277 @@
+.form-control {
+  & button[type="submit"] {
+    margin: 0 auto;
+    margin-top: 3rem;
+  }
+
+  &-otp {
+    @include flex-center;
+    flex-direction: column;
+
+    &-label {
+      text-align: center;
+      @include style-text(1.5rem, 500, 2rem, $text-color-2);
+      margin-bottom: 2rem;
+
+      & b {
+        color: $text-color;
+        font-weight: 600;
+      }
+    }
+
+    &-input {
+      margin-bottom: 2rem;
+      & > div {
+        // width: 300px;
+        width: fit-content;
+        height: 40px;
+        @include responsive(sm-screen) {
+          height: 55px;
+        }
+
+        & > div {
+          border: 1px solid $gray-color-1;
+          border-radius: 8px;
+          margin-right: 0.6rem;
+          height: 100%;
+          width: 40px;
+
+          @include responsive(sm-screen) {
+            width: 55px;
+          }
+
+          & input {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 8px;
+            @include style-text(1.6rem, 500, 1.6rem, $text-color);
+
+            &:focus {
+              border: 1px solid $primary-color !important;
+            }
+          }
+        }
+
+        & > div:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  & .otp__resend {
+    @include flex-center;
+    @include style-text(1.4rem, 500, 2rem, $text-color-2);
+    margin-bottom: 2rem;
+
+    &-title {
+      text-align: center;
+    }
+
+    &-btn {
+      margin-left: 0.2rem;
+      color: $primary-color;
+      cursor: pointer;
+    }
+  }
+
+  & .form-control-forgot-pw {
+    margin-bottom: 1rem;
+    text-align: right;
+    & a {
+      @include style-text(1.5rem, 500, 2rem, $primary-color);
+    }
+  }
+
+  & .form-control-remember {
+    @include flex(flex-end, center);
+    margin-bottom: 1rem;
+    @include style-text(1.5rem, 500, 2rem, $text-color);
+
+    & label {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    & .input__radio {
+      margin-left: 1.6rem;
+    }
+  }
+
+  & .form-item-action {
+    @include flex(space-between, center);
+
+    & .form-control-remember {
+      margin-bottom: 0;
+      margin-right: 1.2rem;
+    }
+
+    & .form-control-forgot-pw {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.form-item {
+  margin-bottom: 2rem;
+
+  @include responsive(sm-screen) {
+    display: flex;
+    align-items: center;
+  }
+
+  &-label {
+    @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
+    width: 120px;
+  }
+
+  &-inner {
+    flex: 1;
+  }
+
+  &-wrapper {
+    display: block;
+    flex: 1;
+    position: relative;
+
+    & .form-item-toggle-pw-btn {
+      @include vertical-align;
+      right: 20px;
+    }
+  }
+
+  &-input {
+    height: 55px;
+    background-color: $gray-color-2;
+    @include style-text(1.5rem, 500, 1.7rem, $text-color);
+    padding-inline: 1.4rem;
+    border-radius: 16px;
+    outline: none;
+    width: 100%;
+
+    &:focus {
+      border: 3px solid $primary-color;
+    }
+
+    &-error {
+      border: 1px solid $danger;
+      background-color: $danger-opacity;
+    }
+
+    &-text-error {
+      @include style-text(1.4rem, 500, 2rem, $danger);
+      margin-top: 0.6rem;
+    }
+  }
+
+  & input[type="password"] {
+    padding-right: 5rem;
+  }
+
+  & textarea {
+    height: auto;
+    padding: 1.2rem;
+  }
+}
+
+.booking__form {
+  & label {
+    @include style-text(1.5rem, 600, 2.2rem, $text-color-2);
+    user-select: none;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+  }
+
+  &-item {
+    margin-bottom: 2rem;
+
+    &-inline {
+      display: flex;
+      @include flex(flex-start, flex-start);
+      flex-direction: column;
+      @include responsive(sm-screen) {
+        flex-direction: row;
+      }
+
+      & label {
+        width: 150px;
+        text-align: left;
+
+        @include responsive(sm-screen) {
+          margin-bottom: 0;
+          margin-right: 1.6rem;
+        }
+      }
+
+      & input,
+      p,
+      textarea,
+      ul {
+        flex: 1;
+      }
+    }
+
+    &-checkbox {
+      width: fit-content;
+      display: flex;
+
+      flex-wrap: wrap;
+
+      & label {
+        margin-right: 0.8rem;
+      }
+    }
+
+    &-title,
+    &-result {
+      @include style-text(1.5rem, 600, 2.2rem, $text-color-2);
+    }
+
+    &-title {
+      margin-right: 1rem;
+    }
+
+    &-result {
+      color: $text-color;
+    }
+
+    &-submit {
+      margin-inline: auto;
+    }
+
+    &-calendar {
+      position: relative;
+      flex: 1;
+
+      &-absolute {
+        position: absolute;
+        left: 0%;
+        width: 400px;
+        height: 400px;
+        top: calc(100% + 10px);
+        background-color: $white;
+        z-index: 10;
+
+        & .calendar {
+          position: static;
+          transform: unset;
+        }
+      }
+    }
+  }
+}
+
+.input-close-btn {
+  margin-right: 1rem;
+}
+
+.form-label {
+  border-radius: 16px;
+  border: 1px solid $gray-color-1;
+  padding: 12px;
+  @include style-text(1.4rem, 500, 2.2rem, $text-color);
+
+  &:focus {
+    border: 1px solid $primary-color;
+  }
+}

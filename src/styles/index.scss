@@ -1,0 +1,33 @@
+@import "./mixin";
+@import "./variables";
+@import "./base";
+@import "./base";
+
+// Component style
+@import "./component-style/header.scss";
+@import "./component-style/menu.scss";
+@import "./component-style/custom-library.scss";
+@import "./component-style/search-rides.scss";
+@import "./component-style/ride-item.scss";
+@import "./component-style/footer.scss";
+@import "./component-style/input-quantity.scss";
+@import "./component-style/common.scss";
+@import "./component-style/rides-result.scss";
+@import "./component-style/modal.scss";
+@import "./component-style/form-control.scss";
+@import "./component-style/rating.scss";
+@import "./component-style/map.scss";
+@import "./component-style/location.scss";
+@import "./component-style/promotion.scss";
+
+// Layout style
+@import "./layout-style/layout.scss";
+
+// Main style
+@import "./main-style/home.scss";
+@import "./main-style/search.scss";
+@import "./main-style/dashboard.scss";
+@import "./main-style/rides.scss";
+@import "./main-style/password.scss";
+@import "./main-style/auth.scss";
+@import "./main-style/offer-seats.scss";

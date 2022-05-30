@@ -1,0 +1,96 @@
+.ride__item {
+  min-height: 80px;
+  cursor: pointer;
+  background-color: $white;
+  width: 100%;
+  padding: 1.6rem 2rem;
+  @include style-text(1.6rem, 500, 2.6rem, $text-color);
+  border-radius: 8px;
+  // @include flex(space-between, center);
+
+  &:hover {
+    background-color: $gray-color-2;
+  }
+
+  &-info {
+    @include flex(flex-start, center);
+    flex-wrap: wrap;
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  &-arrow-icon-right {
+    display: flex;
+    margin-inline: 1rem;
+    & svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &-bottom {
+    @include flex(space-between, center);
+
+    &-price {
+      @include style-text(1.5rem, 500, 2.5rem, $text-color);
+      flex: 1;
+    }
+
+    &-btn {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.rides__done-item {
+  padding: 2rem;
+  border-radius: 0.8rem;
+  box-shadow: $shadow-1;
+  @include style-text(1.6rem, 600, 2.2rem, $text-color);
+
+  &-time {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  &-info {
+    position: relative;
+
+    &-line {
+      width: 4px;
+      background-color: $text-color;
+      height: 80%;
+      @include vertical-align;
+
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 7px;
+        height: 7px;
+        background-color: $white;
+        border-radius: 50%;
+        border: 2px solid $text-color;
+      }
+
+      &::after {
+        top: 0;
+      }
+
+      &::before {
+        bottom: 0;
+      }
+    }
+
+    &-from,
+    &-to {
+      margin-left: 2rem;
+    }
+
+    &-from {
+      margin-bottom: 1rem;
+    }
+  }
+}

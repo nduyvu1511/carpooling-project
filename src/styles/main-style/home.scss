@@ -1,0 +1,197 @@
+.home {
+  &__banner {
+    position: relative;
+    height: 40vh;
+    background-image: url("../../shared/assets/images/banner-1.png");
+    background-position: center;
+    background-size: cover;
+
+    @include responsive(lg-screen) {
+      height: 45vh;
+    }
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background-color: rgba($color: #000000, $alpha: 0.1);
+    }
+
+    &-content {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      @include flex(space-between, center);
+      flex-direction: column;
+
+      &-heading {
+        margin-top: 3rem;
+        padding-inline: 3rem;
+        @include style-text(2.6rem, 600, 3.6rem, $white);
+        text-align: center;
+
+        @include responsive(sm-screen) {
+          font-size: 3rem;
+          line-height: 4rem;
+        }
+
+        @include responsive(md-screen) {
+          font-size: 4rem;
+          line-height: 5rem;
+        }
+
+        @include responsive(lg-screen) {
+          font-size: 5rem;
+          line-height: 6rem;
+        }
+
+        @include responsive(xl-screen) {
+          font-size: 5.5rem;
+          line-height: 6.5rem;
+          letter-spacing: -1px;
+        }
+      }
+
+      &-form {
+        margin-bottom: 2rem;
+        max-width: $container-width;
+        width: 100%;
+        padding-inline: 2.4rem;
+        position: absolute;
+        top: 72%;
+
+        @include responsive(lg-screen) {
+          top: unset;
+          position: static;
+        }
+      }
+    }
+  }
+
+  &__content {
+    padding-block: 2.4rem;
+    @include responsive(md-screen) {
+      padding-block: 4.8rem;
+    }
+
+    &-heading {
+      @include style-text(2.4rem, 600, 3.4rem, $white);
+      margin-bottom: 1rem;
+      @include responsive(md-screen) {
+        @include style-text(3rem, 600, 4rem, $white);
+      }
+    }
+
+    &-first {
+      margin-top: 16rem;
+      @include responsive(lg-screen) {
+        margin-top: 0;
+      }
+
+      & .home__content-list {
+        grid-gap: 3rem;
+
+        &-item {
+          & svg {
+            margin-bottom: 1rem;
+            fill: $text-color-2;
+          }
+
+          &-title {
+            @include style-text(1.6rem, 600, 2.6rem, $text-color);
+            margin-bottom: 0.4rem;
+          }
+
+          &-desc {
+            @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
+          }
+        }
+      }
+    }
+
+    &-second {
+      background-color: $secondary-color;
+    }
+
+    &-third {
+      & .home__content-heading {
+        color: $text-color;
+      }
+
+      & .home__content-info {
+        color: $text-color !important;
+
+        &-content {
+          &-desc {
+            color: $text-color;
+          }
+        }
+      }
+    }
+
+    &-rides {
+      background-color: $secondary-color;
+      padding-block: 3rem;
+
+      & .home__content-heading {
+        margin-bottom: 2rem;
+      }
+
+      & .rides__list {
+        grid-gap: 2rem;
+      }
+
+      &-btn {
+        margin-top: 1.6rem;
+        text-align: right;
+
+        & button {
+          margin-left: auto;
+          @include style-text(1.5rem, 600, 2rem, $primary-color);
+        }
+      }
+    }
+  }
+}
+
+.home__content-info {
+  display: flex;
+  flex-direction: column;
+
+  @include responsive(md-screen) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &-img {
+    margin-bottom: 2rem;
+    @include responsive(md-screen) {
+      width: 350px;
+      margin-right: 5rem;
+      margin-bottom: 0;
+    }
+
+    & img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &-content {
+    flex: 1;
+    @include flex-center;
+    flex-direction: column;
+
+    @include responsive(md-screen) {
+      display: block;
+    }
+
+    &-desc {
+      @include style-text(1.4rem, 500, 2.2rem, $white);
+      margin-bottom: 1.6rem;
+      @include responsive(md-screen) {
+        @include style-text(1.5rem, 500, 2.3rem, $white);
+      }
+    }
+  }
+}

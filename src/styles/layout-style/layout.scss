@@ -1,0 +1,10 @@
+main {
+  margin-top: $header-mobile-height;
+  min-height: calc(100vh - $header-height);
+  padding-top: 1rem;
+
+  @include responsive(md-screen) {
+    margin-top: $header-height;
+  }
+  padding-bottom: 2rem;
+}

@@ -1,0 +1,41 @@
+.location {
+  & .input-common {
+    background-color: $gray-color-2;
+    height: 55px;
+    border-radius: 16px;
+
+    & input {
+      background-color: $gray-color-2;
+      border-radius: 50%;
+      width: 100%;
+    }
+  }
+
+  &-search {
+    @include flex(flex-start, center);
+    background-color: $gray-color-2;
+    border-radius: 16px;
+    padding-inline: 16px;
+
+    & .css-b62m3t-container {
+      border-radius: 16px 0 0 16px;
+    }
+
+    & .input-common {
+      flex: 1;
+    }
+
+    & button {
+      display: flex;
+
+      & svg {
+        color: $primary-color;
+        font-size: 3rem;
+      }
+    }
+  }
+
+  &-select {
+    margin-bottom: 1rem;
+  }
+}
