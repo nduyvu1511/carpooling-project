@@ -8,7 +8,7 @@
 @import "./component-style/menu.scss";
 @import "./component-style/custom-library.scss";
 @import "./component-style/search-rides.scss";
-@import "./component-style/ride-item.scss";
+@import "./component-style/rides-item.scss";
 @import "./component-style/footer.scss";
 @import "./component-style/input-quantity.scss";
 @import "./component-style/common.scss";
@@ -22,6 +22,9 @@
 
 // Layout style
 @import "./layout-style/layout.scss";
+@import "./layout-style/ride.scss";
+@import "./layout-style/vehicle.scss";
+@import "./layout-style/driver.scss";
 
 // Main style
 @import "./main-style/home.scss";
@@ -30,4 +33,3 @@
 @import "./main-style/rides.scss";
 @import "./main-style/password.scss";
 @import "./main-style/auth.scss";
-@import "./main-style/offer-seats.scss";

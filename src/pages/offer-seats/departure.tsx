@@ -1,36 +1,43 @@
 import { RideResultItem } from "@/components"
 import LocationSelect from "@/components/location/locationSelect"
-import { MainNoFooter } from "@/layout"
+import { RideContainer } from "@/container"
+import { useRouter } from "next/router"
 
 const Departure = () => {
+  const router = useRouter()
   return (
-    <div className="departure">
-      <div className="content-container">
-        <h1 className="page-heading px-24">Chọn điểm đến</h1>
-
+    <RideContainer
+      showBtn
+      onClick={() => router.push("/offer-seats/arrival")}
+      heading="Chọn điểm đi"
+    >
+      <div className="departure content-container">
         <div className="departure-location px-24">
           <LocationSelect />
         </div>
 
-        <ul className="departure__list">
-          <li className="departure__list-item">
-            <RideResultItem type="history" />
-          </li>
-          <li className="departure__list-item">
-            <RideResultItem type="history" />
-          </li>
-          <li className="departure__list-item">
-            <RideResultItem type="history" />
-          </li>
-          <li className="departure__list-item">
-            <RideResultItem type="history" />
-          </li>
-        </ul>
+        <div className="departure__result">
+          <ul className="departure__list">
+            <li className="departure__list-item">
+              <RideResultItem type="history" />
+            </li>
+            <li className="departure__list-item">
+              <RideResultItem type="history" />
+            </li>
+            <li className="departure__list-item">
+              <RideResultItem type="history" />
+            </li>
+            <li className="departure__list-item">
+              <RideResultItem type="history" />
+            </li>
+            <li className="departure__list-item">
+              <RideResultItem type="history" />
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </RideContainer>
   )
 }
-
-Departure.Layout = MainNoFooter
 
 export default Departure

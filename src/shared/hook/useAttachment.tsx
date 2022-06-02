@@ -1,6 +1,8 @@
 import { convertBase64 } from "@/helper"
 import _ from "lodash"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { notify } from "reapop"
 
 interface UseAttachmentRes {
   getBase64Images: (
@@ -16,10 +18,12 @@ interface UseAttachmentRes {
 interface UseAttachmentProps {
   limit: number
   initImages?: Array<string>
+  useState?: boolean
 }
 
 const useAttachment = (props: UseAttachmentProps): UseAttachmentRes => {
-  const { limit, initImages } = props
+  const { limit, initImages, useState: useStateProps = true } = props
+  const dispatch = useDispatch()
 
   const [images, setImages] = useState<Array<string> | undefined>(
     initImages && initImages?.length > 0 ? initImages : undefined
@@ -40,11 +44,13 @@ const useAttachment = (props: UseAttachmentProps): UseAttachmentRes => {
 
       if (!urls?.length) {
         handleError && handleError()
+        dispatch(notify(`Có lỗi khi chọn ảnh, vui lòng thử lại`, "error"))
         return
       }
 
       if (limit === 1) {
-        setImages([urls?.[0] || ""])
+        useStateProps && setImages([urls?.[0] || ""])
+        callback && callback(urls)
         return
       }
 
@@ -52,15 +58,18 @@ const useAttachment = (props: UseAttachmentProps): UseAttachmentRes => {
         files?.length > limit ||
         (files?.length || 0) + (images?.length || 0) > limit
       ) {
+        dispatch(
+          notify(`Số lượng ảnh chọn không được vượt quá ${limit} ảnh!`, "error")
+        )
         return
       }
 
       if (!images) {
-        setImages(urls)
+        useStateProps && setImages(urls)
         callback && callback(urls)
       } else {
         const newUrls = _.uniq([...urls, ...images])
-        setImages(newUrls)
+        useStateProps && setImages(newUrls)
         callback && callback(newUrls)
       }
     } catch (error) {
@@ -75,16 +84,16 @@ const useAttachment = (props: UseAttachmentProps): UseAttachmentRes => {
         images?.some((x) => x === item)
       )
 
-      setImages(newImages?.length > 0 ? newImages : undefined)
+      useStateProps && setImages(newImages?.length > 0 ? newImages : undefined)
     } else {
-      setImages(undefined)
+      useStateProps && setImages(undefined)
     }
   }
 
   const deleteImage = (url: string) => {
     if (images) {
       const newImages = [...images].filter((item) => item !== url)
-      setImages(newImages?.length > 0 ? newImages : undefined)
+      useStateProps && setImages(newImages?.length > 0 ? newImages : undefined)
     }
   }
 

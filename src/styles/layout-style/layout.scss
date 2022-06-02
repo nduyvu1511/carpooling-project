@@ -7,4 +7,6 @@ main {
     margin-top: $header-height;
   }
   padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
 }

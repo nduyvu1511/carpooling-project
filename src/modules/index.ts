@@ -9,6 +9,7 @@ import chatModalSlice from "./chat/modalSlice"
 import ridesSlice from "./rides/ridesSlice"
 import { reducer as notificationsReducer } from "reapop"
 import locationSlice from "./location/locationSlice"
+import driverFormSlice from "./driver/driverFormSlice"
 
 const rootReducer = combineReducers({
   common: commonSlice,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   rides: ridesSlice,
   notifications: notificationsReducer(),
   location: locationSlice,
+  driverForm: driverFormSlice,
 })
 
 export default rootReducer
@@ -31,3 +33,4 @@ export * from "./search/searchSlice"
 export * from "./user/userSlice"
 export * from "./chat"
 export * from "./location/locationSlice"
+export * from "./driver/driverFormSlice"

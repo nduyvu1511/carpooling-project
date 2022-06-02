@@ -1,0 +1,200 @@
+.ride__container {
+  & .ride__header {
+    @include fixed(0, 0, 0, 0);
+    background-color: $white;
+    height: $header-mobile-height;
+    @include responsive(sm-screen) {
+      height: $header-height;
+    }
+    z-index: 100;
+
+    &-back {
+      & svg {
+        transform: rotate(-180deg);
+      }
+    }
+
+    &-inner {
+      @include flex(space-between, center);
+      height: 100%;
+    }
+
+    &-heading {
+      @include limit-line-text(1);
+      flex: 1;
+      text-align: center;
+      padding-inline: 1.2rem;
+      @include style-text(2.4rem, 600, 3.4rem, $text-color);
+      @include responsive(lg-screen) {
+        @include style-text(3rem, 600, 4rem, $text-color);
+      }
+    }
+
+    &-active {
+      border-bottom: 1px solid $gray-color-2;
+    }
+  }
+
+  &-body {
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: $header-mobile-height;
+    @include responsive(sm-screen) {
+      padding-top: $header-height;
+    }
+
+    &-padding {
+      padding-top: calc($header-mobile-height + 1rem);
+      @include responsive(sm-screen) {
+        padding-top: calc($header-height + 2rem);
+      }
+    }
+
+    & .route__container {
+      flex: 1;
+      padding-top: 2rem;
+
+      & .route__inner {
+        & .route__list {
+          &-item {
+          }
+        }
+      }
+    }
+
+    &-child {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 2rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  &-footer {
+    @include flex-center;
+    padding-block: 1.6rem;
+    background-color: $white;
+    @include fixed(0, 0, 0, unset);
+  }
+
+  & .departure__list {
+    margin-top: 1.6rem;
+
+    &-item {
+      & .rides__result-item {
+        padding-block: 1rem;
+      }
+    }
+  }
+
+  & .stopovers__body {
+    margin-top: 2rem;
+  }
+
+  & .stopovers__container {
+    & .modal-small-close-btn {
+      padding-inline: 24px;
+      position: static;
+      margin-left: auto;
+    }
+
+    & .stopovers__result {
+      margin-top: 2rem;
+    }
+
+    & .stopovers__address {
+      & .stopovers__list {
+        &-item {
+          padding-block: 0.6rem;
+          border-top: 1px solid $gray-color-2;
+
+          &:first-child {
+            border-top: none;
+          }
+
+          &-btn {
+            padding-block: 2rem;
+            width: 100%;
+            text-align: left;
+            font-size: 1.6rem;
+
+            &:hover {
+              background-color: $gray-color-2;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .departure-date__container {
+    & .departure-date__inner {
+      @include flex-center;
+
+      & .calendar {
+        position: static;
+        transform: unset;
+      }
+    }
+  }
+
+  & .departure-time__container {
+    & .departure-time__inner {
+      @include flex-center;
+      margin-bottom: 5rem;
+    }
+  }
+
+  & .passenger-quantity__container {
+    & .passenger__quantity {
+      &-heading {
+        padding-inline: 0;
+      }
+
+      & .rides__quantity-large {
+        margin-bottom: 3rem;
+      }
+    }
+  }
+
+  & .rides__comment {
+    margin-bottom: 4rem;
+  }
+
+  & .rides-vehicle__container {
+    & .rides__vehicle {
+      @include flex-center;
+
+      & .select-large {
+        margin-bottom: 3rem;
+        // max-width: 300px;
+      }
+    }
+  }
+
+  & .rides-quality__container {
+    & .rides__quality {
+      & .rides__quality-list {
+        flex-wrap: wrap;
+        @include flex-center;
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
+  & .booking {
+    &__inner {
+      & .booking-heading {
+        @include style-text(1.8rem, 600, 2.8rem, $text-color);
+        @include responsive(md-screen) {
+          @include style-text(2.4rem, 600, 3.4rem, $text-color);
+        }
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+    }
+  }
+}

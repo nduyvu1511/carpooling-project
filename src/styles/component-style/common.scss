@@ -114,18 +114,21 @@
   }
 }
 
-.input__radio {
-  border-radius: 50%;
-}
-
-.input__checkbox,
-.input__radio {
+.input__checkbox {
   width: 20px;
   height: 20px;
   border: 3px solid $primary-color;
   cursor: pointer;
   @include flex-center;
   transition: all 0.2s linear;
+
+  &-square {
+    border-radius: 4px;
+  }
+
+  &-circle {
+    border-radius: 50%;
+  }
 
   @include responsive(sm-screen) {
     width: 24px;
@@ -142,8 +145,42 @@
   }
 }
 
-.input__checkbox {
-  border-radius: 4px;
+.input__radio {
+  border: 3px solid $primary-color;
+  cursor: pointer;
+  @include flex-center;
+  transition: all 0.2s linear;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+
+  @include responsive(sm-screen) {
+    width: 24px;
+    height: 24px;
+  }
+
+  & svg {
+    fill: $white;
+    font-size: 1.7rem;
+  }
+
+  &-active {
+    position: relative;
+
+    &::after {
+      content: "";
+      @include center-absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: $primary-color;
+
+      @include responsive(sm-screen) {
+        width: 13px;
+        height: 13px;
+      }
+    }
+  }
 }
 
 .backdrop {
@@ -213,4 +250,148 @@
     margin-right: 1rem;
     margin-bottom: 1rem;
   }
+}
+
+.item__select {
+  @include flex(space-between, center);
+  padding-block: 16px;
+  cursor: pointer;
+  &:hover {
+    background-color: $gray-color-2;
+  }
+
+  &-info {
+    flex: 1;
+    margin-right: 1rem;
+
+    &-title {
+      @include style-text(1.6rem, 500, 2.4rem, $text-color);
+    }
+  }
+
+  &-action {
+    @include flex-center;
+  }
+}
+
+.success__screen {
+  @include fixed(0, 0, 0, 0);
+  z-index: 2000;
+  background-color: $success;
+  @include flex-center;
+
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    @include responsive(lg-screen) {
+      flex-direction: row;
+    }
+
+    &-left {
+      @include flex-center;
+      width: 100%;
+
+      @include responsive(lg-screen) {
+        width: 30%;
+      }
+
+      & svg {
+        max-width: 350px;
+      }
+    }
+
+    &-right {
+      padding: 2rem;
+      width: 100%;
+      @include responsive(lg-screen) {
+        width: 70%;
+      }
+
+      & h1 {
+        @include style-text(2.4rem, 600, 3.4rem, $white);
+        @include responsive(md-screen) {
+          @include style-text(3.4rem, 600, 4.4rem, $white);
+        }
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      & button {
+        margin: 0 auto;
+        background-color: $white;
+        color: $primary-color;
+        font-weight: 600;
+
+        &:hover {
+          opacity: 0.8;
+          color: $primary-color;
+          background-color: $white;
+        }
+      }
+    }
+  }
+}
+
+.alert__screen {
+  @include fixed(0, 0, 0, 0);
+  background-color: $alert-bg;
+  z-index: 2000;
+
+  &-inner {
+    height: 100%;
+    @include flex(flex-start, center);
+    flex-direction: column;
+    margin-top: 10rem;
+  }
+
+  &-title {
+    text-align: center;
+    @include style-text(2.4rem, 600, 3.4rem, $white);
+    @include responsive(md-screen) {
+      @include style-text(3rem, 600, 4rem, $white);
+    }
+    margin-block: 5rem;
+  }
+
+  &-actions {
+    @include flex(flex-start, center);
+
+    &-close-btn {
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+      @include flex-center;
+      margin-right: 2rem;
+    }
+
+    &-confirm-btn {
+      background-color: $danger;
+      &:hover {
+        background-color: $danger;
+      }
+    }
+  }
+}
+
+.file-image-pickup {
+  width: 120px;
+  height: 100px;
+  background-color: $gray-color-2;
+  border: 1px solid $gray-color-1;
+  border-radius: 4px;
+  @include flex-center;
+  cursor: pointer;
+
+  & svg {
+    color: $text-color-2;
+    font-size: 3.6rem;
+  }
+}
+
+.file-image-action {
+  @include style-text(1.3rem, 500, 1.8rem, $primary-color);
+  text-align: center;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  display: block;
 }

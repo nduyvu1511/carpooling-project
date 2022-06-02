@@ -8,7 +8,13 @@ import {
   trustUserIcon,
   userCircleIcon,
 } from "@/assets"
-import { UserFormSchemaKey } from "@/models"
+import {
+  DriverFormKey,
+  IdCardKeyType,
+  IdCardName,
+  UserFormSchemaKey,
+  VehicleKeyType,
+} from "@/models"
 
 export const notifications = [{}]
 
@@ -124,6 +130,33 @@ export const userFormFields: {
     name: "bio",
     label: "Giới thiệu",
     placeholder: "Giới thiệu",
+  },
+]
+
+export const vehicleFormFields: {
+  name: VehicleKeyType
+  label: string
+  placeholder: string
+}[] = [
+  {
+    name: "brand",
+    label: "Tên hãng xe",
+    placeholder: "Tên hãng xe",
+  },
+  {
+    name: "model",
+    label: "Tên xe",
+    placeholder: "Tên xe",
+  },
+  {
+    name: "type",
+    label: "Loại xe",
+    placeholder: "Loại xe",
+  },
+  {
+    name: "desc",
+    label: "Mô tả xe",
+    placeholder: "Mô tả xe",
   },
 ]
 
@@ -394,4 +427,136 @@ export const models = [
   { label: "Isuzu", value: "Isuzu" },
   { label: "KIA", value: "KIA" },
   { label: "Mercedes Benz", value: "Mercedes Benz" },
+]
+
+export const vehicles = [
+  {
+    label: "Xe 4 chỗ",
+    value: "4",
+  },
+  {
+    label: "Xe 7 chỗ",
+    value: "7",
+  },
+  {
+    label: "Xe 16 chỗ",
+    value: "16",
+  },
+]
+
+export const ratings = [
+  { label: "5 sao", value: 5 },
+  { label: "4 sao", value: 4 },
+  { label: "3 sao", value: 3 },
+]
+
+export const idCardFormFields: {
+  name: IdCardName
+  type: IdCardKeyType
+  placeHolder: string
+}[] = [
+  {
+    name: "frontCard",
+    type: "file",
+    placeHolder: "Mặt Trước",
+  },
+  {
+    name: "backCard",
+    type: "file",
+    placeHolder: "Mặt Sau",
+  },
+  {
+    name: "id",
+    type: "text",
+    placeHolder: "Số CMND / Thẻ Căn Cước / Hộ Chiếu",
+  },
+  {
+    name: "date",
+    type: "date",
+    placeHolder: "Ngày Cấp",
+  },
+  {
+    name: "address",
+    type: "select",
+    placeHolder: "Nơi Cấp",
+  },
+  {
+    name: "apartmentNumber",
+    type: "text",
+    placeHolder: "Số Nhà/Tổ | Địa Chỉ Thường Trú",
+  },
+  {
+    name: "ward",
+    type: "text",
+    placeHolder: "Xã/Phường | Địa Chỉ Thường Trú",
+  },
+  {
+    name: "district",
+    type: "text",
+    placeHolder: "Quận/Huyện | Địa Chỉ Thường Trú",
+  },
+  {
+    name: "province",
+    type: "select",
+    placeHolder: "Tỉnh | Địa Chỉ Thường Trú",
+  },
+]
+
+export const driverFormFields: {
+  heading: string
+  child: {
+    route: string
+    label: string
+    isRequired: boolean
+    key: DriverFormKey
+  }[]
+}[] = [
+  {
+    heading: "Thông tin cá nhân",
+
+    child: [
+      {
+        route: "bio_details",
+        label: "Ảnh chân dung",
+        isRequired: true,
+        key: "info",
+      },
+      {
+        route: "identity_card_details",
+        label: "CMND / Thẻ Căn Cước / Hộ Chiếu",
+        isRequired: true,
+        key: "idCard",
+      },
+      {
+        route: "driving_license_details",
+        label: "Bằng lái xe",
+        isRequired: true,
+        key: "license",
+      },
+    ],
+  },
+
+  {
+    heading: "Thông tin phương tiện di chuyển ",
+    child: [
+      {
+        route: "vehicle_image",
+        label: "hình xe",
+        isRequired: true,
+        key: "vehicleImages",
+      },
+      {
+        route: "vehicle_details",
+        label: "Giấy Đăng Ký Xe",
+        isRequired: true,
+        key: "vehicleRegistration",
+      },
+      {
+        route: "vehicle_insurance",
+        label: "Bảo Hiểm Xe",
+        isRequired: true,
+        key: "vehicleInsuranceImages",
+      },
+    ],
+  },
 ]

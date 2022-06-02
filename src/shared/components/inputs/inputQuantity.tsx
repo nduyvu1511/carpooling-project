@@ -91,6 +91,7 @@ export const InputQuantity = ({
         value={inputQuantity}
         onChange={updateQuantity}
         min={1}
+        max={10}
       />
       <button
         onClick={() => handleChangeQuantity("Increase")}

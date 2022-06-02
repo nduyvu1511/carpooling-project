@@ -44,7 +44,7 @@ export const Navigation = () => {
           </div>
         </li>
       ))}
-
+      {/* 
       <li className="show-on-tablet navigation-item navigation-item-sm">
         <h3 className="navigation-item-heading">Chọn kiều di chuyển</h3>
       </li>
@@ -68,7 +68,7 @@ export const Navigation = () => {
           <span className="navigation-item-title">Ba chiều</span>
           {arrowRightIcon()}
         </div>
-      </li>
+      </li> */}
     </ul>
   )
 }

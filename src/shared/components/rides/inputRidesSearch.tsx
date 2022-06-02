@@ -3,7 +3,7 @@ import { setOpenRidesModalSearch } from "@/modules/rides/ridesSlice"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useClickOutside, useDebounce, useInputText } from "shared/hook"
-import { RidesResult } from "../search"
+import { RidesResult } from "./ridesResult"
 
 interface InputRidesSearchProps {
   onChange: (value: string) => void

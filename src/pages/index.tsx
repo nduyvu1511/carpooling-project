@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { cautionImg, driveImg } from "@/assets"
-import { HomeContent, RideItem, RidesForm } from "@/components"
+import { HomeContent, RidesForm, RidesSearchItem } from "@/components"
 import { quotes } from "@/helper"
 import { MainLayout } from "@/layout"
 import { useRouter } from "next/router"
@@ -72,19 +72,19 @@ const Home = () => {
           <div className="">
             <ul className="grid grid-col-1 grid-col-md-3 rides__list">
               <li className="rides__list-item">
-                <RideItem
+                <RidesSearchItem
                   fromLocation="Norwitch city"
                   toLocation="Manchester"
                 />
               </li>
               <li className="rides__list-item">
-                <RideItem
+                <RidesSearchItem
                   fromLocation="Norwitch city"
                   toLocation="Manchester"
                 />
               </li>
               <li className="rides__list-item">
-                <RideItem
+                <RidesSearchItem
                   fromLocation="Norwitch city"
                   toLocation="Manchester"
                 />

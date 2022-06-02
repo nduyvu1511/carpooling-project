@@ -5,7 +5,7 @@ import { useSpring, animated } from "react-spring"
 
 interface ModalProps {
   mainChildren: ReactNode
-  headerChildren: ReactNode
+  headerChildren?: ReactNode
   onClose: Function
   className?: string
   zIndex?: number
@@ -54,8 +54,8 @@ export const Modal = ({
         </>
       ) : (
         <div className="modal-small content-container">
-          <header className="modal-small-header">
-            {headerChildren}
+          <header className="modal-small-header px-24">
+            {headerChildren || null}
 
             <button
               onClick={() => onClose()}

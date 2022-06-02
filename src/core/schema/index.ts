@@ -1,8 +1,10 @@
 import {
   BIRTHDAY_SCHEMA,
+  DATE_SCHEMA,
   PASSWORD_SCHEMA,
   PHONE_SCHEMA,
   STRING_AT_LEAST_TWO_CHARACTER,
+  VIETNAMESE_NAME,
 } from "@/helper"
 import * as Yup from "yup"
 
@@ -108,6 +110,41 @@ export const userFormSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
+export const vehicleFormSchema = Yup.object().shape({
+  brand: Yup.string().required("Vui lòng nhập loại xe"),
+  model: Yup.string().required("Vui lòng nhập hãng xe"),
+  type: Yup.string().required("Vui lòng nhập mô tả xe"),
+  desc: Yup.string(),
+})
+
 export const messageSchema = Yup.object().shape({
   message: Yup.string().required("Vui lòng nhập bình luận"),
+})
+
+export const driverBioSchema = Yup.object().shape({
+  dateOfBirth: Yup.string()
+    .matches(DATE_SCHEMA, "Vui lòng nhập ngày sinh hợp lệ")
+    .required("Vui lòng nhập ngày sinh"),
+  name: Yup.string()
+    .matches(VIETNAMESE_NAME, "Vui lòng nhập tên hợp lệ")
+    .required("Vui lòng nhập tên"),
+  sex: Yup.string()
+    .oneOf(["male", "female"])
+    .required("Vui lòng nhập giới tính"),
+  avatar: Yup.string().required("Vui lòng chọn ảnh đại diện"),
+})
+
+export const identityCardSchema = Yup.object().shape({
+  frontCard: Yup.string().required("Vui lòng chọn ảnh mặt trước"),
+  backCard: Yup.string().required("Vui lòng chọn ảnh mặt sau"),
+  id: Yup.string()
+    .min(8, "Phải có ít nhất 8 đến 12 ký tự")
+    .max(12, "Phải có ít nhất 8 đến 12 ký tự")
+    .required("Vui lòng nhập trường này"),
+  date: Yup.string().required("Vui lòng nhập ngày cấp"),
+  address: Yup.string().required("Vui lòng nhập địa chỉ"),
+  apartmentNumber: Yup.string().required("Vui lòng nhập địa chỉ nhà"),
+  ward: Yup.string().required("Vui lòng nhập Xã/Phường"),
+  district: Yup.string().required("Vui lòng nhập Quận/Huyện"),
+  province: Yup.string().required("Vui lòng nhập Tỉnh/Thành phố"),
 })

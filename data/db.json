@@ -1,0 +1,44 @@
+{
+  "driver": [
+    {
+      "name": "nduyvu",
+      "gender": true,
+      "age": 21,
+      "address": "",
+      "avatar": "",
+      "date_of_birth": "",
+      "desc": "",
+      "email": "",
+      "license": {
+        "license_front_image": "",
+        "license_backside_image": "",
+        "license_number": "",
+        "license_date": "",
+        "license_expire_date": "",
+        "license_class": ""
+      },
+      "vehicle": {
+        "vehicle_images": "",
+        "vehicle_model": "",
+        "vehicle_brand": "",
+        "vehicle_year": ""
+      }
+    }
+  ],
+
+  "rides": [
+    {
+      "driver_id": "",
+      "from_lat": "",
+      "to_lat": "",
+      "from_lng": "",
+      "to_lng": "",
+      "number_seat": 4,
+      "is_picking_up_from_start": true,
+      "from_address": "",
+      "to_address" : "",
+      "promotion_id": "",
+      "is_taking_to_final_destination": true
+    }
+  ]
+}

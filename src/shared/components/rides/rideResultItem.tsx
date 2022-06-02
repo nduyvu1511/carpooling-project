@@ -7,14 +7,14 @@ interface RideResultItemProps {
 
 export const RideResultItem = ({ type }: RideResultItemProps) => {
   return (
-    <div className="rides__result-item">
+    <div className="rides__result-item px-24">
       {type !== "result" ? (
         <span className="rides__result-item-clock-icon">{clockIcon()}</span>
       ) : null}
 
       {type !== "historyResult" ? (
         <div className="rides__result-item-inner">
-        <div className="rides__result-item-address">
+          <div className="rides__result-item-address">
             <p className="rides__result-item-address-heading">Vietnam</p>
 
             {type === "result" ? (

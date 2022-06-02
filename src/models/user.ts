@@ -221,3 +221,69 @@ export interface AuthSlice {
   currentUserInfo: UserInfo | undefined
   isValidateCreatePasswordOTP: boolean | undefined
 }
+
+export interface DriverBioForm {
+  avatar: string
+  name: string
+  sex: "male" | "female"
+  dateOfBirth: string
+}
+
+export type VehicleKeyType = "brand" | "model" | "type" | "desc"
+
+export type IdCardKeyType = "text" | "select" | "date" | "file"
+
+export type IdCardName =
+  | "frontCard"
+  | "backCard"
+  | "id"
+  | "date"
+  | "address"
+  | "apartmentNumber"
+  | "ward"
+  | "district"
+  | "province"
+
+export interface IdCardForm {
+  frontCard: string
+  backCard: string
+  id: string
+  date: string
+  address: string
+  apartmentNumber: string
+  ward: string
+  district: string
+  province: string
+}
+
+export interface DriverLicenseForm {
+  fontCard: string
+  backCard: string
+  driverLicenseNumber: string
+  driverLicenseClass: "A1" | "A2" | "A3"
+}
+
+export interface VehicleRegistrationForm {
+  fontCard: string
+  backCard: string
+  LicensePlates: string
+  vehicleType: string
+  yearPublicOfVehicle: string
+}
+
+export interface DriverFormSlice {
+  info: DriverBioForm | undefined
+  idCard: IdCardForm | undefined
+  license: DriverLicenseForm | undefined
+  vehicleImages: string[] | undefined
+  vehicleRegistration: VehicleRegistrationForm | undefined
+  vehicleInsuranceImages: string[] | undefined
+}
+
+export type DriverFormKey =
+  | "idCard"
+  | "info"
+  | "license"
+  | "vehicleImages"
+  | "vehicleInsuranceImages"
+  | "vehicleRegistration"

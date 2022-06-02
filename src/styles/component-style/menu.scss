@@ -41,12 +41,6 @@
       flex: 1;
     }
 
-    &-heading {
-      margin-top: 2rem;
-      @include style-text(1.7rem, 600, 1.9rem, $text-color);
-      padding: 1.6rem 2.4rem;
-    }
-
     &-sm {
       border: none;
     }

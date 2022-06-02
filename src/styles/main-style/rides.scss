@@ -1,15 +1,116 @@
-.rides__page {
-  padding-bottom: 2rem;
+.rides-available__container {
+  & .rides__available {
+    display: grid;
+    grid-template-columns: 1fr;
 
-  &-content {
-    &-list {
-      &-item {
-        margin-bottom: 1.4rem;
+    @include responsive(lg-screen) {
+      grid-template-columns: 400px 1fr;
+      grid-column-gap: 2rem;
+    }
 
-        &:last-child {
-          margin-bottom: 0;
+    & .rides__filter-header {
+      @include flex(space-between, center);
+    }
+
+    &-left {
+      display: none;
+      @include responsive(lg-screen) {
+        display: block;
+        position: relative;
+      }
+
+      &-btn {
+        position: absolute;
+        right: 24px;
+        top: 20px;
+      }
+
+      & .rides__filter-list-parent {
+        position: fixed;
+        width: 400px;
+      }
+    }
+
+    &-right {
+      & .rides__vehicle-filter {
+        &-list {
+          display: flex;
+
+          &-item {
+            flex: 1;
+
+            &-quantity {
+            }
+
+            & .rides__vehicle-filter-item {
+              height: 100%;
+              @include flex(space-between, center);
+              flex-direction: column;
+              padding-bottom: 1rem;
+              cursor: pointer;
+              border-bottom: 1px solid $gray-color-1;
+              @include style-text(1.6rem, 600, 2.4rem, $text-color);
+
+              &-active {
+                border-bottom: 3px solid $primary-color;
+                color: $primary-color;
+              }
+            }
+          }
         }
       }
     }
+  }
+
+  & .rides__list {
+    padding-block: 2rem;
+    grid-gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-bottom: 6rem;
+    @include responsive(md-screen) {
+      padding-bottom: 2rem;
+    }
+  }
+
+  & .rides__page-btn {
+    position: fixed;
+    bottom: 2rem;
+    z-index: 1000;
+    left: 50%;
+    transform: translateX(-50%);
+    @include responsive(md-screen) {
+      display: none;
+    }
+  }
+
+  & .rides__filter {
+    padding-block: 1.6rem;
+    border-bottom: 8px solid $gray-color-2;
+
+    &-item {
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+}
+
+.rides__filter-header-heading {
+  @include style-text(1.8rem, 600, 2.6rem, $text-color);
+  margin-bottom: 1rem;
+}
+
+.rides__filter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background-color: $white;
+
+  &-header {
+    @include flex(space-between, center);
+    padding-block: 2.4rem;
   }
 }

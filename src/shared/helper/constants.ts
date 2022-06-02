@@ -1,11 +1,17 @@
+// Regex
 export const DEFAULT_LIMIT_PRODUCT = 24
 export const PHONE_SCHEMA = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/
 export const BIRTHDAY_SCHEMA = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
 export const STRING_AT_LEAST_TWO_CHARACTER = /^[a-z]+(?:\s[a-z]+)+$/
 export const PASSWORD_SCHEMA =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+export const DATE_SCHEMA =
+  /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/
 export const BASE64_REGEX =
   /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/
+export const VIETNAMESE_NAME =
+  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/
+
 export const FIREBASE_API_KEY = "AIzaSyBFTcgvxkTVzziiIlEOhvoAbP1bLpTpwsg"
 export const FIREBASE_AUTH_DOMAIN = "womart-3a686.firebaseapp.com"
 export const FIREBASE_DATABASE_URL =
@@ -20,3 +26,18 @@ export const LIMIT_MESSAGES = 30
 export const PRIMARY_COLOR = "#0BB2F5"
 export const REMEMBER_PASSWORD_KEY = "is_remember_password_KEY"
 export const FORM_LOGIN_KEY = "form_login_KEY"
+export const HEADER_HEIGHT = 72
+export const DEFAULT_TRANSITION = {
+  from: {
+    opacity: 0,
+    transform: "translateY(100%)",
+  },
+  enter: {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+  leave: {
+    opacity: 0,
+    transform: "translateY(100%)",
+  },
+}

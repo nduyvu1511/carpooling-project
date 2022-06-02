@@ -91,10 +91,7 @@
     & label {
       cursor: pointer;
       user-select: none;
-    }
-
-    & .input__radio {
-      margin-left: 1.6rem;
+      margin-right: 1rem;
     }
   }
 
@@ -115,14 +112,21 @@
 .form-item {
   margin-bottom: 2rem;
 
-  @include responsive(sm-screen) {
-    display: flex;
-    align-items: center;
+  &-inline {
+    @include responsive(sm-screen) {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &-label {
-    @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
-    width: 120px;
+    @include style-text(1.5rem, 500, 2.2rem, $text-color-2);
+    display: block;
+    margin-bottom: 0.6rem;
+
+    &-inline {
+      width: 120px;
+    }
   }
 
   &-inner {
@@ -159,8 +163,8 @@
     }
 
     &-text-error {
-      @include style-text(1.4rem, 500, 2rem, $danger);
-      margin-top: 0.6rem;
+      @include style-text(1.3rem, 500, 1.8rem, $danger);
+      margin-top: 0.2rem;
     }
   }
 
@@ -171,6 +175,18 @@
   & textarea {
     height: auto;
     padding: 1.2rem;
+  }
+
+  & .css-b62m3t-container {
+    @include style-text(1.5rem, 500, 2.2rem, $text-color);
+
+    & .css-1n7v3ny-option,
+    & .css-yt9ioa-option,
+    & .css-9gakcf-option {
+      font-size: 1.5rem;
+      font-weight: 500;
+      padding-block: 0.6rem;
+    }
   }
 }
 
@@ -265,13 +281,16 @@
   margin-right: 1rem;
 }
 
-.form-label {
+.form-textarea {
+  width: 100%;
+  flex: 1;
+  background-color: $gray-color-2;
+  @include style-text(1.6rem, 500, 2.4rem, $text-color);
+  padding: 16px;
   border-radius: 16px;
-  border: 1px solid $gray-color-1;
-  padding: 12px;
-  @include style-text(1.4rem, 500, 2.2rem, $text-color);
+  outline: none;
 
   &:focus {
-    border: 1px solid $primary-color;
+    border: 3px solid $primary-color;
   }
 }

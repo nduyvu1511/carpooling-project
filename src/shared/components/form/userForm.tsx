@@ -17,7 +17,7 @@ export const UserForm = () => {
       onSubmit={(data) => console.log(data)}
     >
       {({ errors, touched, isValid }) => (
-        <Form className="form-control">
+        <Form className="form-control px-24">
           {userFormFields.map((input, index) => (
             <div key={index} className="form-item">
               <label className="form-item-label" htmlFor={input.name}>

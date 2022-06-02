@@ -5,6 +5,7 @@ const initialState: CommonSlice = {
   isOpenSearchModal: undefined,
   isScreenLoading: false,
   isOpenPromotionModal: false,
+  isOpenAlertModal: false,
 }
 
 const commonSlice = createSlice({
@@ -22,9 +23,17 @@ const commonSlice = createSlice({
     setOpenPromotionModal: (state, { payload }: PayloadBoolean) => {
       state.isOpenPromotionModal = payload
     },
+
+    setOpenAlertModal: (state, { payload }: PayloadBoolean) => {
+      state.isOpenAlertModal = payload
+    },
   },
 })
 
 export default commonSlice.reducer
-export const { setOpenSearchModal, setScreenLoading, setOpenPromotionModal } =
-  commonSlice.actions
+export const {
+  setOpenSearchModal,
+  setScreenLoading,
+  setOpenPromotionModal,
+  setOpenAlertModal,
+} = commonSlice.actions

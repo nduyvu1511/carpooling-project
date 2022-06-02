@@ -1,0 +1,139 @@
+.driver__container {
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    @include flex(flex-start, center);
+    padding-block: 2rem;
+    margin-bottom: 1rem;
+
+    &-heading {
+      @include style-text(2.4rem, 500, 3.4rem, $text-color);
+      flex: 1;
+      margin-left: 1.2rem;
+    }
+
+    &-btn {
+      & svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &-body {
+    flex: 1;
+    padding-bottom: 7rem;
+
+    & .driver-bio__form {
+      &-label {
+        margin-bottom: 1rem;
+      }
+
+      &-input {
+        @include flex-center;
+      }
+    }
+  }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+    background-color: $white;
+    padding-block: 1rem;
+    @include flex-center;
+  }
+}
+
+.driver__page {
+  &-header {
+    padding-block: 2rem;
+
+    &-desc {
+      margin-top: 1rem;
+      @include style-text(1.4rem, 500, 2rem, $text-color-2);
+    }
+  }
+
+  &-status {
+    height: 8px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: $gray-color-2;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+
+    &-inner {
+      position: absolute;
+      z-index: 1;
+      height: 100%;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: $success;
+    }
+  }
+
+  &-body {
+    padding-bottom: 8rem;
+
+    &-item {
+      margin-bottom: 2rem;
+
+      & .driver__body-heading {
+        @include style-text(2rem, 600, 3rem, $text-color);
+        margin-bottom: 1rem;
+
+        @include responsive(sm-screen) {
+          @include style-text(3rem, 600, 4rem, $text-color);
+        }
+      }
+
+      & .driver__body-list {
+        &-item {
+          @include flex(space-between, center);
+          padding-block: 1.2rem;
+          border-bottom: 1px solid $gray-color-2;
+          cursor: pointer;
+          @include responsive(sm-screen) {
+            padding-block: 1.6rem;
+          }
+
+          &:hover {
+            background-color: $gray-color-2;
+          }
+
+          &:last-child {
+            border-bottom: 0;
+          }
+
+          &-name {
+            flex: 1;
+            @include style-text(1.5rem, 500, 2.5rem, $text-color);
+
+            @include responsive(sm-screen) {
+              @include style-text(1.7rem, 500, 2.5rem, $text-color);
+            }
+            margin-right: 1rem;
+          }
+
+          &-noti {
+            display: flex;
+            align-items: center;
+            @include style-text(1.4rem, 600, 1.8rem, $warning);
+
+            & svg {
+              margin-left: 0.6rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+    background-color: $white;
+    padding-block: 1rem;
+    @include flex-center;
+  }
+}

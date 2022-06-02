@@ -3,13 +3,13 @@ import { BsCheck2 } from "react-icons/bs"
 interface InputCheck {
   onCheck: Function
   isChecked: boolean
-  type?: "radio" | "checkbox"
+  type?: "circle" | "square"
 }
 
 export const InputCheckbox = ({
   onCheck,
   isChecked,
-  type = "checkbox",
+  type = "square",
 }: InputCheck) => {
   return (
     <span
@@ -17,7 +17,9 @@ export const InputCheckbox = ({
         e.stopPropagation()
         onCheck && onCheck()
       }}
-      className={`input__${type} ${isChecked ? `input__${type}-active` : ""}`}
+      className={`input__checkbox input__checkbox-${type} ${
+        isChecked ? `input__checkbox-active` : ""
+      }`}
     >
       {isChecked ? <BsCheck2 /> : null}
     </span>

@@ -27,7 +27,7 @@ export const Header = () => {
               </Link>
             </div>
 
-            <ul className="header__nav-list">
+            {/* <ul className="header__nav-list">
               {navLinks.map((item) => (
                 <li key={item.path} className="header__nav-list-item">
                   <a className="header__nav-list-item-link" href={item.path}>
@@ -35,7 +35,7 @@ export const Header = () => {
                   </a>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
           <div className="header__inner-right">
             <div className="header__actions">

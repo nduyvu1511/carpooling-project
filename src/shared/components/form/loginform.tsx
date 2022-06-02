@@ -131,7 +131,7 @@ export const LoginForm = () => {
               <InputCheckbox
                 isChecked={remember}
                 onCheck={toggleRememberPassword}
-                type="radio"
+                type="circle"
               />
             </div>
 

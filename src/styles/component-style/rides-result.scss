@@ -8,7 +8,7 @@
 }
 
 .rides__result-item {
-  padding: 1.6rem 2rem;
+  padding-block: 1.6rem;
   @include flex(flex-start, center);
   cursor: pointer;
   &:hover {

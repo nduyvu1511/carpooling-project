@@ -75,9 +75,9 @@ export const RidesForm = () => {
             </div>
 
             {/* Quantity */}
-            <div className="search__rides-info-quantity hide-on-tablet-flex">
+            <div className="rides__quantity hide-on-tablet-flex">
               <div
-                className="search__rides-info-quantity-btn"
+                className="rides__quantity-btn"
                 ref={quantityBtnRef}
                 onClick={() => setShowQuantity(!showQuantity)}
               >
@@ -86,13 +86,8 @@ export const RidesForm = () => {
               </div>
 
               {showQuantity ? (
-                <div
-                  ref={quantityRef}
-                  className="search__rides-info-quantity-box"
-                >
-                  <p className="search__rides-info-quantity-box-text">
-                    Số hành khách
-                  </p>
+                <div ref={quantityRef} className="rides__quantity-box">
+                  <p className="rides__quantity-box-text">Số hành khách</p>
                   <InputQuantity
                     quantity={quantity}
                     onChangeQuantity={(q) => setQuantity(q)}
@@ -104,7 +99,7 @@ export const RidesForm = () => {
             <div
               // ref={}
               onClick={() => setShowQuantityModal(!showQuantityModal)}
-              className="search__rides-info-quantity show-on-tablet-flex"
+              className="rides__quantity show-on-tablet-flex"
             >
               {userIcon()}
               <span>{quantity}</span>
@@ -138,10 +133,12 @@ export const RidesForm = () => {
             </h3>
           }
           mainChildren={
-            <InputQuantity
-              quantity={quantity}
-              onChangeQuantity={(q) => setQuantity(q)}
-            />
+            <div className="rides__quantity-large">
+              <InputQuantity
+                quantity={quantity}
+                onChangeQuantity={(q) => setQuantity(q)}
+              />
+            </div>
           }
           onClose={() => {
             setShowQuantityModal(false)

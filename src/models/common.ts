@@ -34,4 +34,5 @@ export interface CommonSlice {
   isOpenSearchModal: boolean | undefined
   isScreenLoading: boolean
   isOpenPromotionModal: boolean
+  isOpenAlertModal: boolean
 }

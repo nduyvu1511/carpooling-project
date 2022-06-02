@@ -5,10 +5,12 @@ import { PRIMARY_COLOR } from "@/helper"
 import { MainNoFooter } from "@/layout"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 const MenuProfile = () => {
   const [showUserForm, setShowUserForm] = useState<boolean>()
+  const router = useRouter()
 
   return (
     <>
@@ -83,9 +85,21 @@ const MenuProfile = () => {
           <div className="profile__menu__item profile__menu__vehicles">
             <h3 className="profile__menu-heading">Phương tiện</h3>
             <ul className="profile__menu-list">
+              <li
+                onClick={() => router.push("/dashboard/profile/vehicle/id")}
+                className="vehicle__item px-24"
+              >
+                <div className="vehicle__item-info">
+                  <a>FORD</a>
+                </div>
+                <span>{arrowRightIcon()}</span>
+              </li>
+
               <li className="profile__menu-list-item">
-                {addCircleIcon(24, "#0BB2F5")}
-                <Link href="/dashboard/profile/vehicle/add">
+                <Link href="/dashboard/profile/vehicle/brand">
+                  {addCircleIcon(24, PRIMARY_COLOR)}
+                </Link>
+                <Link href="/dashboard/profile/vehicle/brand">
                   <a className="profile__menu-list-item-text">
                     Thêm phương tiện
                   </a>

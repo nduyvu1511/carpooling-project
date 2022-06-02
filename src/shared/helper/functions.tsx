@@ -257,3 +257,28 @@ export const toggleHTMLOverflow = (status: "hidden" | "unset") => {
     htmlTag.style.overflow = status
   }
 }
+
+export const getTimes = (): { label: string; value: string }[] => {
+  var times = [],
+    periods = ["Sáng", "Chiều"],
+    hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    prop = null,
+    hour = null,
+    min = null
+
+  for (prop in periods) {
+    for (hour in hours) {
+      for (min = 0; min < 60; min += 10) {
+        const timeStr =
+          ("0" + hours[hour]).slice(-2) + ":" + ("0" + min).slice(-2)
+
+        times.push({
+          label: timeStr + " " + periods[prop],
+          value: timeStr + " " + periods[prop],
+        })
+      }
+    }
+  }
+
+  return times
+}

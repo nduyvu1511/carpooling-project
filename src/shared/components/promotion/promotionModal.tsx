@@ -1,6 +1,4 @@
-import { toggleHTMLOverflow } from "@/helper"
 import { setOpenPromotionModal } from "@/modules"
-import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useInputText } from "shared/hook"
 import { Modal } from "../modal"
@@ -16,7 +14,7 @@ export const PromotionModal = () => {
       onClose={() => dispatch(setOpenPromotionModal(false))}
       mainChildren={
         <div className="promotion__modal">
-          <div className="content-container">
+          <div className="content-container px-24">
             <div className="promotion__modal-input">
               <div className="form-item">
                 <input

@@ -16,6 +16,7 @@ const LocationSelect = ({ onChooseLocation }: LocationSelectProps) => {
   const router = useRouter()
   const [selectedOption, setSelectedOption] = useState(null)
 
+
   return (
     <div className="location">
       <div className="location-select">
