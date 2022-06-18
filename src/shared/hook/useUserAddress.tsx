@@ -6,7 +6,7 @@ import {
   UserDetail,
 } from "@/models"
 import { setAddress, setAddressDefault, setMessage } from "@/modules"
-import userApi from "@/services/userApi"
+import { userApi } from "@/services"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import useSWR from "swr"

@@ -1,0 +1,209 @@
+.rides__form {
+  &-header {
+    display: flex;
+    align-items: center;
+
+    & p {
+      @include style-text(1.8rem, 500, 2.4rem, $text-color);
+      margin-right: 10px;
+    }
+    margin-bottom: 10px;
+  }
+
+  &-disabled {
+    & .rides__form-body {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  }
+
+  &-location {
+    margin-bottom: 20px;
+
+    &-item {
+      &:first-child {
+        margin-bottom: 10px;
+      }
+    }
+
+    &-info {
+      flex-wrap: wrap;
+      margin-top: 4px;
+      @include style-text(1.4rem, 600, 2rem, $text-color);
+      text-align: right;
+      padding-inline: 4px;
+      @include flex(space-between, center);
+    }
+  }
+
+  &-info {
+    @include flex(space-between, center);
+    margin-bottom: 20px;
+    @include style-text(1.5rem, 500, 2.3rem, $text-color);
+
+    & strong {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+  }
+
+  &-location-input {
+    position: relative;
+
+    &-type {
+      position: absolute;
+      @include vertical-align(absolute);
+      left: 16px;
+      @include style-text(1.4rem, 600, 1.6rem, $text-color-2);
+    }
+
+    & input {
+      padding-left: 60px;
+      color: $text-color;
+      font-weight: 600;
+
+      &:focus {
+        border: none;
+      }
+    }
+  }
+
+  &-inline,
+  & .form-item-inline {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    @include responsive(sm-screen) {
+      flex-direction: row;
+    }
+
+    &-item {
+      flex: 1;
+
+      &:first-child {
+        @include responsive(sm-screen) {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  & input {
+    font-size: 1.5rem;
+    font-weight: 500;
+
+    &::placeholder {
+      font-weight: 600;
+    }
+  }
+
+  & .form-item .css-b62m3t-container {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  & .form-item-label {
+    @include style-text(1.4rem, 600, 2.2rem, $text-color-2);
+    @include flex(flex-start, center);
+
+    & svg {
+      margin-right: 6px;
+      font-size: 1.6rem;
+      position: relative;
+      top: -1px;
+    }
+
+    &-policy {
+      display: flex;
+      align-items: center;
+      @include style-text(1.4rem, 500, 2rem, $text-color);
+      margin-bottom: 10px;
+      cursor: default;
+
+      & .input__checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+      }
+
+      &-error {
+        & .input__checkbox {
+          border-color: $danger;
+        }
+      }
+
+      &-text {
+        flex: 1;
+
+        &-error {
+          color: $danger;
+        }
+      }
+    }
+
+    &-flex {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      @include style-text(1.5rem, 600, 2.2rem, $text-color);
+
+      & .toggle {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &-return {
+    margin-bottom: 20px;
+
+    & .form-item-label {
+      margin-bottom: 10px;
+    }
+
+    &-radio {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      &-item {
+        @include flex-center;
+        cursor: default;
+        @include style-text(1.4rem, 500, 1.8rem, $text-color-2);
+
+        & + & {
+          margin-left: 20px;
+        }
+
+        & .input__radio {
+          width: 20px;
+          height: 20px;
+          margin-right: 4px;
+
+          &::after {
+            width: 10px;
+            height: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  & .css-1s2u09g-control {
+    background-color: $gray-color-2;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  & .form-textarea {
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 12px 16px;
+  }
+
+  & .css-1insrsq-control {
+    height: 55px;
+    border-radius: 16px;
+    padding-inline: 6px;
+  }
+}

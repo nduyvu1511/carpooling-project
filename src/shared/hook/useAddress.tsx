@@ -1,69 +1,105 @@
-import { AddressId, WardAddress } from "@/models"
-import userApi from "@/services/userApi"
+import { SWRConfig } from "@/helper"
+import { DistrictId, ProvinceId, WardId } from "@/models"
+import { addressApi } from "@/services"
 import { useEffect, useState } from "react"
+import useSWR from "swr"
 
-interface UseAddressRes {
+interface UseAddress {
   getWards: (id: number) => void
   getDistricts: (id: number) => void
-  states: AddressId[] | undefined
-  districts: AddressId[] | undefined
-  wards: WardAddress[] | undefined
+  states: ProvinceId[]
+  districts: DistrictId[]
+  wards: WardId[]
   clearDistricts: Function
   clearWards: Function
   clearAddressList: Function
   setDistricts: Function
   setWards: Function
+  getProvinceId: (stringTerms: string) => number | undefined
 }
 
-export const useAddress = (): UseAddressRes => {
-  const [states, setStates] = useState<AddressId[]>()
-  const [districts, setDistricts] = useState<AddressId[]>()
-  const [wards, setWards] = useState<WardAddress[]>()
+export const useAddress = (
+  shouldFetch = true,
+  state_id?: number,
+  district_id?: number
+): UseAddress => {
+  const { data, isValidating } = useSWR<ProvinceId[]>(
+    "address_form",
+    shouldFetch ? () => getStates() : null,
+    {
+      dedupingInterval: 10000000,
+      ...SWRConfig,
+    }
+  )
+
+  const [districts, setDistricts] = useState<DistrictId[]>([])
+  const [wards, setWards] = useState<WardId[]>([])
 
   useEffect(() => {
-    getStates()
+    if (state_id) {
+      getDistricts(state_id)
+    }
+
+    if (district_id) {
+      getWards(district_id)
+    }
   }, [])
 
   const getDistricts = (state_id: number) => {
-    userApi
-      .getAddress({ state_id })
-      .then((res: any) => setDistricts(res.result?.data || []))
+    addressApi
+      .getDistricts([state_id])
+      .then((res: any) => setDistricts(res?.result?.data || []))
+      .catch((err) => console.log(err))
   }
 
-  const getStates = () => {
-    userApi.getAddress({}).then((res: any) => setStates(res.result?.data || []))
-  }
+  const getStates = () =>
+    addressApi
+      .getProvinces()
+      .then((res: any) => res?.result?.data || [])
+      .catch((err) => console.log(err))
 
   const getWards = (district_id: number) => {
-    userApi
-      .getAddress({ district_id })
-      .then((res: any) => setWards(res.result?.data || []))
+    addressApi
+      .getWards([district_id])
+      .then((res: any) => setWards(res?.result?.data || []))
+      .catch((err) => console.log(err))
   }
 
   const clearAddressList = () => {
-    setDistricts(undefined)
-    setDistricts(undefined)
-    setWards(undefined)
+    setDistricts([])
+    setDistricts([])
+    setWards([])
   }
 
   const clearDistricts = () => {
-    setDistricts(undefined)
+    setDistricts([])
   }
 
   const clearWards = () => {
-    setWards(undefined)
+    setWards([])
+  }
+
+  const getProvinceId = (stringTerms: string): number | undefined => {
+    if (!data?.length) return
+
+    const provinceId = data.find(
+      (item) => item.province_vietnamese_name === stringTerms
+    )?.province_id
+
+    return provinceId
   }
 
   return {
     getWards,
     getDistricts,
-    states,
     districts,
     wards,
+    states: data || [],
     clearDistricts,
     clearWards,
     clearAddressList,
     setDistricts,
     setWards,
+    getProvinceId,
   }
 }

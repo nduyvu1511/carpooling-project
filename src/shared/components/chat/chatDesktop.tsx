@@ -1,6 +1,6 @@
 import { cartEmptyIcon } from "@/assets"
 import { RootState } from "@/core/store"
-import { toggleHTMLOverflow } from "@/helper"
+import { toggleBodyOverflow } from "@/helper"
 import { toggleExpandChatModal, setOpenChatDesktop } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"
@@ -21,7 +21,7 @@ export const ChatDesktop = () => {
 
   const handleExpandChatModal = () => {
     dispatch(toggleExpandChatModal(!isExpandChatModal))
-    toggleHTMLOverflow(!isExpandChatModal ? "hidden" : "unset")
+    toggleBodyOverflow(!isExpandChatModal ? "hidden" : "unset")
   }
 
   return (
@@ -49,7 +49,7 @@ export const ChatDesktop = () => {
 
           <button
             onClick={() => {
-              toggleHTMLOverflow("unset")
+              toggleBodyOverflow("unset")
               dispatch(setOpenChatDesktop(false))
             }}
             className="btn-reset chat__header-actions-close-btn"

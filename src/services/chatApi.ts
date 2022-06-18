@@ -68,5 +68,4 @@ const chatApi = {
     return axiosClient.post("/message/get_detail_message", { params: params })
   },
 }
-
-export default chatApi
+export { chatApi }

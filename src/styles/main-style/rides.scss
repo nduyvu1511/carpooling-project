@@ -4,7 +4,7 @@
     grid-template-columns: 1fr;
 
     @include responsive(lg-screen) {
-      grid-template-columns: 400px 1fr;
+      grid-template-columns: $rides-sidebar-width 1fr;
       grid-column-gap: 2rem;
     }
 
@@ -27,38 +27,38 @@
 
       & .rides__filter-list-parent {
         position: fixed;
-        width: 400px;
+        width: $rides-sidebar-width;
       }
     }
 
     &-right {
-      & .rides__vehicle-filter {
-        &-list {
-          display: flex;
+      // & .rides__vehicle-filter {
+      //   &-list {
+      //     display: flex;
 
-          &-item {
-            flex: 1;
+      //     &-item {
+      //       flex: 1;
 
-            &-quantity {
-            }
+      //       &-quantity {
+      //       }
 
-            & .rides__vehicle-filter-item {
-              height: 100%;
-              @include flex(space-between, center);
-              flex-direction: column;
-              padding-bottom: 1rem;
-              cursor: pointer;
-              border-bottom: 1px solid $gray-color-1;
-              @include style-text(1.6rem, 600, 2.4rem, $text-color);
+      //       & .rides__vehicle-filter-item {
+      //         height: 100%;
+      //         @include flex(space-between, center);
+      //         flex-direction: column;
+      //         padding-bottom: 1rem;
+      //         cursor: pointer;
+      //         border-bottom: 1px solid $gray-color-1;
+      //         @include style-text(1.6rem, 600, 2.4rem, $text-color);
 
-              &-active {
-                border-bottom: 3px solid $primary-color;
-                color: $primary-color;
-              }
-            }
-          }
-        }
-      }
+      //         &-active {
+      //           border-bottom: 3px solid $primary-color;
+      //           color: $primary-color;
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -66,8 +66,7 @@
     padding-block: 2rem;
     grid-gap: 1rem;
     display: grid;
-    grid-template-columns: 1fr;
-    padding-bottom: 6rem;
+    grid-template-columns: 1fr 1fr 1fr;
     @include responsive(md-screen) {
       padding-bottom: 2rem;
     }
@@ -112,5 +111,95 @@
   &-header {
     @include flex(space-between, center);
     padding-block: 2.4rem;
+  }
+}
+
+.rides-detail__container {
+  padding-top: 10px;
+  @include responsive(lg-screen) {
+    padding-top: 20px;
+  }
+
+  & .rides__detail-inner {
+    & .page-heading {
+      padding-inline: 0;
+    }
+
+    & .rides__detail-body {
+      & .rides__detail {
+        &-separate {
+          height: 8px;
+          margin-block: 8px;
+          background-color: $gray-color-2;
+        }
+
+        &-route {
+          padding-block: 16px;
+        }
+
+        &-price {
+          padding-block: 16px;
+          @include flex(space-between, center);
+
+          &-title {
+            @include style-text(1.6rem, 500, 2.2rem, $text-color-2);
+          }
+
+          &-price {
+            @include style-text(1.5rem, 600, 2.2rem, $text-color);
+          }
+        }
+
+        &-driver {
+          @include flex(space-between, center);
+          cursor: pointer;
+          padding-block: 16px;
+
+          &:hover {
+            background-color: $gray-color-2;
+          }
+
+          &-name {
+            @include style-text(1.6rem, 600, 2.2rem, $text-color);
+            flex: 1;
+            margin-right: 1.2rem;
+          }
+
+          &-avatar {
+            display: flex;
+            align-items: center;
+
+            & .image-container {
+              width: 48px;
+              height: 48px;
+              margin-right: 1.2rem;
+
+              & img {
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+    background-color: $white;
+    padding-block: 1.2rem;
+    @include flex-center;
+  }
+}
+
+.infinite__wrapper {
+  &-loading {
+    @include flex-center;
+    padding-block: 10px;
+
+    & svg {
+      font-size: 3rem;
+      color: $text-color-2;
+    }
   }
 }

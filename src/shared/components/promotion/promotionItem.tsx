@@ -6,7 +6,7 @@ export const PromotionItem = () => {
       <div className="promotion__item-img">
         <div className="image-container">
           <Image
-            src="https://cf.shopee.vn/file/d60798e3c7667613c410a47d216adbd0_tn"
+            src="https://f12.photo.talk.zdn.vn/543197119994287651/55dd03a4932d53730a3c.jpg"
             alt=""
             layout="fill"
             objectFit="cover"
@@ -16,7 +16,7 @@ export const PromotionItem = () => {
       <div className="promotion__item-content">
         <div className="promotion__item-top">
           <p className="promotion__item-content-title">
-            Mã giảm giá cho áo thun
+            Mã giảm giá cho chuyến đi này
           </p>
         </div>
         <div className="promotion__item-content-bottom">

@@ -56,9 +56,13 @@
         margin-bottom: 2rem;
         max-width: $container-width;
         width: 100%;
-        padding-inline: 2.4rem;
+        padding-inline: 12px;
         position: absolute;
         top: 72%;
+
+        @include responsive(sm-screen) {
+          padding-inline: 24px;
+        }
 
         @include responsive(lg-screen) {
           top: unset;

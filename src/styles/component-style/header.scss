@@ -3,12 +3,12 @@
   background-color: $white;
   z-index: 1000;
   height: $header-mobile-height;
-  // border-bottom: 1px solid $gray-color-2;
   @include responsive(md-screen) {
     height: $header-height;
   }
 
   &-active {
+    border-bottom: 1px solid $gray-color-2;
   }
 
   &-container {
@@ -73,13 +73,22 @@
           @include style-text(1.5rem, 600, 2.6rem, $primary-color);
           @include flex(flex-start, center);
           cursor: pointer;
+          margin-right: 2rem;
+
+          &--hide {
+            display: none;
+            @include responsive(md-screen) {
+              display: flex;
+            }
+          }
 
           & svg {
             color: $primary-color;
+            font-size: 2.4rem;
           }
 
-          &:first-child {
-            margin-right: 2rem;
+          &:last-child {
+            margin-right: 0;
           }
 
           &-text {
@@ -121,7 +130,7 @@
   cursor: pointer;
   position: relative;
   display: none;
-  max-width: 250px;
+  max-width: 200px;
   width: 100%;
   @include responsive(md-screen) {
     @include flex(flex-start, center);
@@ -139,11 +148,11 @@
     flex: 1;
     @include style-text(1.4rem, 600, 2.4rem, $text-color);
     margin-right: 1.4rem;
+    @include limit-line-text(1);
     display: none;
-    @include responsive(md-screen) {
+    @include responsive(xl-screen) {
       display: -webkit-box;
     }
-    @include limit-line-text(1);
   }
 
   &-avatar {

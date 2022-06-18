@@ -1,28 +1,35 @@
-import {
-    RideModalSearch,
-    RidesSlice
-} from "@/models"
+import { getFromSessionStorage } from "@/helper"
+import { RidesKeyType } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState: RidesSlice = {
-  modal: {
-    isOpenSearchModal: undefined,
-    type: undefined,
-  },
+export interface RidesSlice {
+  compounding_car_id: number | undefined
+}
+
+let initialState: RidesSlice = {
+  compounding_car_id: undefined,
+}
+
+try {
+  Object.keys(initialState).forEach((item) => {
+    initialState[item as RidesKeyType] = getFromSessionStorage(item)
+  })
+} catch (error) {
+  console.log(error)
 }
 
 const commonSlice = createSlice({
   name: "rides",
   initialState,
   reducers: {
-    setOpenRidesModalSearch: (
+    setCompoundingCarId: (
       state,
-      { payload }: { payload: RideModalSearch }
+      { payload }: { payload: number | undefined }
     ) => {
-      state.modal = payload
+      state.compounding_car_id = payload
     },
   },
 })
 
 export default commonSlice.reducer
-export const { setOpenRidesModalSearch } = commonSlice.actions
+export const { setCompoundingCarId } = commonSlice.actions

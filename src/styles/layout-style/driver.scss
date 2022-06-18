@@ -1,48 +1,3 @@
-.driver__container {
-  display: flex;
-  flex-direction: column;
-
-  &-header {
-    @include flex(flex-start, center);
-    padding-block: 2rem;
-    margin-bottom: 1rem;
-
-    &-heading {
-      @include style-text(2.4rem, 500, 3.4rem, $text-color);
-      flex: 1;
-      margin-left: 1.2rem;
-    }
-
-    &-btn {
-      & svg {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  &-body {
-    flex: 1;
-    padding-bottom: 7rem;
-
-    & .driver-bio__form {
-      &-label {
-        margin-bottom: 1rem;
-      }
-
-      &-input {
-        @include flex-center;
-      }
-    }
-  }
-
-  &-footer {
-    @include fixed(0, 0, 0, unset);
-    background-color: $white;
-    padding-block: 1rem;
-    @include flex-center;
-  }
-}
-
 .driver__page {
   &-header {
     padding-block: 2rem;
@@ -121,6 +76,14 @@
             align-items: center;
             @include style-text(1.4rem, 600, 1.8rem, $warning);
 
+            &-no-required {
+              color: $text-color-2;
+            }
+
+            &-success {
+              color: $success;
+            }
+
             & svg {
               margin-left: 0.6rem;
             }
@@ -133,7 +96,7 @@
   &-footer {
     @include fixed(0, 0, 0, unset);
     background-color: $white;
-    padding-block: 1rem;
+    padding-block: 1.6rem;
     @include flex-center;
   }
 }

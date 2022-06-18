@@ -1,8 +1,9 @@
 import { RootState } from "@/core/store"
-import { ResetPassword } from "@/models"
-import { setMessage, setScreenLoading } from "@/modules"
-import userApi from "@/services/userApi"
+import { ResetPasswordParams } from "@/models"
+import { setScreenLoading } from "@/modules"
+import { userApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
+import { notify } from "reapop"
 import useSWR, { KeyedMutator } from "swr"
 
 interface ChangePasswordProps {
@@ -12,8 +13,16 @@ interface ChangePasswordProps {
   old_password: string
 }
 
-interface CreatePasswordProps extends ResetPassword {
+interface CreatePasswordProps {
   handleSuccess: Function
+  password: string
+  re_password: string
+}
+
+interface DoResetPasswordParams {
+  params: ResetPasswordParams
+  onSuccess: Function
+  onError?: Function
 }
 
 interface UsePasswordRes {
@@ -21,6 +30,7 @@ interface UsePasswordRes {
   isValidating: boolean
   createPassword: (props: CreatePasswordProps) => void
   changePassword: (props: ChangePasswordProps) => void
+  resetPassword: (props: DoResetPasswordParams) => void
   mutate: KeyedMutator<any>
 }
 
@@ -33,9 +43,9 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
     "check_password",
     shouldFetch && token
       ? () =>
-          userApi.checkPassword({ token }).then((res: any) => {
+          userApi.checkHasPassword({ token }).then((res: any) => {
             if (res?.result?.success) {
-              return res.result.data.has_pass
+              return res?.result?.data?.has_password || false
             }
             return false
           })
@@ -47,28 +57,52 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
   )
 
   const createPassword = async (props: CreatePasswordProps) => {
-    const { password, handleSuccess, re_password, phone, token } = props
+    const { password, handleSuccess, re_password } = props
     if (!token || !password || !re_password || !phone) return
     dispatch(setScreenLoading(true))
 
     try {
-      const res: any = await userApi.resetPassword({
+      const res: any = await userApi.createNewPassword({
         password,
         re_password,
         token,
-        phone,
       })
       dispatch(setScreenLoading(false))
 
       if (res?.result?.success) {
         handleSuccess()
-        dispatch(setMessage({ title: "Tạo mật khẩu thành công!" }))
+        dispatch(notify("Tạo mật khẩu thành công!", "success"))
       } else {
         dispatch(
-          setMessage({
-            title: res?.result?.message || "Tạo mật khẩu không thành công",
-            type: "danger",
-          })
+          notify(
+            res?.result?.message || "Tạo mật khẩu không thành công",
+            "error"
+          )
+        )
+      }
+    } catch (error) {
+      dispatch(setScreenLoading(false))
+    }
+  }
+
+  const resetPassword = async (props: DoResetPasswordParams) => {
+    const { params, onSuccess, onError } = props
+    dispatch(setScreenLoading(true))
+
+    try {
+      const res: any = await userApi.resetPassword(params)
+      dispatch(setScreenLoading(false))
+
+      if (res?.result?.success) {
+        onSuccess()
+        dispatch(notify("Lấy lại mật khẩu thành công!", "success"))
+      } else {
+        onError && onError()
+        dispatch(
+          notify(
+            res?.result?.message || "Lấy lại mật khẩu không thành công",
+            "warning"
+          )
         )
       }
     } catch (error) {
@@ -92,13 +126,14 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
 
       if (res?.result?.success) {
         handleSuccess()
-        dispatch(setMessage({ title: "Đổi mật khẩu thành công" }))
+
+        dispatch(notify("Đổi mật khẩu thành công!", "success"))
       } else {
         dispatch(
-          setMessage({
-            title: res?.result?.message || "Đổi mật khẩu không thành công",
-            type: "danger",
-          })
+          notify(
+            res?.result?.message || "Đổi mật khẩu không thành công",
+            "error"
+          )
         )
       }
     } catch (error) {
@@ -112,5 +147,6 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
     isValidating,
     mutate,
     changePassword,
+    resetPassword,
   }
 }

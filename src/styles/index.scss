@@ -19,17 +19,26 @@
 @import "./component-style/map.scss";
 @import "./component-style/location.scss";
 @import "./component-style/promotion.scss";
+@import "./component-style/route-item.scss";
+@import "./component-style/loader.scss";
+@import "./component-style/rides-detail.scss";
+@import "./component-style/rides-form.scss";
 
 // Layout style
 @import "./layout-style/layout.scss";
 @import "./layout-style/ride.scss";
 @import "./layout-style/vehicle.scss";
 @import "./layout-style/driver.scss";
+@import "./layout-style/screen.scss";
 
 // Main style
 @import "./main-style/home.scss";
+@import "./main-style/home-mobile.scss";
 @import "./main-style/search.scss";
 @import "./main-style/dashboard.scss";
 @import "./main-style/rides.scss";
 @import "./main-style/password.scss";
 @import "./main-style/auth.scss";
+@import "./main-style/register.scss";
+@import "./main-style/home-customer.scss";
+@import "./main-style/rides-confirm.scss";

@@ -6,7 +6,7 @@ import {
   confirmReadMessageInChannel,
   setChannelLoading,
 } from "@/modules"
-import chatApi from "@/services/chatApi"
+import { chatApi } from "@/services"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 

@@ -1,10 +1,14 @@
-import { setToLocalStorage } from "@/helper"
-import { UserEdit, UserInfo, UserSlice } from "@/models"
+import { UserInfo } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
+
+interface UserSlice {
+  token: string
+  userInfo: UserInfo | undefined
+  fcmToken: string
+}
 
 const initialState: UserSlice = {
   token: "",
-  addressDefault: undefined,
   userInfo: {} as UserInfo,
   fcmToken: "",
 }
@@ -17,7 +21,6 @@ const userSlice = createSlice({
       state.token = ""
       state.userInfo = {} as UserInfo
       state.fcmToken = ""
-      state.addressDefault = undefined
       location.reload()
     },
 
@@ -27,34 +30,10 @@ const userSlice = createSlice({
 
     setUserInfo: (state, { payload }: { payload: UserInfo | undefined }) => {
       state.userInfo = payload
-      setToLocalStorage("partner_id", payload?.id + "")
     },
-
-    editUserInfo: (state, { payload }: { payload: UserEdit }) => {
-      if (state.userInfo) {
-        state.userInfo.name = payload.name
-        state.userInfo.email = payload.email
-        state.userInfo.sex = payload.sex
-
-        if (payload?.image) {
-          state.userInfo.avatar = payload.image
-        }
-      }
-    },
-
-    // setAddressDefault: (
-    //   state,
-    //   { payload }: { payload: ShippingAddress | undefined }
-    // ) => {
-    //   state.addressDefault = payload
-    // },
-
-    // setFCMToken: (state, { payload }: { payload: string }) => {
-    //   state.fcmToken = payload
-    // },
   },
 })
 
-export const { logOut, setToken, setUserInfo, editUserInfo } = userSlice.actions
+export const { logOut, setToken, setUserInfo } = userSlice.actions
 
 export default userSlice.reducer

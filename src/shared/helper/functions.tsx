@@ -1,5 +1,14 @@
-import { GroupTimeType, TIME_TYPE } from "@/models"
+import {
+  AddressTypeKey,
+  CompoundingType,
+  GroupTimeType,
+  OptionModel,
+  ProvinceId,
+  TIME_TYPE,
+} from "@/models"
 import _ from "lodash"
+import { LatLng } from "use-places-autocomplete"
+import { BASE64_READER_REGEX } from "./constants"
 
 export const correctEmail = (value: string) => {
   ;/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)
@@ -121,11 +130,6 @@ export function getWindowDimensions() {
     height,
   }
 }
-
-// export function getFullAddress(address?: ShippingAddress): string {
-//   if (!address) return ""
-//   return `${address.street}, ${address.ward_id}, ${address.district_id}, ${address.state_id}.`
-// }
 
 export function isObjectHasValue(obj: any): boolean {
   return obj && _.isObject(obj) && Object.keys(obj).length > 0
@@ -251,10 +255,10 @@ export const calculateElapsedTime = (timeCreated: string) => {
   return "Just now"
 }
 
-export const toggleHTMLOverflow = (status: "hidden" | "unset") => {
-  const htmlTag = document.querySelector("html")
-  if (htmlTag) {
-    htmlTag.style.overflow = status
+export const toggleBodyOverflow = (status: "hidden" | "unset") => {
+  const body = document.body
+  if (body) {
+    body.style.overflow = status
   }
 }
 
@@ -268,17 +272,89 @@ export const getTimes = (): { label: string; value: string }[] => {
 
   for (prop in periods) {
     for (hour in hours) {
-      for (min = 0; min < 60; min += 10) {
+      for (min = 0; min < 60; min += 30) {
         const timeStr =
           ("0" + hours[hour]).slice(-2) + ":" + ("0" + min).slice(-2)
 
         times.push({
           label: timeStr + " " + periods[prop],
-          value: timeStr + " " + periods[prop],
+          value:
+            periods[prop] === "Sáng"
+              ? timeStr + ":00"
+              : `0${Number(timeStr.slice(0, 2)) + 12}`.slice(-2) +
+                ":" +
+                timeStr.slice(3, 5) +
+                ":00",
         })
       }
     }
   }
 
   return times
+}
+
+export const convertToEnNoSpaceAndSpecialCharacter = (address: string) => {
+  return address.replace(/\W/g, "")
+}
+
+export const removeBase64Reader = (str: string) =>
+  str.replace(BASE64_READER_REGEX, "")
+
+export const addressToOptions = (
+  addressList: any[],
+  type: AddressTypeKey
+): OptionModel[] =>
+  addressList?.length
+    ? addressList.map((item) => ({
+        label: item[`${type}_name`],
+        value: item[`${type}_id`] + "",
+      }))
+    : []
+
+export const getProvinceName = (address: string): string => {
+  const arr = address.split(",")
+  if (arr?.length < 3) return ""
+
+  return convertViToEn(arr[arr.length - 2])
+    .replace("city", "")
+    .replace(/\W/g, "")
+    .replace(/[0-9]/g, "")
+    .replace("thanhpho", "")
+    .replace("tp", "")
+}
+
+export const lngLatToKms = ({
+  from,
+  to,
+}: {
+  from: LatLng
+  to: LatLng
+}): number => {
+  var R = 6371.071 // Radius of the Earth in miles
+  var rlat1 = from.lat * (Math.PI / 180) // Convert degrees to radians
+  var rlat2 = to.lat * (Math.PI / 180) // Convert degrees to radians
+  var difflat = rlat2 - rlat1 // Radian difference (latitudes)
+  var difflon = (to.lng - from.lng) * (Math.PI / 180) // Radian difference (longitudes)
+
+  var d =
+    2 *
+    R *
+    Math.asin(
+      Math.sqrt(
+        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2)
+      )
+    )
+  return d
+}
+
+export const getCompoundingTypeName = (str: CompoundingType) => {
+  return str === "compounding"
+    ? "Đi ghép"
+    : str === "one_way"
+    ? "Một chiều"
+    : "Hai chiều"
 }

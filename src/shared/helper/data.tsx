@@ -2,19 +2,35 @@ import {
   chatIcon,
   closeFillIcon,
   dbIcon,
-  paymentIcon,
-  quotesIcon,
   thunderIcon,
   trustUserIcon,
   userCircleIcon,
 } from "@/assets"
 import {
+  CertificateInspectionFormKey,
+  DepartureFormKey,
   DriverFormKey,
+  DrivingLicenseClassType,
+  DrivingLicenseFormKey,
+  DrivingLicenseKeyType,
+  FilledDataFieldsKey,
+  HourWaitTimeType,
   IdCardKeyType,
   IdCardName,
-  UserFormSchemaKey,
-  VehicleKeyType,
+  NewPasswordFormKeys,
+  OptionModel,
+  RidesFormFieldKey,
+  UserInfoFormKey,
+  VehicleDetailFormKey,
+  VehicleInsuranceFormKey,
 } from "@/models"
+import { ReactNode } from "react"
+import { BiMerge } from "react-icons/bi"
+import { CgArrowRight, CgArrowsExchange } from "react-icons/cg"
+import { FiSearch } from "react-icons/fi"
+import { HiOutlineLocationMarker } from "react-icons/hi"
+import { MdOutlineDateRange } from "react-icons/md"
+import { RiCarWashingLine } from "react-icons/ri"
 
 export const notifications = [{}]
 
@@ -54,7 +70,7 @@ export const navLinks = [
 ]
 
 export const headerUserOptions = [
-  { icon: quotesIcon(24), name: "Chuyến đi của bạn", path: "/rides" },
+  // { icon: quotesIcon(24), name: "Chuyến đi của bạn", path: "/rides" },
   { icon: chatIcon(24), name: "Tin nhắn", path: "/chat" },
   {
     icon: userCircleIcon(24),
@@ -63,14 +79,10 @@ export const headerUserOptions = [
   },
   {
     icon: dbIcon(24),
-    name: "Giao dịch",
-    path: "/dashboard/account/money-available",
+    name: "Hoạt động",
+    path: "/activities",
   },
-  {
-    icon: paymentIcon(24),
-    name: "Thanh toán",
-    path: "/dashboard/account/payments-history",
-  },
+
   {
     icon: closeFillIcon(24),
     name: "Đăng xuất",
@@ -81,7 +93,7 @@ export const quotes = [
   {
     icon: dbIcon(),
     title: "Lựa chọn của bạn với mức giá thấp",
-    desc: "Cho dù bạn đang đi đâu, bằng xe buýt hay đi chung xe, hãy tìm một chuyến đi hoàn hảo từ nhiều điểm đến và tuyến đường của chúng tôi với mức giá thấp.",
+    desc: "Cho dù bạn đang đi đâu, Bằng xe buýt hay đi chung xe, hãy tìm một chuyến đi hoàn hảo từ nhiều điểm đến và tuyến đường của chúng tôi với mức giá thấp.",
   },
   {
     icon: trustUserIcon(),
@@ -95,327 +107,108 @@ export const quotes = [
   },
 ]
 
+export const headerNavs: {
+  label: string
+  path: string
+  icon: ReactNode
+}[] = [
+  {
+    label: "Một Chiều",
+    icon: <CgArrowRight />,
+    path: "/offer-seats?compounding_type=one_way",
+  },
+  {
+    label: "Hai Chiều",
+    icon: <CgArrowsExchange />,
+    path: "/offer-seats?compounding_type=two_way",
+  },
+  {
+    label: "Đi Ghép",
+    icon: <BiMerge />,
+    path: "/offer-seats?compounding_type=compounding",
+  },
+  {
+    label: "Tìm kiếm",
+    icon: <FiSearch />,
+    path: "/search",
+  },
+]
+
 export const userFormFields: {
-  name: UserFormSchemaKey
+  name: UserInfoFormKey
   label: string
   placeholder: string
+  type: "text" | "date" | "select" | "textarea"
+  isRequired: boolean
 }[] = [
   {
     name: "name",
     label: "Họ tên",
     placeholder: "Họ tên",
+    type: "text",
+    isRequired: true,
   },
   {
-    name: "sex",
+    name: "avatar_attachment_id",
+    label: "Ảnh đại diện",
+    placeholder: "Ảnh đại diện",
+    type: "text",
+    isRequired: true,
+  },
+  {
+    name: "gender",
     label: "Giới tính",
     placeholder: "Giới tính",
+    type: "select",
+    isRequired: true,
   },
   {
-    name: "birthday",
+    name: "date_of_birth",
     label: "Ngày sinh",
     placeholder: "DD/MM/YYYY",
+    type: "date",
+    isRequired: true,
   },
   {
-    name: "email",
-    label: "Địa chỉ email",
-    placeholder: "Địa chỉ email",
-  },
-
-  {
-    name: "phone",
-    label: "Số điện thoại",
-    placeholder: "Số điện thoại",
-  },
-  {
-    name: "bio",
+    name: "description",
     label: "Giới thiệu",
     placeholder: "Giới thiệu",
+    type: "textarea",
+    isRequired: false,
   },
 ]
 
-export const vehicleFormFields: {
-  name: VehicleKeyType
+export const drivingClassList: {
   label: string
-  placeholder: string
+  value: DrivingLicenseClassType
 }[] = [
   {
-    name: "brand",
-    label: "Tên hãng xe",
-    placeholder: "Tên hãng xe",
+    label: "Bằng B1",
+    value: "b1",
   },
-  {
-    name: "model",
-    label: "Tên xe",
-    placeholder: "Tên xe",
-  },
-  {
-    name: "type",
-    label: "Loại xe",
-    placeholder: "Loại xe",
-  },
-  {
-    name: "desc",
-    label: "Mô tả xe",
-    placeholder: "Mô tả xe",
-  },
-]
 
-export const provinces = [
   {
-    label: "An Giang",
-    value: "An Giang",
+    label: "Bằng B2",
+    value: "b2",
+  },
+
+  {
+    label: "Bằng C",
+    value: "c",
+  },
+
+  {
+    label: "Bằng D",
+    value: "d",
+  },
+
+  {
+    label: "Bằng E",
+    value: "e",
   },
   {
-    label: "Bà Rịa-Vũng Tàu",
-    value: "Bà Rịa-Vũng Tàu",
-  },
-  {
-    label: "Bạc Liêu",
-    value: "Bạc Liêu",
-  },
-  {
-    label: "Bắc Kạn",
-    value: "Bắc Kạn",
-  },
-  {
-    label: "Bắc Giang",
-    value: "Bắc Giang",
-  },
-  {
-    label: "Bắc Ninh",
-    value: "Bắc Ninh",
-  },
-  {
-    label: "Bến Tre",
-    value: "Bến Tre",
-  },
-  {
-    label: "Bình Dương",
-    value: "Bình Dương",
-  },
-  {
-    label: "Bình Định",
-    value: "Bình Định",
-  },
-  {
-    label: "Bình Phước",
-    value: "Bình Phước",
-  },
-  {
-    label: "Bình Thuận",
-    value: "Bình Thuận",
-  },
-  {
-    label: "Cà Mau",
-    value: "Cà Mau",
-  },
-  {
-    label: "Cao Bằng",
-    value: "Cao Bằng",
-  },
-  {
-    label: "Cần Thơ (TP)",
-    value: "Cần Thơ (TP)",
-  },
-  {
-    label: "Đà Nẵng (TP)",
-    value: "Đà Nẵng (TP)",
-  },
-  {
-    label: "Đắk Lắk",
-    value: "Đắk Lắk",
-  },
-  {
-    label: "Đắk Nông",
-    value: "Đắk Nông",
-  },
-  {
-    label: "Điện Biên",
-    value: "Điện Biên",
-  },
-  {
-    label: "Đồng Nai",
-    value: "Đồng Nai",
-  },
-  {
-    label: "Đồng Tháp",
-    value: "Đồng Tháp",
-  },
-  {
-    label: "Gia Lai",
-    value: "Gia Lai",
-  },
-  {
-    label: "Hà Giang",
-    value: "Hà Giang",
-  },
-  {
-    label: "Hà Nam",
-    value: "Hà Nam",
-  },
-  {
-    label: "Hà Nội (TP)",
-    value: "Hà Nội (TP)",
-  },
-  {
-    label: "Hà Tây",
-    value: "Hà Tây",
-  },
-  {
-    label: "Hà Tĩnh",
-    value: "Hà Tĩnh",
-  },
-  {
-    label: "Hải Dương",
-    value: "Hải Dương",
-  },
-  {
-    label: "Hải Phòng (TP)",
-    value: "Hải Phòng (TP)",
-  },
-  {
-    label: "Hòa Bình",
-    value: "Hòa Bình",
-  },
-  {
-    label: "Hồ Chí Minh (TP)",
-    value: "Hồ Chí Minh (TP)",
-  },
-  {
-    label: "Hậu Giang",
-    value: "Hậu Giang",
-  },
-  {
-    label: "Hưng Yên",
-    value: "Hưng Yên",
-  },
-  {
-    label: "Khánh Hòa",
-    value: "Khánh Hòa",
-  },
-  {
-    label: "Kiên Giang",
-    value: "Kiên Giang",
-  },
-  {
-    label: "Kon Tum",
-    value: "Kon Tum",
-  },
-  {
-    label: "Lai Châu",
-    value: "Lai Châu",
-  },
-  {
-    label: "Lào Cai",
-    value: "Lào Cai",
-  },
-  {
-    label: "Lạng Sơn",
-    value: "Lạng Sơn",
-  },
-  {
-    label: "Lâm Đồng",
-    value: "Lâm Đồng",
-  },
-  {
-    label: "Long An",
-    value: "Long An",
-  },
-  {
-    label: "Nam Định",
-    value: "Nam Định",
-  },
-  {
-    label: "Nghệ An",
-    value: "Nghệ An",
-  },
-  {
-    label: "Ninh Bình",
-    value: "Ninh Bình",
-  },
-  {
-    label: "Ninh Thuận",
-    value: "Ninh Thuận",
-  },
-  {
-    label: "Phú Thọ",
-    value: "Phú Thọ",
-  },
-  {
-    label: "Phú Yên",
-    value: "Phú Yên",
-  },
-  {
-    label: "Quảng Bình",
-    value: "Quảng Bình",
-  },
-  {
-    label: "Quảng Nam",
-    value: "Quảng Nam",
-  },
-  {
-    label: "Quảng Ngãi",
-    value: "Quảng Ngãi",
-  },
-  {
-    label: "Quảng Ninh",
-    value: "Quảng Ninh",
-  },
-  {
-    label: "Quảng Trị",
-    value: "Quảng Trị",
-  },
-  {
-    label: "Sóc Trăng",
-    value: "Sóc Trăng",
-  },
-  {
-    label: "Sơn La",
-    value: "Sơn La",
-  },
-  {
-    label: "Tây Ninh",
-    value: "Tây Ninh",
-  },
-  {
-    label: "Thái Bình",
-    value: "Thái Bình",
-  },
-  {
-    label: "Thái Nguyên",
-    value: "Thái Nguyên",
-  },
-  {
-    label: "Thanh Hóa",
-    value: "Thanh Hóa",
-  },
-  {
-    label: "Thừa Thiên – Huế",
-    value: "Thừa Thiên – Huế",
-  },
-  {
-    label: "Tiền Giang",
-    value: "Tiền Giang",
-  },
-  {
-    label: "Trà Vinh",
-    value: "Trà Vinh",
-  },
-  {
-    label: "Tuyên Quang",
-    value: "Tuyên Quang",
-  },
-  {
-    label: "Vĩnh Long",
-    value: "Vĩnh Long",
-  },
-  {
-    label: "Vĩnh Phúc",
-    value: "Vĩnh Phúc",
-  },
-  {
-    label: "Yên Bái",
-    value: "Yên Bái",
+    label: "Bằng F",
+    value: "f",
   },
 ]
 
@@ -429,21 +222,6 @@ export const models = [
   { label: "Mercedes Benz", value: "Mercedes Benz" },
 ]
 
-export const vehicles = [
-  {
-    label: "Xe 4 chỗ",
-    value: "4",
-  },
-  {
-    label: "Xe 7 chỗ",
-    value: "7",
-  },
-  {
-    label: "Xe 16 chỗ",
-    value: "16",
-  },
-]
-
 export const ratings = [
   { label: "5 sao", value: 5 },
   { label: "4 sao", value: 4 },
@@ -453,52 +231,68 @@ export const ratings = [
 export const idCardFormFields: {
   name: IdCardName
   type: IdCardKeyType
-  placeHolder: string
+  placeholder: string
+  isRequired: boolean
 }[] = [
   {
-    name: "frontCard",
+    name: "front_identity_card_image_url",
     type: "file",
-    placeHolder: "Mặt Trước",
+    placeholder: "Mặt Trước",
+    isRequired: true,
   },
   {
-    name: "backCard",
+    name: "back_identity_card_image_url",
     type: "file",
-    placeHolder: "Mặt Sau",
+    placeholder: "Mặt Sau",
+    isRequired: true,
   },
   {
-    name: "id",
+    name: "identity_number",
     type: "text",
-    placeHolder: "Số CMND / Thẻ Căn Cước / Hộ Chiếu",
+    placeholder: "Số CMND / Thẻ Căn Cước / Hộ Chiếu",
+    isRequired: true,
   },
   {
-    name: "date",
+    name: "date_of_issue",
     type: "date",
-    placeHolder: "Ngày Cấp",
+    placeholder: "Ngày Cấp",
+    isRequired: true,
   },
   {
-    name: "address",
+    name: "date_of_expiry",
+    type: "date",
+    placeholder: "Ngày Hết Hạn",
+    isRequired: true,
+  },
+  {
+    name: "place_of_issue",
     type: "select",
-    placeHolder: "Nơi Cấp",
+    placeholder: "Nơi Cấp",
+    isRequired: true,
   },
   {
-    name: "apartmentNumber",
-    type: "text",
-    placeHolder: "Số Nhà/Tổ | Địa Chỉ Thường Trú",
-  },
-  {
-    name: "ward",
-    type: "text",
-    placeHolder: "Xã/Phường | Địa Chỉ Thường Trú",
-  },
-  {
-    name: "district",
-    type: "text",
-    placeHolder: "Quận/Huyện | Địa Chỉ Thường Trú",
-  },
-  {
-    name: "province",
+    name: "province_id",
     type: "select",
-    placeHolder: "Tỉnh | Địa Chỉ Thường Trú",
+    placeholder: "Tỉnh | Địa Chỉ Hiện Tại",
+    isRequired: true,
+  },
+  {
+    name: "district_id",
+    type: "select",
+    placeholder: "Quận/Huyện | Địa Chỉ Hiện Tại",
+    isRequired: true,
+  },
+  {
+    name: "ward_id",
+    type: "select",
+    placeholder: "Xã/Phường | Địa Chỉ Hiện Tại",
+    isRequired: true,
+  },
+  {
+    name: "street",
+    type: "text",
+    placeholder: "Số Nhà/Tổ | Địa Chỉ Hiện Tại",
+    isRequired: true,
   },
 ]
 
@@ -509,6 +303,7 @@ export const driverFormFields: {
     label: string
     isRequired: boolean
     key: DriverFormKey
+    name: FilledDataFieldsKey
   }[]
 }[] = [
   {
@@ -517,21 +312,24 @@ export const driverFormFields: {
     child: [
       {
         route: "bio_details",
-        label: "Ảnh chân dung",
+        label: "Họ & Tên",
         isRequired: true,
         key: "info",
+        name: "user_information",
       },
       {
         route: "identity_card_details",
         label: "CMND / Thẻ Căn Cước / Hộ Chiếu",
         isRequired: true,
         key: "idCard",
+        name: "identity_card",
       },
       {
         route: "driving_license_details",
-        label: "Bằng lái xe",
+        label: "Bằng Lái xe",
         isRequired: true,
         key: "license",
+        name: "car_driving_license",
       },
     ],
   },
@@ -540,23 +338,485 @@ export const driverFormFields: {
     heading: "Thông tin phương tiện di chuyển ",
     child: [
       {
-        route: "vehicle_image",
-        label: "hình xe",
-        isRequired: true,
-        key: "vehicleImages",
-      },
-      {
         route: "vehicle_details",
         label: "Giấy Đăng Ký Xe",
         isRequired: true,
         key: "vehicleRegistration",
+        name: "car_registration_certificate",
+      },
+      {
+        route: "registration_certificate",
+        label: "Giấy Đăng Kiểm",
+        isRequired: true,
+        key: "registrationCertificate",
+        name: "periodical_inspection_certificate",
       },
       {
         route: "vehicle_insurance",
-        label: "Bảo Hiểm Xe",
+        label: "Bảo Hiểm Xe Bắt Buộc",
         isRequired: true,
         key: "vehicleInsuranceImages",
+        name: "compulsory_car_insurance",
       },
     ],
+  },
+]
+
+export const drivingLicenseFormFields: {
+  name: DrivingLicenseFormKey
+  type: DrivingLicenseKeyType
+  placeholder: string
+  isRequired: boolean
+}[] = [
+  {
+    name: "front_license_image_url",
+    type: "file",
+    placeholder: "Mặt Trước",
+    isRequired: true,
+  },
+  {
+    name: "back_license_image_url",
+    type: "file",
+    placeholder: "Mặt Sau",
+    isRequired: true,
+  },
+  {
+    name: "identity_number",
+    type: "text",
+    placeholder: "Số Bằng Lái Xe",
+    isRequired: true,
+  },
+  {
+    name: "license_class",
+    type: "select",
+    placeholder: "Hạng Bằng Lái",
+    isRequired: true,
+  },
+  {
+    name: "date_of_issue",
+    type: "date",
+    placeholder: "Ngày Cấp",
+    isRequired: true,
+  },
+  {
+    name: "date_of_expiry",
+    type: "date",
+    placeholder: "Ngày Hết Hạn",
+    isRequired: true,
+  },
+]
+
+export const VehicleImagesForm: {
+  name: "frontImage" | "backImage"
+  placeholder: string
+  isRequired: boolean
+}[] = [
+  {
+    name: "frontImage",
+    placeholder: "Hình Đầu Xe",
+    isRequired: true,
+  },
+  {
+    name: "backImage",
+    placeholder: "Hình Đuôi Xe",
+    isRequired: true,
+  },
+]
+
+export const vehicleInsuranceForm: {
+  name: VehicleInsuranceFormKey
+  placeholder: string
+  isRequired: boolean
+  type: "text" | "date" | "file"
+}[] = [
+  {
+    name: "front_insurance_image_url",
+    placeholder: "Mặt Trước",
+    isRequired: true,
+    type: "file",
+  },
+  {
+    name: "back_insurance_image_url",
+    placeholder: "Mặt Sau",
+    isRequired: true,
+    type: "file",
+  },
+  {
+    name: "identity_number",
+    placeholder: "Số Bảo Hiểm",
+    isRequired: true,
+    type: "text",
+  },
+  {
+    name: "date_of_issue",
+    placeholder: "Ngày Cấp",
+    isRequired: true,
+    type: "date",
+  },
+  {
+    name: "date_of_expiry",
+    placeholder: "Ngày Hết Hạn",
+    isRequired: true,
+    type: "date",
+  },
+]
+
+export const vehicleDetailFormFields: {
+  name: VehicleDetailFormKey
+  placeholder: string
+  type: "file" | "text" | "select" | "date"
+  isRequired: boolean
+  options?: OptionModel[]
+}[] = [
+  {
+    name: "front_car_image_url",
+    placeholder: "Hình Đầu Xe",
+    isRequired: true,
+    type: "file",
+  },
+  {
+    name: "back_car_image_url",
+    placeholder: "Hình Đuôi Xe",
+    isRequired: true,
+    type: "file",
+  },
+  {
+    name: "car_id",
+    placeholder: "Loại Xe",
+    isRequired: true,
+    type: "select",
+  },
+  {
+    name: "car_brand_id",
+    placeholder: "Hãng Xe",
+    isRequired: true,
+    type: "select",
+  },
+  {
+    name: "car_name",
+    placeholder: "Tên Xe",
+    isRequired: true,
+    type: "text",
+  },
+
+  {
+    name: "license_plates",
+    placeholder: "Biển Số Xe",
+    isRequired: true,
+    type: "text",
+  },
+
+  {
+    name: "year_of_issue",
+    placeholder: "Năm Sản Xuất Xe",
+    isRequired: true,
+    type: "text",
+  },
+]
+
+export const genderList: {
+  value: "male" | "female"
+  label: string
+}[] = [
+  { value: "male", label: "Nam" },
+  { value: "female", label: "Nữ" },
+]
+
+export const seats = [
+  { label: "1", value: "1" },
+  { label: "2", value: "2" },
+  { label: "3", value: "3" },
+  { label: "4", value: "4" },
+  { label: "5", value: "5" },
+  { label: "6", value: "6" },
+  { label: "7", value: "7" },
+  { label: "8", value: "8" },
+  { label: "9", value: "9" },
+  { label: "10", value: "10" },
+  { label: "11", value: "11" },
+  { label: "12", value: "12" },
+  { label: "13", value: "13" },
+  { label: "14", value: "14" },
+  { label: "15", value: "15" },
+  { label: "16", value: "16" },
+]
+
+interface DepartureForm {
+  type?: "date" | "select" | "text"
+  placeholder: string
+  name: DepartureFormKey
+  isRequired: boolean
+}
+
+export const waitingTimes = [
+  {
+    label: "30 Phút",
+    value: "30 minutes",
+  },
+  {
+    label: "1 Tiếng",
+    value: "1 hour",
+  },
+  {
+    label: "1 Tiếng 30 phút",
+    value: "1.5 hours",
+  },
+  {
+    label: "2 Tiếng",
+    value: "2 hours",
+  },
+
+  {
+    label: "3 Tiếng",
+    value: "3 hours",
+  },
+
+  {
+    label: "4 Tiếng",
+    value: "4 hours",
+  },
+  {
+    label: "5 Tiếng",
+    value: "5 hours",
+  },
+]
+
+export const userInfoFormfields: {
+  name: UserInfoFormKey
+  placeholder: string
+  type: "file" | "text" | "select" | "date" | "textarea"
+  isRequired: boolean
+  options?: OptionModel[]
+}[] = [
+  {
+    name: "avatar_attachment_id",
+    isRequired: true,
+    placeholder: "Chọn ảnh đại diện",
+    type: "file",
+  },
+  {
+    name: "name",
+    isRequired: true,
+    placeholder: "Họ Tên",
+    type: "text",
+  },
+  {
+    name: "date_of_birth",
+    isRequired: true,
+    placeholder: "Ngày sinh",
+    type: "date",
+  },
+  {
+    name: "gender",
+    isRequired: true,
+    placeholder: "Giới tính",
+    type: "select",
+    options: genderList,
+  },
+  {
+    name: "description",
+    isRequired: false,
+    placeholder: "Mô tả bản thân",
+    type: "textarea",
+    options: genderList,
+  },
+]
+
+export const createNewPasswordFormFields: {
+  name: "password" | "re_password"
+  label: string
+}[] = [
+  { label: "Mật khẩu mới", name: "password" },
+  { label: "Xác nhận mật khẩu mới", name: "re_password" },
+]
+
+export const changePasswordFormFields: {
+  name: NewPasswordFormKeys
+  label: string
+}[] = [
+  { label: "Mật khẩu cũ", name: "old_password" },
+  { label: "Mật khẩu mới", name: "password" },
+  { label: "Xác nhận mật khẩu mới", name: "re_password" },
+]
+
+export const certificatesRegistrationFormFields: {
+  type: "text" | "date" | "file"
+  name: CertificateInspectionFormKey
+  isRequired: boolean
+  label: string
+}[] = [
+  {
+    type: "file",
+    name: "front_inspection_certificate_image_url",
+    isRequired: true,
+    label: "Ảnh Mặt Trước",
+  },
+  {
+    type: "file",
+    name: "back_inspection_certificate_image_url",
+    isRequired: true,
+    label: "Ảnh Mặt Sau",
+  },
+  {
+    type: "text",
+    name: "identity_number",
+    isRequired: true,
+    label: "Số Đăng kiểm",
+  },
+  {
+    type: "date",
+    name: "date_of_expiry",
+    isRequired: true,
+    label: "Ngày Hết Hạn",
+  },
+]
+
+export const ridesFormFields: {
+  name: RidesFormFieldKey
+  type: "text" | "date" | "select"
+  placeholder: string
+  isRequired: boolean
+}[] = [
+  {
+    name: "from_pick_up_station_id",
+    type: "text",
+    placeholder: "Mặt Trước",
+    isRequired: true,
+  },
+  {
+    name: "to_pick_up_station_id",
+    type: "text",
+    placeholder: "Điểm đến",
+    isRequired: true,
+  },
+
+  {
+    name: "from_pick_up_station_id",
+    type: "text",
+    placeholder: "Mặt Trước",
+    isRequired: true,
+  },
+  {
+    name: "from_pick_up_station_id",
+    type: "text",
+    placeholder: "Mặt Trước",
+    isRequired: true,
+  },
+]
+
+interface CreateRidesOneWayFormFieldsParams {
+  label: string
+  isRequired: boolean
+  name: RidesFormFieldKey
+  type: "select" | "date" | "text"
+  icon?: ReactNode
+  childs?: CreateRidesOneWayFormFieldsParams[]
+}
+
+export const createRidesOneWayFormFields: CreateRidesOneWayFormFieldsParams[] =
+  [
+    {
+      name: "from_pick_up_station_id",
+      isRequired: true,
+      label: "Chọn điểm đi",
+      type: "text",
+      icon: <HiOutlineLocationMarker />,
+    },
+
+    {
+      name: "to_pick_up_station_id",
+      isRequired: true,
+      label: "Chọn điểm đến",
+      type: "text",
+      icon: <HiOutlineLocationMarker />,
+    },
+    {
+      name: "expected_going_on_date",
+      isRequired: true,
+      label: "Chọn ngày đi",
+      type: "date",
+      icon: <MdOutlineDateRange />,
+      childs: [
+        {
+          name: "expected_going_on_date",
+          isRequired: true,
+          label: "Chọn ngày đi",
+          type: "date",
+        },
+        {
+          name: "expected_going_on_date",
+          isRequired: true,
+          label: "Chọn giờ đi",
+          type: "text",
+        },
+      ],
+    },
+    {
+      name: "car_id",
+      isRequired: true,
+      label: "Chọn loại xe",
+      type: "select",
+      icon: <RiCarWashingLine />,
+    },
+    {
+      name: "number_seat",
+      isRequired: true,
+      label: "Chọn số ghế",
+      type: "select",
+      icon: <RiCarWashingLine />,
+    },
+  ]
+
+export const CreateRidesTwoWayFormFields: CreateRidesOneWayFormFieldsParams[] =
+  [...createRidesOneWayFormFields]
+
+export const hoursBackList: { label: string; value: HourWaitTimeType }[] = [
+  {
+    label: "1 Giờ",
+    value: "01_hour",
+  },
+  {
+    label: "2 Giờ",
+    value: "02_hour",
+  },
+  {
+    label: "3 Giờ",
+    value: "03_hour",
+  },
+  {
+    label: "4 Giờ",
+    value: "04_hour",
+  },
+  {
+    label: "5 Giờ",
+    value: "05_hour",
+  },
+  {
+    label: "6 Giờ",
+    value: "06_hour",
+  },
+  {
+    label: "7 Giờ",
+    value: "07_hour",
+  },
+  {
+    label: "8 Giờ",
+    value: "08_hour",
+  },
+  {
+    label: "9 Giờ",
+    value: "09_hour",
+  },
+  {
+    label: "10 Giờ",
+    value: "10_hour",
+  },
+  {
+    label: "11 Giờ",
+    value: "11_hour",
+  },
+  {
+    label: "12 Giờ",
+    value: "12_hour",
   },
 ]

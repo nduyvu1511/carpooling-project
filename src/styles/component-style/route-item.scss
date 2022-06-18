@@ -1,0 +1,87 @@
+.route__item {
+  flex: 1;
+  display: flex;
+  position: relative;
+  @include style-text(1.5rem, 600, 2.2rem, $text-color);
+
+  &-line {
+    position: absolute;
+    width: 4px;
+    background-color: $text-color;
+    left: -15px;
+    top: 6px;
+    bottom: 6px;
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: $white;
+      border: 2px solid $text-color;
+      left: 50%;
+      transform: translate(-50%);
+    }
+
+    &::after {
+      top: 0;
+    }
+
+    &::before {
+      bottom: 0;
+    }
+  }
+
+  &-time {
+    margin-right: 40px;
+    @include flex(space-between, start);
+    flex-direction: column;
+    @include style-text(1.3rem, 500, 1.8rem, $text-color);
+
+    &-start {
+      margin-bottom: 20px;
+
+      &-date {
+      }
+
+      &-duration {
+        color: $text-color-2;
+      }
+    }
+  }
+
+  &-location {
+    flex: 1;
+    position: relative;
+    @include flex(space-between, flex-start);
+    flex-direction: column;
+
+    &-name {
+      & .route-item__location-name {
+      }
+
+      & .route-item__location-desc {
+        @include style-text(1.4rem, 600, 2rem, $text-color-2);
+      }
+    }
+
+    &-item {
+      @include limit-line-text(2);
+
+      &-from {
+        margin-bottom: 20px;
+      }
+    }
+
+    &-quantity {
+      &-item {
+        display: flex;
+        & svg {
+          color: $success;
+        }
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ export const ItemSelect = ({
   type = "radio",
 }: RouteItemProps) => {
   return (
-    <div className="item__select px-24">
+    <div onClick={() => onCheck()} className="item__select px-24">
       <div className="item__select-info">
         <p className="item__select-info-title">{title}</p>
       </div>

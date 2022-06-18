@@ -10,6 +10,7 @@ interface RideHeaderProps {
   showBackBtn?: boolean
   showForwardBtn?: boolean
   onRedirectToNext?: Function
+  onClickBackBtn?: Function
 }
 
 interface RideContainerProps extends RideHeaderProps {
@@ -25,6 +26,7 @@ export const RideHeader = ({
   showBackBtn = true,
   showForwardBtn = false,
   onRedirectToNext,
+  onClickBackBtn,
 }: RideHeaderProps) => {
   const router = useRouter()
   const height = useScrollTop()
@@ -37,7 +39,9 @@ export const RideHeader = ({
     >
       <div className="ride__header-inner header-container px-24">
         <button
-          onClick={() => router.back()}
+          onClick={() => {
+            onClickBackBtn ? onClickBackBtn() : router.back()
+          }}
           className={`btn-reset ride__header-back ${
             showBackBtn ? "show" : "hidden"
           }`}
@@ -70,6 +74,7 @@ export const RideContainer = ({
   onClick,
   showBtn,
   btnLabel = "Tiếp theo",
+  onClickBackBtn,
 }: RideContainerProps) => {
   const transition = useSpring({
     from: { opacity: 0 },
@@ -83,6 +88,7 @@ export const RideContainer = ({
       <RideHeader
         heading={heading}
         showBackBtn={showBackBtn}
+        onClickBackBtn={onClickBackBtn}
         showForwardBtn={showForwardBtn}
         onRedirectToNext={onRedirectToNext}
       />

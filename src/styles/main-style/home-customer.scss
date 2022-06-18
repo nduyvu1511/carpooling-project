@@ -1,0 +1,83 @@
+.home-customer__container {
+  & .home-customer__header {
+    padding-block: 24px;
+    position: relative;
+    height: 35vh;
+    background-image: url("../../shared/assets/images/banner-1.png");
+    background-position: center;
+    background-size: cover;
+
+    &-top {
+      @include flex(space-between, flex-start);
+      margin-bottom: 20px;
+    }
+
+    &-content {
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 2px rgba($color: #000000, $alpha: 0.2);
+
+      & .nav__item-title {
+        color: $white;
+      }
+
+      & .home-mobile__nav {
+        & .home-mobile__nav-item {
+        }
+      }
+
+      & .home-customer__header-navs {
+        display: flex;
+        align-items: center;
+
+        & .home-customer__nav-item {
+          @include flex(flex-start, center);
+          margin-right: 16px;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          &-label {
+            @include style-text(1.6rem, 500, 2.4rem, $white);
+          }
+
+          & svg {
+            color: $white;
+            font-size: 2.4rem;
+          }
+        }
+      }
+    }
+
+    &-logo {
+    }
+
+    &-user {
+      & .header__account__option-name {
+        color: $white;
+        text-shadow: 1px 1px 2px rgba($color: #000000, $alpha: 0.2);
+      }
+    }
+
+    &__form {
+    }
+  }
+
+  & .home-customer__content {
+    position: relative;
+    top: -25px;
+    z-index: 10;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $white;
+
+    & .home-customer__form {
+      position: relative;
+      top: -20px;
+    }
+
+    & .home-customer__rides {
+      grid-gap: 20px;
+    }
+  }
+}

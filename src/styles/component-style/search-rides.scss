@@ -12,7 +12,6 @@
   &-inner {
     flex: 1;
     padding-top: 1rem;
-    padding-inline: 2rem;
     display: flex;
     background-color: $white;
     border-radius: 16px 16px 0 0;
@@ -26,7 +25,6 @@
       flex-direction: row;
       border-radius: 16px 0 0 16px;
       padding-top: 0;
-      padding-block: 0.8rem;
     }
   }
 
@@ -34,6 +32,15 @@
     height: 55px;
     @include responsive(lg-screen) {
       height: 100%;
+    }
+  }
+
+  &-vehicle {
+    border-bottom: 1px solid $gray-color-2;
+
+    @include responsive(lg-screen) {
+      border-right: 1px solid $gray-color-2;
+      width: 200px;
     }
   }
 
@@ -70,6 +77,23 @@
       @include flex(flex-start, center);
       position: relative;
       flex: 1;
+      padding-inline: 12px;
+
+      @include responsive(lg-screen) {
+        width: 150px;
+        padding-inline: 0;
+      }
+
+      &-input {
+        height: 100%;
+        @include style-text(1.4rem, 600, 1.8rem, $text-color);
+        outline: none;
+        width: 100%;
+        background-color: $white;
+        @include responsive(lg-screen) {
+          padding-inline: 12px;
+        }
+      }
 
       &-btn {
         width: 100%;

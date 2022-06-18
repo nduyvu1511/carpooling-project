@@ -1,5 +1,5 @@
 import { cautionIcon, closeIcon, notifyIcon } from "@/assets"
-import { PRIMARY_COLOR, toggleHTMLOverflow } from "@/helper"
+import { PRIMARY_COLOR, toggleBodyOverflow } from "@/helper"
 import { useEffect } from "react"
 import { useSpring, animated } from "react-spring"
 
@@ -28,10 +28,10 @@ export const AlertScreen = ({
   })
 
   useEffect(() => {
-    toggleHTMLOverflow("hidden")
+    toggleBodyOverflow("hidden")
 
     return () => {
-      toggleHTMLOverflow("unset")
+      toggleBodyOverflow("unset")
     }
   }, [])
 

@@ -1,11 +1,13 @@
 $second-font: "Dosis", sans-serif;
 $main-font: "Open Sans", sans-serif;
 $header-container-width: 1280px;
-$container-width: 1016px;
+$container-width: 1280px;
 $content-container-width: 662px;
 
 $header-height: 72px;
 $header-mobile-height: 56px;
+
+$navigation-bottom: 50px;
 
 $primary-color: #00aff5;
 $primary-color-darker: rgb(0, 143, 193);
@@ -24,9 +26,16 @@ $warning: #ffc107;
 $danger: #f53f5b;
 $danger-opacity: #fdd8de;
 $alert-bg: #11505a;
+$yellow-opacity: #ffdf7e;
+$yellow: #ffc107;
+
+$rides-sidebar-width: 300px;
 
 // Transition
 $transition-1: opacity 350ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+
+// animations
+$animation-skeleton: skeleton-loading 0.8s linear infinite alternate;
 
 // Box Shadow
 $shadow-1: rgba(0, 0, 0, 0.16) 0px 1pt 4pt, rgba(0, 0, 0, 0.08) 0px 2pt 8pt;

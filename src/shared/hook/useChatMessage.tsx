@@ -15,7 +15,7 @@ import {
   setMoreMessages,
   setSendingMessage,
 } from "@/modules"
-import chatApi from "@/services/chatApi"
+import { chatApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
 
 interface SendMessageParams {

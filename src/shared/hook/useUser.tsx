@@ -1,82 +1,55 @@
 import { RootState } from "@/core/store"
-import { UpdateUserPropsHook, UserInfo } from "@/models"
-import { editUserInfo } from "@/modules"
-import userApi from "@/services/userApi"
+import { CreateUserFormParams } from "@/models"
+import { userApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
-import useSWR from "swr"
+import { notify } from "reapop"
 
 interface UserRes {
-  data: UserInfo
-  isValidating: boolean
-  error: any
-  updateUser: (user: UpdateUserPropsHook) => void
+  updateUserInfo: (params: UpdateUserInfoParams) => void
 }
 
-const useUser = (): UserRes => {
+interface UpdateUserInfoParams {
+  params: CreateUserFormParams
+  onSuccess: Function
+  onError?: Function
+}
+
+const useUser = (shouldFetch?: boolean): UserRes => {
   const { token } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
 
-  const { data, error, isValidating, mutate } = useSWR(
-    "user_info_edit",
-    token
-      ? () =>
-          userApi.getUserInfo({ token }).then((res: any) => {
-            const user = res?.result?.data || {}
-            if (res?.result?.success) return user
-          })
-      : null,
-    {
-      revalidateOnFocus: false,
+  const updateUserInfo = async (props: UpdateUserInfoParams) => {
+    const { onSuccess, params, onError } = props
+    try {
+      const res: any = await userApi.updateUserInfo(params)
+      if (!res?.result?.success) {
+        onError && onError()
+        dispatch(notify(res?.result?.message, "error"))
+        return
+      }
+
+      onSuccess(res?.result?.data)
+    } catch (error) {
+      onError && onError()
     }
-  )
-
-  const updateUser = (user: UpdateUserPropsHook) => {
-    if (!token) return
-
-    dispatch(setScreenLoading(true))
-
-    userApi
-      .updateUser({ ...user, token })
-      .then((res: any) => {
-        if (res?.result?.success) {
-          const newUser = {
-            email: user.email,
-            name: user.name_customs,
-            sex: user.sex,
-            image: user.image
-              ? res?.result?.data?.find((item: any) => item.image_url)
-                  ?.image_url?.[0] || ""
-              : "",
-          }
-
-          dispatch(editUserInfo(newUser))
-          mutate({ ...data, newUser }, true)
-
-          dispatch(setScreenLoading(false))
-          dispatch(
-            setMessage({
-              title: "Chỉnh sửa thông tin thành công!",
-            })
-          )
-        } else {
-          dispatch(
-            setMessage({
-              title: res?.result?.message || "",
-              type: "danger",
-            })
-          )
-          dispatch(setScreenLoading(false))
-        }
-      })
-      .catch(() => {
-        dispatch(setScreenLoading(false))
-      })
   }
+
+  // const { data, error, isValidating, mutate } = useSWR(
+  //   "user_info_edit",
+  //   shouldFetch
+  //     ? () =>
+  //         userApi.getUserInfo({ token }).then((res: any) => {
+  //           const user = res?.result?.data || {}
+  //           if (res?.result?.success) return user
+  //         })
+  //     : null,
+  //   {
+  //     revalidateOnFocus: false,
+  //   }
+  // )
+
   return {
-    data,
-    error,
-    isValidating,
-    updateUser,
+    updateUserInfo,
   }
 }
 

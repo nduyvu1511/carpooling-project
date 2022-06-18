@@ -24,9 +24,9 @@
       flex: 1;
       text-align: center;
       padding-inline: 1.2rem;
-      @include style-text(2.4rem, 600, 3.4rem, $text-color);
-      @include responsive(lg-screen) {
-        @include style-text(3rem, 600, 4rem, $text-color);
+      @include style-text(1.8rem, 600, 2.6rem, $text-color);
+      @include responsive(md-screen) {
+        @include style-text(2.4rem, 600, 3.4rem, $text-color);
       }
     }
 
@@ -54,7 +54,34 @@
 
     & .route__container {
       flex: 1;
-      padding-top: 2rem;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      @include responsive(md-screen) {
+        flex-direction: row;
+        justify-content: unset;
+      }
+
+      &-left {
+        @include responsive(md-screen) {
+          flex: 1;
+        }
+      }
+
+      &-right {
+        height: 300px;
+        @include responsive(md-screen) {
+          height: unset;
+          flex: 1;
+        }
+
+        & .map-container {
+          height: 300px;
+          @include responsive(md-screen) {
+            height: 100%;
+          }
+        }
+      }
 
       & .route__inner {
         & .route__list {
@@ -78,16 +105,6 @@
     padding-block: 1.6rem;
     background-color: $white;
     @include fixed(0, 0, 0, unset);
-  }
-
-  & .departure__list {
-    margin-top: 1.6rem;
-
-    &-item {
-      & .rides__result-item {
-        padding-block: 1rem;
-      }
-    }
   }
 
   & .stopovers__body {
@@ -131,12 +148,32 @@
   }
 
   & .departure-date__container {
-    & .departure-date__inner {
-      @include flex-center;
+    & .departure-form-calendar {
+      &-date {
+        flex: 1;
+        height: 100%;
+        margin-bottom: 2rem;
 
-      & .calendar {
-        position: static;
-        transform: unset;
+        @include responsive(sm-screen) {
+          width: 60%;
+          margin-right: 2rem;
+          margin-bottom: 0;
+        }
+      }
+
+      &-time {
+        height: 100%;
+        @include responsive(sm-screen) {
+          width: 40%;
+        }
+      }
+
+      & .form-item {
+        height: 100%;
+      }
+
+      & .css-b62m3t-container {
+        height: 100%;
       }
     }
   }
@@ -185,16 +222,16 @@
     }
   }
 
-  & .booking {
-    &__inner {
-      & .booking-heading {
-        @include style-text(1.8rem, 600, 2.8rem, $text-color);
-        @include responsive(md-screen) {
-          @include style-text(2.4rem, 600, 3.4rem, $text-color);
-        }
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-    }
-  }
+  // & .booking {
+  //   &__inner {
+  //     & .booking-heading {
+  //       @include style-text(1.8rem, 600, 2.8rem, $text-color);
+  //       @include responsive(md-screen) {
+  //         @include style-text(2.4rem, 600, 3.4rem, $text-color);
+  //       }
+  //       text-align: center;
+  //       margin-bottom: 2rem;
+  //     }
+  //   }
+  // }
 }

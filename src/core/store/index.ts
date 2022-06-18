@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage"
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["compare", "order", "user", "locale"],
+  whitelist: ["compare", "order", "user", "driverForm", "locationHistory"],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

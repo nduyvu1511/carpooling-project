@@ -1,6 +1,7 @@
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import { ReactChild, ReactElement, ReactNode } from "react"
+import { LocationType } from "./location"
 
 export interface HasChildren {
   children: ReactChild
@@ -35,4 +36,18 @@ export interface CommonSlice {
   isScreenLoading: boolean
   isOpenPromotionModal: boolean
   isOpenAlertModal: boolean
+  isOpenLocationFormModal: LocationType | undefined
 }
+
+export interface OptionModel {
+  label: string
+  value: string | number
+}
+
+export interface UseParams<T, U> {
+  params: T
+  onSuccess: (params: U) => void
+  onError?: Function
+}
+
+export type AttachmentRouteType = "common" | "avatar"

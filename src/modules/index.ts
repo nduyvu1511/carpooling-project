@@ -1,36 +1,37 @@
 import { combineReducers } from "@reduxjs/toolkit"
-import authSlice from "./auth/authSlice"
-import messageSlice from "./chat/messageSlice"
-import channelSlice from "./chat/channelSlice"
-import commonSlice from "./common/commonSlice"
-import searchSlice from "./search/searchSlice"
-import userSlice from "./user/userSlice"
-import chatModalSlice from "./chat/modalSlice"
-import ridesSlice from "./rides/ridesSlice"
 import { reducer as notificationsReducer } from "reapop"
+import authSlice from "./auth/authSlice"
+import channelSlice from "./chat/channelSlice"
+import messageSlice from "./chat/messageSlice"
+import chatModalSlice from "./chat/modalSlice"
+import commonSlice from "./common/commonSlice"
+import locationHistorySLice from "./location/locationHistorySlice"
 import locationSlice from "./location/locationSlice"
-import driverFormSlice from "./driver/driverFormSlice"
+import ridesFormSlice from "./rides/ridesFormSlice"
+import ridesSlice from "./rides/ridesSlice"
+import userSlice from "./user/userSlice"
 
 const rootReducer = combineReducers({
   common: commonSlice,
   user: userSlice,
   auth: authSlice,
-  search: searchSlice,
   channel: channelSlice,
   message: messageSlice,
   chatModal: chatModalSlice,
-  rides: ridesSlice,
   notifications: notificationsReducer(),
   location: locationSlice,
-  driverForm: driverFormSlice,
+  locationHistory: locationHistorySLice,
+  ridesForm: ridesFormSlice,
+  rides: ridesSlice,
 })
 
 export default rootReducer
 
 export * from "./auth/authSlice"
-export * from "./common/commonSlice"
-export * from "./search/searchSlice"
-export * from "./user/userSlice"
 export * from "./chat"
+export * from "./common/commonSlice"
+export * from "./location/locationHistorySlice"
 export * from "./location/locationSlice"
-export * from "./driver/driverFormSlice"
+export * from "./rides/ridesFormSlice"
+export * from "./rides/ridesSlice"
+export * from "./user/userSlice"

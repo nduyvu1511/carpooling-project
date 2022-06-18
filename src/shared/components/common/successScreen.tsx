@@ -1,5 +1,5 @@
 import { notifyIcon } from "@/assets"
-import { toggleHTMLOverflow } from "@/helper"
+import { toggleBodyOverflow } from "@/helper"
 import { useEffect } from "react"
 import { useSpring, animated } from "react-spring"
 
@@ -24,10 +24,10 @@ export const SuccessScreen = ({
   })
 
   useEffect(() => {
-    toggleHTMLOverflow("hidden")
+    toggleBodyOverflow("hidden")
 
     return () => {
-      toggleHTMLOverflow("unset")
+      toggleBodyOverflow("unset")
     }
   }, [])
 

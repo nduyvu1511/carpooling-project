@@ -1,8 +1,12 @@
-import { LocationSlice, PayloadBoolean } from "@/models"
+import { PayloadBoolean } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
 
+export interface LocationSlice {
+  currentLocation: any
+  isOpenMapModal: boolean
+}
+
 const initialState: LocationSlice = {
-  isOpenModal: false,
   currentLocation: undefined,
   isOpenMapModal: false,
 }
@@ -11,10 +15,6 @@ const locationSlice = createSlice({
   name: "location",
   initialState,
   reducers: {
-    setOpenLocation: (state, { payload }: PayloadBoolean) => {
-      state.isOpenModal = payload
-    },
-
     setOpenMapModal: (state, { payload }: PayloadBoolean) => {
       state.isOpenMapModal = payload
     },
@@ -22,4 +22,4 @@ const locationSlice = createSlice({
 })
 
 export default locationSlice.reducer
-export const { setOpenLocation, setOpenMapModal } = locationSlice.actions
+export const { setOpenMapModal } = locationSlice.actions

@@ -6,34 +6,47 @@ import {
   REMEMBER_PASSWORD_KEY,
   setToLocalStorage,
 } from "@/helper"
-import { ILogin } from "@/models"
-import { setToken, setUserInfo } from "@/modules"
-import { Field, Form, Formik } from "formik"
+import { LoginForm as LoginFormModel } from "@/models"
+import { yupResolver } from "@hookform/resolvers/yup"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { notify } from "reapop"
-import { useAuth } from "shared/hook"
+import { useForm } from "react-hook-form"
+import { RiLoader4Line } from "react-icons/ri"
 import { InputCheckbox } from "../inputs"
 
-export const LoginForm = () => {
-  const router = useRouter()
-  const { loginWithPassword, getUserInfo } = useAuth()
-  const dispatch = useDispatch()
+interface LoginFormProps {
+  onSubmit?: (data: LoginFormModel) => void
+}
 
+export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const formStorage = getFromLocalStorage(FORM_LOGIN_KEY)
   const rememberStorage = getFromLocalStorage(REMEMBER_PASSWORD_KEY)
 
   const [showPw, setShowPw] = useState<boolean>(false)
   const [remember, setRemember] = useState<boolean>(rememberStorage === "true")
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, dirtyFields, isValid },
+    control,
+    getValues,
+  } = useForm<LoginFormModel>({
+    resolver: yupResolver(loginSchema),
+    mode: "all",
+    defaultValues: {
+      phone: formStorage?.phone || "",
+      password: formStorage?.password || "",
+    },
+  })
+
   useEffect(() => {
-    ;(document.querySelector(".form-item-input") as HTMLInputElement).focus()
+    ;(document.querySelector(".form-item-input") as HTMLInputElement)?.focus()
   }, [])
 
-  const handleSubmit = ({ password, phone }: ILogin) => {
-    dispatch(notify("Đăng nhập thành công", "success"))
+  const onSubmitHandler = (data: LoginFormModel) => {
+    const { password, phone } = data
+    onSubmit && onSubmit(data)
     if (remember) {
       setToLocalStorage(FORM_LOGIN_KEY, { phone, password })
     } else {
@@ -51,104 +64,93 @@ export const LoginForm = () => {
     }
   }
 
-  const handleLogin = (data: ILogin) => {
-    loginWithPassword(data, (token) => {
-      dispatch(setToken(token))
-      getUserInfo(token, (userInfo) => {
-        dispatch(setUserInfo(userInfo))
-        router.push("/")
-      })
-    })
-  }
-
   return (
-    <Formik
-      initialValues={{
-        phone: formStorage?.phone || "",
-        password: formStorage?.password || "",
-      }}
-      validationSchema={loginSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ errors, touched, isValid }) => (
-        <Form className="form-control">
-          <div className="form-item">
-            <div className="form-item-inner">
-              <div className="form-item-wrapper">
-                <Field
-                  className={`form-item-input ${
-                    errors["phone"] && touched["phone"]
-                      ? "form-item-input-error"
-                      : ""
-                  }`}
-                  id="phone"
-                  type="text"
-                  name="phone"
-                  placeholder="Số điện thoại"
-                />
-              </div>
-              {errors["phone"] && touched["phone"] ? (
-                <p className="form-item-input-text-error">{errors["phone"]}</p>
-              ) : null}
-            </div>
+    <form className="form-control" onSubmit={handleSubmit(onSubmitHandler)}>
+      <div className="form-item">
+        <label htmlFor={"phone"} className="form-item-label">
+          Số điện thoại <span className="form-label-warning">(Bắt buộc)</span>
+        </label>
+
+        <input
+          className={`form-item-input ${
+            errors?.["phone"] ? "form-item-input-error" : ""
+          }`}
+          id={"phone"}
+          type="text"
+          placeholder="Số điện thoại"
+          {...register("phone", {
+            required: true,
+          })}
+        />
+        {errors.phone || dirtyFields.phone ? (
+          <p className="form-item-input-text-error">{errors.phone?.message}</p>
+        ) : null}
+      </div>
+
+      <div className="form-item">
+        <label htmlFor={"password"} className="form-item-label">
+          Mật Khẩu <span className="form-label-warning">(Bắt buộc)</span>
+        </label>
+        <div className="form-item-inner">
+          <div className="form-item-wrapper">
+            <input
+              className={`form-item-input ${
+                errors?.["password"] ? "form-item-input-error" : ""
+              }`}
+              id={"password"}
+              type={showPw ? "text" : "password"}
+              placeholder="Số điện thoại"
+              {...register("password", {
+                required: true,
+              })}
+            />
+            <span
+              onClick={() => setShowPw(!showPw)}
+              className="form-item-toggle-pw-btn cursor-pointer"
+            >
+              {showPw ? hidePasswordIcon() : showPasswordIcon()}
+            </span>
           </div>
+          {errors.password || dirtyFields.password ? (
+            <p className="form-item-input-text-error">
+              {errors.password?.message}
+            </p>
+          ) : null}
+        </div>
+      </div>
 
-          <div className="form-item">
-            <div className="form-item-inner">
-              <div className="form-item-wrapper">
-                <Field
-                  className={`form-item-input ${
-                    errors["password"] && touched["password"]
-                      ? "form-item-input-error"
-                      : ""
-                  }`}
-                  id="password"
-                  type={showPw ? "text" : "password"}
-                  name="password"
-                  placeholder="Mật khẩu"
-                />
+      <div className="form-item-action">
+        <div className="form-control-remember">
+          <label onClick={toggleRememberPassword} htmlFor="remember-user">
+            Nhớ tài khoản
+          </label>
+          <InputCheckbox
+            isChecked={remember}
+            onCheck={toggleRememberPassword}
+            type="circle"
+          />
+        </div>
 
-                <span
-                  onClick={() => setShowPw(!showPw)}
-                  className="form-item-toggle-pw-btn cursor-pointer"
-                >
-                  {showPw ? hidePasswordIcon() : showPasswordIcon()}
-                </span>
-              </div>
-              {errors["password"] && touched["password"] ? (
-                <p className="form-item-input-text-error">
-                  {errors["password"]}
-                </p>
-              ) : null}
-            </div>
-          </div>
+        <div className="form-control-forgot-pw">
+          <Link href="/reset-password?page=/login">
+            <a>Quên mật khẩu?</a>
+          </Link>
+        </div>
+      </div>
 
-          <div className="form-item-action">
-            <div className="form-control-remember">
-              <label onClick={toggleRememberPassword} htmlFor="remember-user">
-                Nhớ tài khoản
-              </label>
-              <InputCheckbox
-                isChecked={remember}
-                onCheck={toggleRememberPassword}
-                type="circle"
-              />
-            </div>
+      <div className="form-item-question">
+        Bạn chưa có tài khoản?{" "}
+        <Link href="/register">
+          <a className="form-item-question-link">Đăng ký</a>
+        </Link>
+      </div>
 
-            <div className="form-control-forgot-pw">
-              <Link href="/reset-password">
-                <a>Quên mật khẩu?</a>
-              </Link>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className={`btn-primary ${isValid ? "" : "opacity-50"}`}
-          >
-            Xác nhận
-          </button>
-        </Form>
-      )}
-    </Formik>
+      <button
+        type="submit"
+        className={`btn-primary ${!isValid ? "btn-disabled" : ""}`}
+      >
+        Xác nhận
+      </button>
+    </form>
   )
 }

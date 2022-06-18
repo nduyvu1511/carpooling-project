@@ -1,15 +1,19 @@
 import { arrowUpIcon, blankAvatar } from "@/assets"
-import { toggleHTMLOverflow } from "@/helper"
+import { RootState } from "@/core/store"
+import { toggleBodyOverflow } from "@/helper"
+import { API_URL } from "@/services"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import React, { useRef, useState } from "react"
-import { useTransition, animated } from "react-spring"
+import { useRef, useState } from "react"
+import { useSelector } from "react-redux"
+import { animated, useTransition } from "react-spring"
 import { useClickOutside } from "shared/hook"
-import { Menu } from "../menu"
-import { Navigation } from "./navigation"
+import { Navigation } from "../navigation/navigation"
 
 const HeaderAccount = () => {
   const router = useRouter()
+  const { userInfo } = useSelector((state: RootState) => state.user)
+
   const [showOption, setShowOption] = useState<boolean>(false)
   const [showNav, setShowNav] = useState<boolean>(false)
   const optionRef = useRef<HTMLDivElement>(null)
@@ -28,12 +32,12 @@ const HeaderAccount = () => {
   })
 
   useClickOutside([optionRef], () => {
-    toggleHTMLOverflow("unset")
+    toggleBodyOverflow("unset")
     setShowOption(false)
   })
 
   useClickOutside([optionSmRef], () => {
-    toggleHTMLOverflow("unset")
+    toggleBodyOverflow("unset")
     setShowNav(false)
   })
 
@@ -44,14 +48,25 @@ const HeaderAccount = () => {
         onClick={() => {
           setShowOption(!showOption)
           !showOption
-            ? toggleHTMLOverflow("hidden")
-            : toggleHTMLOverflow("unset")
+            ? toggleBodyOverflow("hidden")
+            : toggleBodyOverflow("unset")
         }}
         className="header__account__option"
       >
-        <p className="header__account__option-name">{"Nduyvu"}</p>
+        <p className="header__account__option-name">
+          {userInfo?.partner_name || ""}
+        </p>
         <div className="header__account__option-avatar image-container">
-          <Image src={blankAvatar} objectFit="cover" layout="fill" alt="" />
+          <Image
+            src={
+              userInfo?.avatar_url
+                ? `${API_URL}${userInfo.avatar_url?.image_url || ""}`
+                : blankAvatar
+            }
+            objectFit="cover"
+            layout="fill"
+            alt=""
+          />
         </div>
         <span
           className={`header__account__option-arrow ${
@@ -63,10 +78,11 @@ const HeaderAccount = () => {
 
         {transition((style, show) =>
           show ? (
-            <animated.div style={{ ...style }}>
-              <Menu width={400}>
-                <Navigation />
-              </Menu>
+            <animated.div
+              className="menu"
+              style={{ ...style, width: 400, backgroundColor: "#fff" }}
+            >
+              <Navigation />
             </animated.div>
           ) : null
         )}
@@ -83,13 +99,24 @@ const HeaderAccount = () => {
         ref={optionSmRef}
         onClick={() => {
           setShowNav(!showNav)
-          !showNav ? toggleHTMLOverflow("hidden") : toggleHTMLOverflow("unset")
+          !showNav ? toggleBodyOverflow("hidden") : toggleBodyOverflow("unset")
         }}
         className="header__account__option-sm"
       >
-        <p className="header__account__option-name">{"Nduyvu"}</p>
+        <p className="header__account__option-name">
+          {userInfo?.partner_name || ""}
+        </p>
         <div className="header__account__option-avatar image-container">
-          <Image src={blankAvatar} objectFit="cover" layout="fill" alt="" />
+          <Image
+            src={
+              userInfo?.avatar_url
+                ? `${API_URL}${userInfo.avatar_url?.image_url || ""}`
+                : blankAvatar
+            }
+            objectFit="cover"
+            layout="fill"
+            alt=""
+          />
         </div>
         <span
           className={`header__account__option-arrow ${

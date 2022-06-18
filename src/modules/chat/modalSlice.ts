@@ -1,4 +1,4 @@
-import { toggleHTMLOverflow } from "@/helper"
+import { toggleBodyOverflow } from "@/helper"
 import { createSlice } from "@reduxjs/toolkit"
 import { ModalChatSliceParams } from "models"
 
@@ -22,7 +22,7 @@ const chatModalSlice = createSlice({
 
     setOpenChatMobile: (state, { payload }: { payload: boolean }) => {
       state.isOpenChatMobile = payload
-      toggleHTMLOverflow(payload ? "hidden" : "unset")
+      toggleBodyOverflow(payload ? "hidden" : "unset")
       if (state.isExpandChatModal) {
         state.isExpandChatModal = false
       }

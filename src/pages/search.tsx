@@ -1,4 +1,4 @@
-import { RideResultItem, RidesForm } from "@/components"
+import { RideResultItem, RidesSearchForm } from "@/components"
 import { MainLayout } from "@/layout"
 import { useSpring, animated } from "react-spring"
 
@@ -11,9 +11,9 @@ const SearchPage = () => {
   return (
     <animated.section style={animation} className="search__page">
       <div className="container">
-        <h1 className="search__page-heading">Bạn muốn tới đâu?</h1>
+        <h1 className="page-heading">Bạn muốn tới đâu?</h1>
         <div className="search__page-form">
-          <RidesForm />
+          <RidesSearchForm />
         </div>
 
         <div className="search__page-result">

@@ -1,12 +1,27 @@
 main {
   margin-top: $header-mobile-height;
   min-height: calc(100vh - $header-height);
-  padding-top: 1rem;
 
   @include responsive(md-screen) {
     margin-top: $header-height;
   }
-  padding-bottom: 2rem;
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
+}
+
+.main-with-navigation {
+  margin-bottom: $navigation-bottom;
+  min-height: calc(100vh - calc($header-height + $navigation-bottom));
+  @include responsive(md-screen) {
+    margin-bottom: 0;
+  }
+}
+
+.mobile-layout {
+  main {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: $navigation-bottom;
+  }
 }

@@ -1,0 +1,60 @@
+.input-file-loader {
+  margin-bottom: 2rem;
+
+  &-label {
+    min-width: 100px;
+    width: 50%;
+    height: 20px;
+    border-radius: 4px;
+    animation: $animation-skeleton;
+    margin-bottom: 0.6rem;
+  }
+
+  &-input {
+    height: 55px;
+    border-radius: 16px;
+    animation: $animation-skeleton;
+  }
+}
+
+.image-file-loader {
+  margin-bottom: 2rem;
+
+  &-label {
+    width: 70%;
+    height: 20px;
+    border-radius: 4px;
+    animation: $animation-skeleton;
+    margin-bottom: 0.6rem;
+  }
+
+  &-image {
+    @include flex-center;
+
+    & > div {
+      height: 100px;
+      width: 120px;
+      border-radius: 4px;
+      animation: $animation-skeleton;
+    }
+  }
+}
+
+.textarea-loader {
+  margin-bottom: 2rem;
+
+  &-label {
+    min-width: 100px;
+    width: 60%;
+    height: 20px;
+    border-radius: 4px;
+    animation: $animation-skeleton;
+    margin-bottom: 0.6rem;
+  }
+
+  &-input {
+    height: 150px;
+    border-radius: 16px;
+    animation: $animation-skeleton;
+  }
+}

@@ -3,11 +3,20 @@ import React from "react"
 
 interface RideResultItemProps {
   type: "history" | "result" | "historyResult"
+  content?: string
+  onSelect?: (val: any) => void
 }
 
-export const RideResultItem = ({ type }: RideResultItemProps) => {
+export const RideResultItem = ({
+  type,
+  content,
+  onSelect,
+}: RideResultItemProps) => {
   return (
-    <div className="rides__result-item px-24">
+    <div
+      onClick={() => onSelect && onSelect(content)}
+      className="rides__result-item px-24"
+    >
       {type !== "result" ? (
         <span className="rides__result-item-clock-icon">{clockIcon()}</span>
       ) : null}
@@ -15,13 +24,10 @@ export const RideResultItem = ({ type }: RideResultItemProps) => {
       {type !== "historyResult" ? (
         <div className="rides__result-item-inner">
           <div className="rides__result-item-address">
-            <p className="rides__result-item-address-heading">Vietnam</p>
+            {/* <p className="rides__result-item-address-heading">Vietnam</p> */}
 
             {type === "result" ? (
-              <p className="rides__result-item-address-title">
-                55/4A Đường Tiền Lân 15, Bà Điểm, Hóc Môn, Ho Chi Minh City,
-                Vietnam
-              </p>
+              <p className="rides__result-item-address-title">{content}</p>
             ) : null}
           </div>
         </div>

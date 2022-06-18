@@ -5,6 +5,7 @@ import { setScreenLoading } from "@/modules"
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
+import { notify } from "reapop"
 import { useAuth } from "shared/hook"
 
 declare global {
@@ -15,13 +16,14 @@ declare global {
 }
 
 interface LoginOtpProps {
-  onVeifyOTP: Function
+  onVerifyOTP: (token: string) => void
   heading?: string
+  type?: "register" | "login" | "resetPassword"
 }
 
-export const OTP = ({ onVeifyOTP, heading }: LoginOtpProps) => {
+export const OTP = ({ onVerifyOTP, heading, type }: LoginOtpProps) => {
   const dispatch = useDispatch()
-  const { OTPVerifier } = useAuth()
+  const { OTPVerifier, checkPhoneExist } = useAuth()
   const [expandForm, setExpandForm] = useState<boolean>(false)
   const [phone, setPhone] = useState<string>("")
 
@@ -36,8 +38,9 @@ export const OTP = ({ onVeifyOTP, heading }: LoginOtpProps) => {
   }
 
   // Generate OTP input
-  const generateOtpCode = async (phoneNumber: string) => {
+  const generateOTPCode = async (phoneNumber: string) => {
     if (!phoneNumber) return
+
     dispatch(setScreenLoading(true))
     const verify = generateRecaptcha()
 
@@ -62,10 +65,32 @@ export const OTP = ({ onVeifyOTP, heading }: LoginOtpProps) => {
   const handleVerifyOTP = async (otpInput: string) => {
     OTPVerifier({
       otpInput,
-      handleSuccess: () => {
-        onVeifyOTP()
+      handleSuccess: (token) => {
+        onVerifyOTP(token)
       },
     })
+  }
+
+  const handleGenerateOTPCode = (phone: string) => {
+    if (type === undefined) {
+      generateOTPCode(phone)
+      return
+    }
+
+    checkPhoneExist(
+      phone,
+      type,
+      () => {
+        generateOTPCode(phone)
+      },
+      () => {
+        type === "register"
+          ? dispatch(
+              notify("SĐT đã tồn tại, vui lòng thử đăng nhập!", "warning")
+            )
+          : dispatch(notify("Không tìm thấy SĐT, vui lòng thử lại", "warning"))
+      }
+    )
   }
 
   return (
@@ -89,11 +114,11 @@ export const OTP = ({ onVeifyOTP, heading }: LoginOtpProps) => {
       ) : null}
 
       {!expandForm ? (
-        <PhoneForm onSubmit={(phone) => generateOtpCode(phone)} />
+        <PhoneForm onSubmit={(phone) => handleGenerateOTPCode(phone)} />
       ) : (
         <div className="otp__form">
           <OtpForm
-            reGenerateRecaptcha={() => generateOtpCode(phone || "")}
+            reGenerateRecaptcha={() => generateOTPCode(phone || "")}
             phoneNumber={phone || ""}
             onSubmit={(val) => handleVerifyOTP(val)}
           />

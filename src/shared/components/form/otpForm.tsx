@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import OtpInput from "react-otp-input"
-import { useAuth } from "shared/hook"
 
 interface PhoneFormProps {
   phoneNumber: string
@@ -18,7 +17,6 @@ export const OtpForm = ({
   const [otpVal, setOtpVal] = useState<string>("")
   const [secondsExpire, setSecondsExprire] =
     useState<number>(RESEND_OTP_TIMEOUT)
-  const {}= useAuth()
 
   useEffect(() => {
     if (secondsExpire === 0) return
@@ -33,6 +31,7 @@ export const OtpForm = ({
     <form
       onSubmit={(e) => {
         e.preventDefault()
+        if (otpVal?.length < 6) return
         onSubmit && onSubmit(otpVal)
       }}
       className="form-control"

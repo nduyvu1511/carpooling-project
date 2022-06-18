@@ -14,12 +14,14 @@ interface InputProps {
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >
+  className?: string
 }
 
 export const Input = ({
   onChange: onChangeProps,
   onFocus,
   attributes,
+  className = "",
 }: InputProps) => {
   const ref = useRef<HTMLInputElement>(null)
   const { onChange, value, clearValue } = useInputText()
@@ -35,7 +37,7 @@ export const Input = ({
   }, [])
 
   return (
-    <div className="input-common">
+    <div className={`input-common ${className}`}>
       <input
         ref={ref}
         onFocus={() => {

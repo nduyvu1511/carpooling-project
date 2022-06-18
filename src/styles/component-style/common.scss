@@ -381,17 +381,157 @@
   border-radius: 4px;
   @include flex-center;
   cursor: pointer;
+  position: relative;
 
   & svg {
     color: $text-color-2;
     font-size: 3.6rem;
   }
+
+  & .file-image-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background-color: $white;
+    pointer-events: none;
+    @include flex-center;
+  }
 }
 
 .file-image-action {
-  @include style-text(1.3rem, 500, 1.8rem, $primary-color);
+  @include style-text(1.2rem, 500, 1.8rem, $primary-color);
   text-align: center;
   cursor: pointer;
   margin-top: 0.6rem;
   display: block;
+}
+
+.place-suggestion {
+  & input {
+    background-color: $gray-color-2;
+  }
+}
+
+.page-not-found {
+  @include flex-center;
+  flex-direction: column;
+
+  & svg {
+    max-height: 250px;
+  }
+}
+
+.loading-box {
+  padding-block: 50px;
+  @include flex-center;
+
+  & svg {
+    font-size: 4rem;
+  }
+}
+
+.toggle {
+  display: block;
+  position: relative;
+  height: 24px;
+  width: 46px;
+  border-radius: 25px;
+  background-color: $gray-color-2;
+  cursor: pointer;
+  transition: all 0.2s linear;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: $white;
+    left: 4px;
+    @include vertical-align(absolute);
+    transition: all 0.2s linear;
+  }
+
+  &-active {
+    background-color: $primary-color;
+
+    &::after {
+      transition: all 0.2s linear;
+      left: 24px;
+    }
+  }
+}
+
+.alert-container {
+  @include fixed(0, 0, 0, 0);
+  z-index: 3000;
+
+  & .alert__body {
+    background-color: $white;
+    overflow: hidden;
+    @include center-absolute();
+    z-index: 10;
+    border-radius: 16px;
+    max-width: 300px;
+    width: 100%;
+
+    @include responsive(sm-screen) {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    &-content {
+      @include flex-center;
+      flex-direction: column;
+      padding: 20px 20px 40px 20px;
+      box-shadow: $shadow-1;
+
+      &-icon {
+        color: $danger;
+        font-size: 5rem;
+        margin-bottom: 1.4rem;
+      }
+
+      &-heading {
+        @include style-text(2.2rem, 600, 3rem, $danger);
+        margin-bottom: 2rem;
+      }
+
+      &-title {
+        @include style-text(1.4rem, 500, 2rem, $text-color);
+        text-align: center;
+      }
+    }
+
+    &-action {
+      display: flex;
+
+      & button {
+        padding-block: 1.2rem;
+        @include flex-center;
+        flex: 1;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      &-confirm {
+        background-color: $danger;
+        color: $white;
+      }
+
+      &-cancel {
+        background-color: $secondary;
+        color: $text-color;
+      }
+    }
+  }
+
+  & .alert-overlay {
+    @include absolute(0, 0, 0, 0);
+    background-color: rgba($color: #000000, $alpha: 0.4);
+  }
+}
+
+.countdown-minute {
+  @include style-text(1.8rem, 600, 2.6rem, $text-color);
 }

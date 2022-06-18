@@ -1,174 +1,269 @@
 import {
-  ILogin,
-  Token,
-  StateId,
-  DistrictId,
-  AddressDelete,
-  AddressAdd,
-  TokenAndPartnerId,
+  AttachmentParams,
   Auth,
-  WishlistReq,
-  AddComment,
-  GetComment,
-  DeleteComment,
-  TokenAndSaleOrderId,
-  UpdateUserProps,
-  PhoneUpdateProps,
-  ChangePasswordProps,
-  ResetPassword,
+  CertificateInspectionParams,
+  ChangePasswordParams,
+  CreateNewPasswordParams,
+  CreateUserFormParams,
+  DrivingLicenseParams,
+  IdCardParams,
+  IdCardUpdateParams,
+  LoginForm,
+  ResetPasswordParams,
+  Token,
+  UpdateCertificateInspectionParams,
+  UpdateDrivingLicenseParams,
+  UpdateUserInfoParams,
+  UpdateVehicleInsuranceParams,
+  VehicleDetailFormParams,
+  VehicleInsuranceParams,
 } from "@/models"
 import axiosClient from "."
 
 const userApi = {
-  login: (data: ILogin) => {
-    return axiosClient.post("/api/v2.0/user/login", { params: data })
-  },
-
-  checkPassword: (params: Token) => {
-    return axiosClient.post("/api/v2.0/user/check-password", { params })
-  },
-
-  changePassword: (data: ChangePasswordProps) => {
-    return axiosClient.post("/api/v2.0/user/change-password", { params: data })
-  },
-
-  resetPassword: (data: ResetPassword) => {
-    return axiosClient.post("/api/v2.0/user/reset-password", { params: data })
-  },
-
-  getUserInfo: (data: Token) => {
-    return axiosClient.post("/api/v2.0/user/account/info", { params: data })
-  },
-
-  updateUser: (address: UpdateUserProps) => {
-    return axiosClient.post("/api/v2.0/information_customers/update_user", {
-      params: address,
+  login: (data: LoginForm) => {
+    return axiosClient.post("/user_information_controller/login", {
+      params: data,
     })
   },
 
+  checkHasPassword: (params: Token) => {
+    return axiosClient.post("user_information_controller/check_has_password", {
+      params,
+    })
+  },
+
+  createNewPassword: (params: CreateNewPasswordParams) => {
+    return axiosClient.post("user_information_controller/create_new_password", {
+      params,
+    })
+  },
+
+  changePassword: (data: ChangePasswordParams) => {
+    return axiosClient.post("/user_information_controller/change-password", {
+      params: data,
+    })
+  },
+
+  resetPassword: (data: ResetPasswordParams) => {
+    return axiosClient.post("/user_information_controller/reset-password", {
+      params: data,
+    })
+  },
+
+  confirmDriverRole: (data: ResetPasswordParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_user_information",
+      { params: data }
+    )
+  },
+
   checkPhoneExist: (phone: string) => {
-    return axiosClient.post("/api/v2.0/user/check_phone", {
+    return axiosClient.post("/user_information_controller/check_user_account", {
       params: {
         phone,
       },
     })
   },
 
-  getAddress: (data: StateId | DistrictId | {}) => {
-    return axiosClient.post("/api/v2.0/user/adress", {
-      params: data,
-    })
-  },
-
-  getAddressByUser: (token: Token) => {
-    return axiosClient.post("/api/v2.0/user/get_adress_by_partner", {
-      params: token,
-    })
-  },
-
-  deleteAddress: (data: AddressDelete) => {
-    return axiosClient.post("/api/v2.0/user/adress_delete", {
-      params: data,
-    })
-  },
-
-  addAddress: (address: AddressAdd) => {
-    return axiosClient.post("/api/v2.0/user/adress_add", { params: address })
-  },
-
-  getPromotionList: (data: TokenAndPartnerId) => {
-    return axiosClient.post(
-      "/api/v2.0/information_promotion/get_list_promotions_ldp",
-      {
-        params: data,
-      }
-    )
-  },
-
   firebaseAuth: (params: Auth) => {
-    return axiosClient.post("/api/v2.0/information_customers/auth", {
+    return axiosClient.post("/user_information_controller/auth", {
       params,
     })
   },
 
-  updatePhoneNumber: (params: PhoneUpdateProps) => {
-    return axiosClient.post("/api/v2.0/update_phone_by_login", {
-      params,
-    })
-  },
-
-  getDetailUser: (token: Token) => {
+  updateUserInfo: (params: UpdateUserInfoParams) => {
     return axiosClient.post(
-      "/api/v2.0/information_customers/get_info_customer",
+      "/user_information_controller/update_user_information",
+      { params }
+    )
+  },
+
+  createUserInfo: (params: CreateUserFormParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_user_information",
+      { params }
+    )
+  },
+
+  createAttachmentCommon: (params: AttachmentParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_attachment_data",
       {
-        params: token,
+        params,
       }
     )
   },
 
-  getOrderListHistory: (params: {
-    token: string
-    limit?: number
-    offset?: number
-  }) => {
-    return axiosClient.post("/api/v2.0/information_booking/booking_history", {
-      params: params,
+  createAttachmentAvatar: (params: AttachmentParams) => {
+    return axiosClient.post("/detail_data_controller/create_attachment_data", {
+      params,
     })
   },
 
-  getDetailOrderHistory: (params: TokenAndSaleOrderId) => {
-    return axiosClient.post("/api/v2.0/information_booking/get_info_booking", {
-      params: params,
+  getUserInfo: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_user_information",
+      {
+        params: {
+          token,
+        },
+      }
+    )
+  },
+
+  createIdentityCard: (params: IdCardParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_identity_card",
+      {
+        params,
+      }
+    )
+  },
+
+  updateIdentityCard: (params: IdCardUpdateParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_identity_card",
+      {
+        params,
+      }
+    )
+  },
+
+  getIdentityCard: (token: string) => {
+    return axiosClient.post("/user_information_controller/get_identity_card", {
+      params: {
+        token,
+      },
     })
   },
 
-  getWishlists: (params: Token) => {
-    return axiosClient.post("/api/v2.0/get_wishlist", {
-      params: params,
-    })
+  createDrivingLicense: (params: DrivingLicenseParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_car_driving_license",
+      {
+        params,
+      }
+    )
   },
 
-  addWishlist: (params: WishlistReq) => {
-    return axiosClient.post("/api/v2.0/add_wishlist", {
-      params: params,
-    })
+  updateDrivingLicense: (params: UpdateDrivingLicenseParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_car_driving_license",
+      {
+        params,
+      }
+    )
   },
 
-  deleteWishlist: (params: WishlistReq) => {
-    return axiosClient.post("/api/v2.0/delete_wishlist", {
-      params: params,
-    })
+  getDrivingLicense: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_car_driving_license",
+      {
+        params: {
+          token,
+        },
+      }
+    )
   },
 
-  addReview: (params: AddComment) => {
-    return axiosClient.post("/api/v2.0/add_comment_product", {
-      params: params,
-    })
+  createCertificateRegistrationVehicle: (params: VehicleDetailFormParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_car_registration_certificate",
+      {
+        params,
+      }
+    )
   },
 
-  getReviews: (params: GetComment) => {
-    return axiosClient.post("/api/v2.0/get_comment_product", {
-      params: params,
-    })
+  updateCertificateRegistrationVehicle: (params: VehicleDetailFormParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_car_registration_certificate",
+      {
+        params,
+      }
+    )
   },
 
-  deleteReview: (params: DeleteComment) => {
-    return axiosClient.post("/api/v2.0/delete_comment_product", {
-      params: params,
-    })
+  getCertificateRegistrationVehicle: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_car_registration_certificate",
+      {
+        params: {
+          token,
+        },
+      }
+    )
   },
 
-  getNotifications: (params: DeleteComment) => {
-    return axiosClient.post("/api/get_notifications", {
-      params: params,
-    })
+  createVehicleInsurance: (params: VehicleInsuranceParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_compulsory_car_insurance",
+      {
+        params,
+      }
+    )
   },
 
-  checkNotifications: (params: DeleteComment) => {
-    return axiosClient.post("/api/get_notifications", {
-      params: params,
-    })
+  updateVehicleInsurance: (params: UpdateVehicleInsuranceParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_compulsory_car_insurance",
+      {
+        params,
+      }
+    )
+  },
+
+  getVehicleInsurance: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_compulsory_car_insurance",
+      {
+        params: {
+          token,
+        },
+      }
+    )
+  },
+
+  createCertificateInspection: (params: CertificateInspectionParams) => {
+    return axiosClient.post(
+      "/user_information_controller/create_periodical_inspection_certificate",
+      {
+        params,
+      }
+    )
+  },
+
+  updateCertificateInspection: (params: UpdateCertificateInspectionParams) => {
+    return axiosClient.post(
+      "/user_information_controller/update_periodical_inspection_certificate",
+      {
+        params,
+      }
+    )
+  },
+
+  getCertificateInspection: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_periodical_inspection_certificate",
+      {
+        params: {
+          token,
+        },
+      }
+    )
+  },
+
+  getFilledDataFields: (token: string) => {
+    return axiosClient.post(
+      "/user_information_controller/get_general_user_information",
+      {
+        params: {
+          token,
+        },
+      }
+    )
   },
 }
 
-export default userApi
+export { userApi }

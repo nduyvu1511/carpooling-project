@@ -1,9 +1,13 @@
 import { circleIcon } from "@/assets"
+import { RootState } from "@/core/store"
+import { GOOGLE_MAP_API_KEY } from "@/helper"
 import { setOpenRidesModalSearch } from "@/modules/rides/ridesSlice"
+import { useLoadScript } from "@react-google-maps/api"
 import { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useClickOutside, useDebounce, useInputText } from "shared/hook"
-import { RidesResult } from "./ridesResult"
+import usePlacesAutocomplete from "use-places-autocomplete"
+import { LocationItemHistory } from "../location"
 
 interface InputRidesSearchProps {
   onChange: (value: string) => void
@@ -16,6 +20,23 @@ export const InputRidesSearch = ({
   type,
   onFocus,
 }: InputRidesSearchProps) => {
+  const { searchHistory } = useSelector(
+    (state: RootState) => state.locationHistory
+  )
+  useLoadScript({
+    googleMapsApiKey: GOOGLE_MAP_API_KEY,
+    libraries: ["places"],
+  })
+  const {
+    ready,
+    value: searchValues,
+    setValue,
+    suggestions: { data, loading, status },
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    // requestOptions: { region: "vi", language: "vi" },
+  })
+
   const dispatch = useDispatch()
   const { onChange, value } = useInputText()
   const ridesHistoryRef = useRef<HTMLDivElement>(null)
@@ -43,13 +64,19 @@ export const InputRidesSearch = ({
           type="text"
           onChange={onChange}
           value={value}
-          placeholder={type === "from" ? "Đón tại..." : "Đi đến..."}
+          placeholder={type === "from" ? "Đi..." : "Đến..."}
         />
       </div>
 
       {showRidesHistory ? (
         <div className="rides__result-absolute hide-on-tablet">
-          <RidesResult type="result" />
+          <div className="location__result-history">
+            {searchHistory?.length > 0 &&
+              searchHistory.map((item) => (
+                <LocationItemHistory key={item.id} location={item} />
+              ))}
+          </div>
+          {/* <RidesResult type="result" /> */}
         </div>
       ) : null}
 

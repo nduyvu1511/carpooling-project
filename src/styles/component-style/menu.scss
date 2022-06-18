@@ -1,8 +1,10 @@
 .menu {
+  z-index: 1000;
   position: absolute;
   right: 0;
   top: calc(100% + 1rem);
   background-color: $white;
+  overflow: hidden;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 36px 36px 0px;
   max-height: calc(100vh - $header-mobile-height);
@@ -72,4 +74,61 @@
     height: $header-height;
   }
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav__bottom {
+  border-top: 1px solid $gray-color-2;
+  background-color: $white;
+  @include fixed(0, 0, 0, unset);
+  height: $navigation-bottom;
+  padding-block: 8px;
+  display: flex;
+  align-items: center;
+
+  @include responsive(md-screen) {
+    display: none;
+  }
+
+  &-list {
+    display: flex;
+    width: 100%;
+
+    &-item {
+      flex: 1;
+      cursor: pointer;
+
+      & .nav__bottom-item {
+        padding-inline: 2px;
+        // @include flex(flex-start, flex);
+        display: flex;
+        flex-direction: column;
+        @include flex-center;
+
+        & svg {
+          font-size: 2.4rem;
+          margin: 0 auto;
+          margin-bottom: 0.2rem;
+          color: $text-color-2;
+        }
+
+        &-label {
+          @include style-text(0.9rem, 400, 1.2rem, $text-color-2);
+          @include limit-line-text(1);
+        }
+      }
+
+      &-active {
+        & .nav__bottom-item {
+          & svg {
+            color: $primary-color;
+          }
+
+          &-label {
+            color: $primary-color;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
 }

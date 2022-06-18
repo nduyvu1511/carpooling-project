@@ -6,7 +6,6 @@
   padding: 1.6rem 2rem;
   @include style-text(1.6rem, 500, 2.6rem, $text-color);
   border-radius: 8px;
-  // @include flex(space-between, center);
 
   &:hover {
     background-color: $gray-color-2;
@@ -41,146 +40,65 @@
   }
 }
 
-.route__item {
-  padding: 2rem;
-  // border-radius: 0.8rem;
-  // box-shadow: $shadow-1;
-  @include style-text(1.6rem, 600, 2.2rem, $text-color);
-
-  &-time {
-    font-size: 1.8rem;
-    line-height: 2.6rem;
-    margin-bottom: 0.6rem;
-  }
-
-  &-info {
-    position: relative;
-
-    &-line {
-      width: 4px;
-      background-color: $text-color;
-      height: 80%;
-      @include vertical-align;
-
-      &::after,
-      &::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 7px;
-        height: 7px;
-        background-color: $white;
-        border-radius: 50%;
-        border: 2px solid $text-color;
-      }
-
-      &::after {
-        top: 0;
-      }
-
-      &::before {
-        bottom: 0;
-      }
-    }
-
-    &-from,
-    &-to {
-      margin-left: 2rem;
-    }
-
-    &-from {
-      margin-bottom: 1rem;
-    }
-  }
-}
-
 .rides__item {
   padding: 1.4rem;
   box-shadow: $shadow-1;
   border-radius: 16px;
-  @include style-text(1.6rem, 600, 2.4rem, $text-color);
+  @include style-text(1.4rem, 500, 2.2rem, $text-color);
+  @include flex(space-between, unset);
+  flex-direction: column;
 
   &-top {
     display: flex;
+    margin-bottom: 1rem;
+  }
+
+  &-content {
+    flex: 1;
 
     & .rides__item-info {
-      flex: 1;
-      margin-right: 1.2rem;
-      display: flex;
-      margin-bottom: 1rem;
+      margin-bottom: 10px;
 
-      &-line {
-        position: relative;
-        top: 0;
+      &-item {
         margin-bottom: 10px;
-        width: 4px;
-        height: 94%;
-        background-color: $text-color;
-        margin-right: 1.2rem;
-        margin-left: 2rem;
+        @include flex(flex-start, center);
+        @include style-text(1.3rem, 500, 1.8rem, $text-color);
 
-        &::after,
-        &::before {
-          content: "";
-          position: absolute;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: $white;
-          border: 2px solid $text-color;
-          left: 50%;
-          transform: translate(-50%);
-        }
+        &-l {
+          @include flex(flex-start, center);
+          margin-right: 10px;
+          width: 120px;
 
-        &::after {
-          top: 0;
-        }
-
-        &::before {
-          bottom: 0;
-        }
-      }
-
-      &-time {
-        @include flex(space-between, start);
-        flex-direction: column;
-
-        &-start {
-          margin-bottom: 1rem;
-
-          &-date {
+          & svg {
+            margin-right: 4px;
+            font-size: 1.6rem;
           }
 
-          &-duration {
-            color: $text-color-2;
-            font-size: 1.4rem;
-            line-height: 1.8rem;
+          & span {
+            flex: 1;
           }
         }
 
-        &-end {
-          margin-bottom: 2.4rem;
+        &-r {
+        }
+
+        &-price {
+          // font-size: 1.4rem;
+          // font-weight: 500;
         }
       }
 
-      &-location {
-        flex: 1;
+      &-passengers {
+        display: flex;
+        flex-wrap: wrap;
 
         &-item {
-          & .rides__item-info-location-name {
-            margin-bottom: 0.4rem;
-          }
-          &-from {
-            margin-bottom: 1rem;
-          }
-        }
+          margin-right: 4px;
+          margin-bottom: 4px;
+          color: $success;
 
-        &-quantity {
-          &-item {
-            & svg {
-              color: $success;
-            }
+          &-active {
+            color: $danger;
           }
         }
       }
@@ -189,6 +107,8 @@
 
   &-author {
     display: flex;
+    margin-bottom: 10px;
+
     &-avatar {
       & .image-container {
         width: 44px;
@@ -207,10 +127,15 @@
 
       &-inner {
         flex: 1;
+
+        & .rides__item-author-info-name {
+          @include limit-line-text(2);
+        }
       }
 
       & .rides__item-price {
         margin-top: auto;
+        @include style-text(1.4rem, 600, 2.2rem, $text-color);
       }
 
       &-name {
@@ -225,6 +150,15 @@
           margin-right: 0.4rem;
         }
       }
+    }
+  }
+
+  &-action {
+    display: flex;
+    justify-content: flex-end;
+
+    & button {
+      margin-left: auto;
     }
   }
 }

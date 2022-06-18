@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { pageNotFound } from "@/assets"
-import { MainLayout } from "@/layout"
+import { MainNoFooter } from "@/layout"
 import Link from "next/link"
 
 const NotFound = () => {
   return (
-    <div className="container not-found">
-      <img src={pageNotFound} alt="." />
-      <h3>Không tìm thấy trang</h3>
+    <div className="container page-not-found">
+      {pageNotFound}
+      <h1 className="page-heading">Trang này không tồn tại.</h1>
       <Link href="/" passHref>
         <button className="btn-primary">Trở về trang chủ</button>
       </Link>
@@ -15,6 +15,6 @@ const NotFound = () => {
   )
 }
 
-NotFound.Layout = MainLayout
+NotFound.Layout = MainNoFooter
 
 export default NotFound

@@ -1,15 +1,16 @@
-import { addCircleIcon, logoIcon, logoSmIcon, searchIcon } from "@/assets"
-import { navLinks } from "@/helper"
+import { logoIcon, logoSmIcon } from "@/assets"
+import { headerNavs, HEADER_HEIGHT } from "@/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import React from "react"
+import { useScrollTop } from "shared/hook"
 import { HeaderAccount } from "./headerAccount"
 
 export const Header = () => {
   const router = useRouter()
+  const height = useScrollTop()
 
   return (
-    <div className={`header`}>
+    <div className={`header ${height > HEADER_HEIGHT ? "header-active" : ""}`}>
       <div className="header-container">
         <div className="header__inner">
           <div className="header__account header__account-sm">
@@ -39,22 +40,18 @@ export const Header = () => {
           </div>
           <div className="header__inner-right">
             <div className="header__actions">
-              <div
-                onClick={() => router.push("/search")}
-                className="header__actions-item"
-              >
-                {searchIcon(24, "#00AFF5")}
-                <span className="header__actions-item-text">Tìm kiếm</span>
-              </div>
-              <div
-                onClick={() => router.push("/offer-seats/departure")}
-                className="header__actions-item"
-              >
-                {addCircleIcon(24, "#00AFF5")}
-                <span className="header__actions-item-text">
-                  Thêm chuyến đi
-                </span>
-              </div>
+              {headerNavs.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => router.push(item.path)}
+                  className="header__actions-item header__actions-item--hide"
+                >
+                  {item.icon}
+                  <span className="header__actions-item-text">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="header__account header__account-lg">

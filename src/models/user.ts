@@ -1,20 +1,70 @@
-export interface UserForm {
-  phone: string
-  email: string
-  birthday: string
-  name: string
-  sex: "male" | "female" | ""
-  bio: string
-}
+import { DistrictId, ProvinceId, WardId } from "./address"
 
-export type UserFormSchemaKey =
-  | "phone"
-  | "email"
-  | "birthday"
+export type UserInfoFormKey =
+  | "date_of_birth"
+  | "description"
+  | "avatar_attachment_id"
   | "name"
-  | "sex"
-  | "bio"
+  | "gender"
+export type VehicleKeyType = "brand" | "model" | "type" | "desc"
+export type IdCardKeyType = "text" | "select" | "date" | "file"
+export type DrivingLicenseKeyType = "text" | "select" | "file" | "date"
+export type IdCardName =
+  | "front_identity_card_image_url"
+  | "back_identity_card_image_url"
+  | "identity_number"
+  | "date_of_issue"
+  | "date_of_expiry"
+  | "place_of_issue"
+  | "province_id"
+  | "district_id"
+  | "ward_id"
+  | "street"
+export type NewPasswordFormKeys = "password" | "re_password" | "old_password"
+export type DriverFormKey =
+  | "idCard"
+  | "info"
+  | "license"
+  | "vehicleInsuranceImages"
+  | "vehicleRegistration"
+  | "registrationCertificate"
 
+export type DrivingLicenseFormKey =
+  | "front_license_image_url"
+  | "back_license_image_url"
+  | "identity_number"
+  | "license_class"
+  | "date_of_issue"
+  | "date_of_expiry"
+export type CarAccountType = "customer" | "car_driver"
+export type VehicleDetailFormKey =
+  | "car_brand_id"
+  | "car_id"
+  | "car_name"
+  | "front_car_image_url"
+  | "back_car_image_url"
+  | "license_plates"
+  | "year_of_issue"
+export type VehicleInsuranceFormKey =
+  | "front_insurance_image_url"
+  | "back_insurance_image_url"
+  | "identity_number"
+  | "date_of_issue"
+  | "date_of_expiry"
+export type VehicleImageKeyType = "frontImage" | "backImage"
+export type CertificateInspectionFormKey =
+  | "back_inspection_certificate_image_url"
+  | "front_inspection_certificate_image_url"
+  | "identity_number"
+  | "date_of_expiry"
+export type GenderType = "male" | "female"
+export type DriverAccountStatus =
+  | "inactive_account"
+  | "active_acount"
+  | "blocked_account"
+export type DrivingLicenseClassType = "b1" | "b2" | "c" | "d" | "e" | "f"
+
+// Interfaces
 export interface Auth {
   firebase_access_token?: string
   google_access_token?: string
@@ -23,33 +73,35 @@ export interface Auth {
   data_in_token?: any
 }
 
-export interface ChangePasswordProps {
+export interface NewPasswordParams {
   token: string
   password: string
   re_password: string
+}
+
+export interface NewPasswordNoTokenParams {
+  password: string
+  re_password: string
+}
+
+export interface ChangePasswordParams extends NewPasswordParams {
   old_password: string
 }
 
-export interface ResetPassword {
-  token: string
+export interface ResetPasswordParams {
+  firebase_access_token: string
   password: string
   re_password: string
-  phone: string
-}
-
-export interface PhoneUpdateProps extends Token {
-  firebase_access_token: string
-  phone: string
 }
 
 export interface UserEdit {
   email: string
   name: string
-  sex: "male" | "female" | ""
+  gender: "male" | "female" | ""
   image?: string
 }
 
-export interface ILogin {
+export interface LoginForm {
   phone: string
   password: string
 }
@@ -57,6 +109,12 @@ export interface ILogin {
 export interface Token {
   token: string
 }
+
+export interface ChangePasswordFormParams extends NewPasswordNoTokenParams {
+  old_password: string
+}
+
+export interface CreatePasswordFormParams extends NewPasswordNoTokenParams {}
 
 export interface User {
   token: string
@@ -73,16 +131,21 @@ export interface User {
 }
 
 export interface UserInfo {
-  id: number
-  avatar?: string
-  name: string
-  phone?: string
-  email: string
-  birthday?: string
-  sex?: "male" | "female" | ""
-  phone_2: false
-  address?: string
-  account_type?: string
+  partner_id: number
+  partner_name: string
+  avatar_url: {
+    image_id: number
+    image_url: string
+  }
+  gender: GenderType
+  date_of_birth: string
+  car_account_type: false
+  verified_car_driver_account: DriverAccountStatus
+  verified_account_date: string
+  description: string
+  car_information: any
+  phone: string
+  address: string
 }
 
 export interface TokenAndPartnerId {
@@ -90,200 +153,275 @@ export interface TokenAndPartnerId {
   partner_id: number
 }
 
-export interface UserDetail extends UserInfo {
-  notification_counts: number
-  partner_id: number
-  company_id: number
-  // shipping_adress: ShippingAddress[]
-}
-
-export interface OrderHistory {
-  sell_by: string
-  coupon_code: string | boolean
-  amount_total: number
-  order_id: number
-  partner_id: number
-  name: string
-  create_date: string
-  state: string
-  state_name: string
-  state_paid_name: string
-  state_delivery: string
-  state_paid: string
-  state_return_delivery: string
-  state_return_paid: string
-}
-
-export interface UpdateUserPropsHook {
-  name_customs: string
-  image?: string
-  sex: "male" | "female" | ""
-  email: string
-}
-
-export interface UpdateUserProps extends UpdateUserPropsHook {
+export interface LoginRes {
+  car_account_type: CarAccountType
   token: string
 }
 
-interface ProductOrderHistory {
-  image_url: Array<string>
+// User form
+export interface UserInfoFormParams {
+  date_of_birth: string
+  description?: string
+  avatar_attachment_id: number
   name: string
-  price: number
-  product_discount: number
-  product_id: number
-  product_uom: string
-  quantity: number
-  re_order: boolean
+  gender: GenderType
 }
 
-export interface OrderHistoryDetail {
-  amount_total: number
-  create_date: string
-  customer_location: { longitude: string; latitude: string }
-  delivery_address: string
-  delivery_name: string
-  delivery_phone: string
-  discount_by_loyal: number
-  is_rate: string
+export interface CreateUserFormParamsNoToken {
+  date_of_birth: string
+  description?: string
+  car_account_type: CarAccountType
+  avatar_attachment_id: number
   name: string
-  note: string
-  partner_address: string
-  partner_id: number
-  partner_name: string
-  partner_phone: string
-  products: ProductOrderHistory[]
-  sell_by: string
-  star: number
-  state: string
-  state_delivery: string
-  state_name: string
-  state_paid: string
-  state_return_delivery: string
-  state_return_paid: string
-  type_product: string
+  gender: GenderType
 }
 
-export interface Wishlist {
-  id: number
-  product_id: number
-  id_product_att: number
-  name: string
-  partner_id: number
-  partner_name: string
-  price: number
-  product_uom: string
-  product_uom_id: number
-  qty_available: number
-  barcode: boolean | string
-  description: boolean | string
-  image_url: Array<string>
-}
-
-export interface Comment {
-  id: number
-  partner_id: number
-  partner_name: string
-  message: string
-  star_rating: number
-  product_id: number
-  date: string
-  avatar: string
-}
-
-export interface UserSlice {
+export interface CreateUserFormParams extends CreateUserFormParamsNoToken {
   token: string
-  // addressDefault: undefined | ShippingAddress
-  userInfo: UserInfo | undefined
-  fcmToken: string
 }
 
-export interface WishlistReq extends Token {
-  product_id?: number
-  wishlist_id?: number
+export interface UpdateUserInfoParams extends CreateUserFormParamsNoToken {
+  token: string
 }
 
-export interface GetComment extends Token {
-  product_id: number
+export interface IdCardParamsNoToken {
+  front_identity_card_image_url: number
+  back_identity_card_image_url: number
+  identity_number: string
+  date_of_issue: string
+  date_of_expiry: string
+  place_of_issue: string
+  country_id: number
+  province_id: number
+  district_id: number
+  ward_id: number
+  street: string
 }
 
-export interface AddComment extends GetComment {
-  content: string
+export interface IdCardParams extends IdCardParamsNoToken {
+  token: string
 }
 
-export interface DeleteComment extends Token {
-  comment_id: number
-  product_id: number
+export interface IdCardUpdateParams extends IdCardParams {
+  identity_card_id: number
 }
 
-export interface AuthSlice {
-  currentToken: string | undefined
-  phoneNumber: string | undefined
-  currentUserInfo: UserInfo | undefined
-  isValidateCreatePasswordOTP: boolean | undefined
+export interface DrivingLicenseFormParams {
+  front_license_image_url: number
+  back_license_image_url: number
+  identity_number: string
+  license_class: string
+  date_of_issue: string
+  date_of_expiry: string
 }
 
-export interface DriverBioForm {
-  avatar: string
-  name: string
-  sex: "male" | "female"
-  dateOfBirth: string
+export interface DrivingLicenseParams extends DrivingLicenseFormParams {
+  token: string
 }
 
-export type VehicleKeyType = "brand" | "model" | "type" | "desc"
+export interface UpdateDrivingLicenseParams extends DrivingLicenseParams {
+  car_driving_license_id: number
+}
 
-export type IdCardKeyType = "text" | "select" | "date" | "file"
+export interface VehicleDetailFormParamsNoToken {
+  car_brand_id: number
+  car_id: number
+  car_name: string
+  year_of_issue: string
+  license_plates: string
+  front_car_image_url: number
+  back_car_image_url: number
+}
 
-export type IdCardName =
-  | "frontCard"
-  | "backCard"
-  | "id"
-  | "date"
-  | "address"
-  | "apartmentNumber"
-  | "ward"
-  | "district"
-  | "province"
+export interface VehicleDetailFormParams
+  extends VehicleDetailFormParamsNoToken {
+  token: string
+}
 
-export interface IdCardForm {
-  frontCard: string
-  backCard: string
-  id: string
-  date: string
-  address: string
-  apartmentNumber: string
-  ward: string
-  district: string
-  province: string
+export interface RegistrationCertificateRes {
+  car_registration_certificate_id: number
+  car: { car_id: number; name: string; car_type: string }
+  car_name: string
+  year_of_issue: string
+  license_plates: string
+  front_car_image: { id: number; url: string }
+  back_car_image: {
+    id: number
+    url: string
+  }
+  car_brand: {
+    brand_id: number
+    brand_name: string
+    brand_icon: { icon_id: number; icon_url: string }
+  }
+}
+
+export interface UpdateVehicleDetailFormParams extends VehicleDetailFormParams {
+  car_registration_certificate_id: number
+}
+
+export interface VehicleInsuranceParamsNoToken {
+  front_insurance_image_url: number
+  back_insurance_image_url: number
+  identity_number: string
+  date_of_issue: string
+  date_of_expiry: string
+}
+
+export interface VehicleInsuranceParams extends VehicleInsuranceParamsNoToken {
+  token: string
+}
+
+export interface VehicleInsuranceRes {
+  compulsory_car_insurance_id: number
+  partner: number
+  front_insurance_image_url: {
+    id: number
+    url: string
+  }
+  back_insurance_image_url: {
+    id: number
+    url: string
+  }
+  identity_number: string
+  date_of_issue: string
+  date_of_expiry: string
+}
+
+export interface UpdateVehicleInsuranceParams extends VehicleInsuranceParams {
+  compulsory_car_insurance_id: number
+}
+
+export interface CertificateInspectionParamsNoToken {
+  front_inspection_certificate_image_url: number
+  back_inspection_certificate_image_url: number
+  identity_number: string
+  date_of_expiry: string
+}
+
+export interface CertificateInspectionParams
+  extends CertificateInspectionParamsNoToken {
+  token: string
+}
+
+export interface CertificateInspectionRes {
+  periodical_inspection_certificate_id: number
+  front_inspection_certificate_image: {
+    id: number
+    url: string
+  }
+  back_inspection_certificate_image: {
+    id: number
+    url: string
+  }
+  identity_number: string
+  date_of_expiry: string
+}
+
+export interface UpdateCertificateInspectionParams
+  extends CertificateInspectionParams {
+  periodical_inspection_certificate_id: number
+}
+
+export interface AttachmentItem {
+  attachment_id: number
+  attachment_url: string
 }
 
 export interface DriverLicenseForm {
-  fontCard: string
+  frontCard: string
   backCard: string
-  driverLicenseNumber: string
-  driverLicenseClass: "A1" | "A2" | "A3"
-}
-
-export interface VehicleRegistrationForm {
-  fontCard: string
-  backCard: string
-  LicensePlates: string
-  vehicleType: string
-  yearPublicOfVehicle: string
+  driversLicenseNumber: string
+  driversLicenseClass: string
 }
 
 export interface DriverFormSlice {
-  info: DriverBioForm | undefined
-  idCard: IdCardForm | undefined
+  info: UserInfoFormParams | undefined
+  idCard: any | undefined
   license: DriverLicenseForm | undefined
-  vehicleImages: string[] | undefined
-  vehicleRegistration: VehicleRegistrationForm | undefined
-  vehicleInsuranceImages: string[] | undefined
+  vehicleRegistration: VehicleDetailFormParamsNoToken | undefined
+  vehicleInsuranceImages: any | undefined
+  registrationCertificate: CertificateInspectionParamsNoToken | undefined
 }
 
-export type DriverFormKey =
-  | "idCard"
-  | "info"
-  | "license"
-  | "vehicleImages"
-  | "vehicleInsuranceImages"
-  | "vehicleRegistration"
+export interface CreateNewPasswordParams extends NewPasswordParams {}
+
+export interface UserInfoParams {
+  token: string
+  car_account_type: CarAccountType | false
+  name: string
+  date_of_birth: string
+  gender: GenderType
+  description: string
+  avatar_attachment_id: number
+}
+
+export interface AttachmentChildParams {
+  file: string
+  type: "image" | "video"
+}
+
+export interface AttachmentParams {
+  token: string
+  attachments: AttachmentChildParams[]
+}
+
+export interface DrivingLicenseRes {
+  car_driving_license_id: number
+  partner: UserInfo
+  front_license_image_url: {
+    id: number
+    url: string
+  }
+  back_license_image_url: {
+    id: number
+    url: string
+  }
+  identity_number: string
+  date_of_issue: string
+  date_of_expiry: string
+  license_class: string
+}
+
+export interface IdentityCardRes {
+  identity_card_id: number
+  partner: UserInfo
+  front_identity_card_image_url: {
+    id: number
+    url: string
+  }
+  back_identity_card_image_url: {
+    id: number
+    url: string
+  }
+  identity_number: string
+  date_of_issue: string
+  date_of_expiry: string
+  place_of_issue: string
+  country_id: {
+    country_id: number
+    country_name: string
+    country_vietnamese_name: string
+  }
+  province_id: ProvinceId
+  district_id: DistrictId
+  ward_id: WardId
+  street: string
+}
+
+export type FilledDataFieldsKey =
+  | "user_information"
+  | "identity_card"
+  | "car_driving_license"
+  | "car_registration_certificate"
+  | "periodical_inspection_certificate"
+  | "compulsory_car_insurance"
+
+export interface FilledDataFieldsRes {
+  user_information: boolean
+  identity_card: boolean
+  car_driving_license: boolean
+  car_registration_certificate: boolean
+  periodical_inspection_certificate: boolean
+  compulsory_car_insurance: boolean
+}

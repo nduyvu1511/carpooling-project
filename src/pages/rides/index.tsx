@@ -1,8 +1,9 @@
 import { busIcon, carIcon, closeIcon } from "@/assets"
-import { RidesFilter, RidesItem } from "@/components"
-import { DEFAULT_TRANSITION, toggleHTMLOverflow } from "@/helper"
+import { InfiniteScrollWrapper, RidesFilter, RidesItem } from "@/components"
+import { DEFAULT_TRANSITION, toggleBodyOverflow } from "@/helper"
 import { MainNoFooter } from "@/layout"
 import { useState } from "react"
+import { useInView } from "react-intersection-observer"
 import { useTransition, animated } from "react-spring"
 
 export const Rides = () => {
@@ -11,12 +12,18 @@ export const Rides = () => {
 
   const toggleShowFilterModal = () => {
     if (showFilterModal) {
-      toggleHTMLOverflow("unset")
+      toggleBodyOverflow("unset")
     } else {
-      toggleHTMLOverflow("hidden")
+      toggleBodyOverflow("hidden")
     }
   }
 
+  const [items, setItems] = useState<Array<number>>([1, 1, 1, 1, 1, 1])
+
+  const FetchMoreItems = () => {
+    setItems([...items, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+  }
+  console.log(items)
   return (
     <section className="rides-available__container">
       <div className="container rides__available">
@@ -26,7 +33,7 @@ export const Rides = () => {
 
         <div className="rides__available-right">
           <div className="rides__vehicle-filter">
-            <ul className="rides__vehicle-filter-list">
+            {/* <ul className="rides__vehicle-filter-list">
               <li className="rides__vehicle-filter-list-item">
                 <div className="rides__vehicle-filter-item rides__vehicle-filter-item-active">
                   Tất cả
@@ -51,23 +58,23 @@ export const Rides = () => {
                   <span className="rides__vehicle-filter-item-quantity">4</span>
                 </div>
               </li>
-            </ul>
+            </ul> */}
           </div>
-          <div className="rides-list__container">
+          <InfiniteScrollWrapper
+            // isLoading={true}
+            onBottom={() => {
+              FetchMoreItems()
+              console.log("fetch data..............")
+            }}
+          >
             <ul className="rides__list">
-              <li className="rides__list-item">
-                <RidesItem />
-              </li>
-
-              <li className="rides__list-item">
-                <RidesItem />
-              </li>
-
-              <li className="rides__list-item">
-                <RidesItem />
-              </li>
+              {items.map((_, index) => (
+                <li key={index} className="rides__list-item">
+                  <RidesItem />
+                </li>
+              ))}
             </ul>
-          </div>
+          </InfiniteScrollWrapper>
         </div>
       </div>
 

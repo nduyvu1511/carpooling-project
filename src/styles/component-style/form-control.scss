@@ -1,7 +1,7 @@
 .form-control {
   & button[type="submit"] {
     margin: 0 auto;
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
 
   &-otp {
@@ -97,6 +97,7 @@
 
   & .form-item-action {
     @include flex(space-between, center);
+    margin-bottom: 10px;
 
     & .form-control-remember {
       margin-bottom: 0;
@@ -120,9 +121,14 @@
   }
 
   &-label {
-    @include style-text(1.5rem, 500, 2.2rem, $text-color-2);
+    @include style-text(1.4rem, 500, 2rem, $text-color-2);
     display: block;
     margin-bottom: 0.6rem;
+
+    @include responsive(md-screen) {
+      font-size: 1.5rem;
+      line-height: 2.2rem;
+    }
 
     &-inline {
       width: 120px;
@@ -147,23 +153,29 @@
   &-input {
     height: 55px;
     background-color: $gray-color-2;
-    @include style-text(1.5rem, 500, 1.7rem, $text-color);
+    @include style-text(1.4rem, 500, 1.6rem, $text-color);
     padding-inline: 1.4rem;
     border-radius: 16px;
     outline: none;
     width: 100%;
 
+    @include responsive(md-screen) {
+      font-size: 1.5rem;
+      line-height: 1.7rem;
+    }
+
     &:focus {
       border: 3px solid $primary-color;
+      background: $gray-color-2;
     }
 
     &-error {
-      border: 1px solid $danger;
+      border: 2px solid $danger;
       background-color: $danger-opacity;
     }
 
     &-text-error {
-      @include style-text(1.3rem, 500, 1.8rem, $danger);
+      @include style-text(1.2rem, 400, 1.8rem, $danger);
       margin-top: 0.2rem;
     }
   }
@@ -174,7 +186,7 @@
 
   & textarea {
     height: auto;
-    padding: 1.2rem;
+    padding: 1.6rem;
   }
 
   & .css-b62m3t-container {
@@ -186,6 +198,17 @@
       font-size: 1.5rem;
       font-weight: 500;
       padding-block: 0.6rem;
+    }
+  }
+
+  &-question {
+    @include style-text(1.5rem, 500, 2.2rem, $text-color);
+    display: flex;
+    justify-content: flex-end;
+
+    &-link {
+      color: $primary-color;
+      margin-left: 4px;
     }
   }
 }
@@ -292,5 +315,44 @@
 
   &:focus {
     border: 3px solid $primary-color;
+  }
+}
+
+.form-label-warning {
+  @include style-text(1.3rem, 500, 1.8rem, $warning);
+}
+
+.form-item-select-error {
+  & .css-1s2u09g-control {
+    background-color: $danger-opacity !important;
+    border: 2px solid $danger !important;
+
+    & svg {
+      color: $danger;
+    }
+  }
+}
+
+.form-label-sm {
+  @include style-text(1.3rem, 500, 1.8rem, $text-color-2);
+}
+
+// .user-info__form-footer {
+//   @include fixed(0, 0, 0, unset);
+//   background-color: $white;
+//   padding-block: 1rem;
+//   @include flex-center;
+// }
+
+.form-item,
+.form-select {
+  .css-b62m3t-container {
+    & .css-1s2u09g-control {
+      background-color: $gray-color-2;
+    }
+
+    & .css-1pahdxg-control {
+      background-color: $gray-color-2;
+    }
   }
 }

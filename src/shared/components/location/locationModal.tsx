@@ -1,42 +1,94 @@
 import { RootState } from "@/core/store"
-import { useSelector } from "react-redux"
-import { animated, useTransition } from "react-spring"
+import { toggleBodyOverflow } from "@/helper"
+import {
+  CompoundingType,
+  FromLocation,
+  LocationType,
+  StationPickUpParams,
+} from "@/models"
+import { setOpenLocationFormModal } from "@/modules"
+import { useEffect } from "react"
+import { CgClose } from "react-icons/cg"
+import { useDispatch, useSelector } from "react-redux"
+import { LocationForm } from "."
 
-const LocationModal = () => {
-  const { isOpenModal } = useSelector((state: RootState) => state.location)
+interface LocationModalProps {
+  title: string
+  onChooseLocation: (params: FromLocation) => void
+  onChooseStation: (params: StationPickUpParams) => void
+  locationType: LocationType
+  compoundingType: CompoundingType
+}
 
-  const transition = useTransition(isOpenModal, {
-    from: {
-      opacity: 0,
-      transform: "translateY(100%)",
-    },
-    enter: {
-      opacity: 1,
-      transform: "translateY(0%)",
-    },
-    leave: {
-      opacity: 0,
-      transform: "translateY(100%)",
-    },
-  })
+export const LocationModal = ({
+  title,
+  onChooseLocation,
+  onChooseStation,
+  locationType,
+  compoundingType,
+}: LocationModalProps) => {
+  const dispatch = useDispatch()
+  const {
+    from_pick_up_station_id,
+    from_province_id,
+    to_pick_up_station_id,
+    to_province_id,
+    is_picking_up_from_start,
+  } = useSelector((state: RootState) => state.ridesForm)
+
+  useEffect(() => {
+    toggleBodyOverflow("hidden")
+    return () => {
+      toggleBodyOverflow("unset")
+    }
+  }, [])
+
+  const closeModal = () => {
+    dispatch(setOpenLocationFormModal(undefined))
+  }
+
   return (
-    <>
-      {transition((style, show) =>
-        show ? (
-          <animated.section
-            className="location__modal"
-            style={{
-              ...style,
-              position: "fixed",
-              inset: 0,
-              zIndex: 2000,
-            }}
+    <section className="location__modal">
+      <div className="location__modal-content">
+        <header className="location__modal-header">
+          <h1 className="location__modal-header-title">{title}</h1>
+          <button
+            onClick={closeModal}
+            className="btn-reset location__modal-header-close"
           >
-            <div className=""></div>
-          </animated.section>
-        ) : null
-      )}
-    </>
+            <CgClose />
+          </button>
+        </header>
+        <div className="location__modal-body">
+          <LocationForm
+            isPickingUpFromStart={!!is_picking_up_from_start}
+            onChooseLocation={(data) => {
+              onChooseLocation(data)
+            }}
+            onChooseStation={(data) => {
+              onChooseStation(data)
+            }}
+            showMap={compoundingType !== "compounding"}
+            onCloseModal={closeModal}
+            locationType={locationType}
+            defaultLocation={
+              locationType === "from_location"
+                ? from_province_id
+                : to_province_id
+            }
+            defaultStation={
+              compoundingType === "compounding"
+                ? locationType === "from_location"
+                  ? from_pick_up_station_id
+                  : to_pick_up_station_id
+                : to_pick_up_station_id
+            }
+          />
+        </div>
+      </div>
+
+      <div className="location__modal-overlay"></div>
+    </section>
   )
 }
 

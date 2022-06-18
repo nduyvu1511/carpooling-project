@@ -2,8 +2,12 @@
   padding: 1.6rem 2.4rem;
 
   &-header {
-    padding: 1rem 0 3rem 0;
+    padding: 1rem 0 2rem 0;
     @include flex-center;
+
+    @include responsive(md-screen) {
+      padding-bottom: 3rem;
+    }
 
     & .page-heading {
       flex: 1;
@@ -26,7 +30,7 @@
       &-item {
         @include style-text(1.5rem, 500, 2.2rem, $text-color);
         width: 100%;
-        padding: 16px 24px;
+        padding-block: 16px;
         @include flex(space-between, center);
         border-bottom: 1px solid $gray-color-2;
 

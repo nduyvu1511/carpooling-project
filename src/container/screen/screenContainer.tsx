@@ -1,21 +1,19 @@
 import { arrowRightIcon } from "@/assets"
 import { useRouter } from "next/router"
 import { ReactNode } from "react"
-import { useSpring, animated } from "react-spring"
+import { animated, useSpring } from "react-spring"
 
-interface DriverContainerProps {
+interface ScreenContainerProps {
   children: ReactNode
   heading: string
-  onAction?: Function
-  btnLabel?: string
+  onBackBtnClick?: Function
 }
 
 export const ScreenContainer = ({
   children,
   heading,
-  onAction,
-  btnLabel,
-}: DriverContainerProps) => {
+  onBackBtnClick,
+}: ScreenContainerProps) => {
   const router = useRouter()
   const transition = useSpring({
     from: { opacity: 0 },
@@ -25,26 +23,17 @@ export const ScreenContainer = ({
   })
 
   return (
-    <animated.section style={transition} className="driver__container">
-      <header className="content-container px-24 driver__container-header">
+    <animated.section style={transition} className="screen__container">
+      <header className="content-container px-24 screen__container-header">
         <button
-          onClick={() => router.back()}
-          className="btn-reset driver__container-header-btn"
+          onClick={() => (!onBackBtnClick ? router.back() : onBackBtnClick())}
+          className="btn-reset screen__container-header-btn"
         >
           {arrowRightIcon(30)}
         </button>
-        <h3 className="driver__container-header-heading">{heading}</h3>
+        <h3 className="screen__container-header-heading">{heading}</h3>
       </header>
-      <div className="driver__container-body">{children}</div>
-
-      <div className="driver__container-footer">
-        <button
-          onClick={() => onAction && onAction()}
-          className="btn-primary driver__container-footer-btn"
-        >
-          {btnLabel}
-        </button>
-      </div>
+      <div className="screen__container-body">{children}</div>
     </animated.section>
   )
 }

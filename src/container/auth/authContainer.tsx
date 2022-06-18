@@ -60,32 +60,32 @@ export const AuthContainer = ({ children, type, heading }: IAuthLayout) => {
         <div className="form-body">
           {children}
 
-          {type !== "otp" ? (
+          {type === "login" ? (
             <footer className="auth__footer">
               <div className="recaptcha-container"></div>
 
               <div className="auth__footer-buttons">
                 <button
                   onClick={() => router.push("/login/otp")}
-                  className="btn-reset auth__footer-buttons-item"
+                  className="btn-reset auth__footer-buttons-item px-24"
                 >
                   <span className="">Tiếp tục với SMS</span>
                   <FaPhoneAlt className="phone-icon" />
                 </button>
-                <button
+                {/* <button
                   onClick={handleLoginWithGoogle}
-                  className="btn-reset auth__footer-buttons-item"
+                  className="btn-reset auth__footer-buttons-item px-24"
                 >
                   <span className="">Tiếp tục với Google</span>
                   <FcGoogle className="google-icon" />
                 </button>
                 <button
                   onClick={handleLoginWithFacebook}
-                  className="btn-reset auth__footer-buttons-item"
+                  className="btn-reset auth__footer-buttons-item px-24"
                 >
                   <span className="">Tiếp tục với Facebook</span>
                   <BsFacebook className="facebook-icon" />
-                </button>
+                </button> */}
               </div>
             </footer>
           ) : null}

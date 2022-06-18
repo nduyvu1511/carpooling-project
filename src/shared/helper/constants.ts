@@ -6,12 +6,15 @@ export const STRING_AT_LEAST_TWO_CHARACTER = /^[a-z]+(?:\s[a-z]+)+$/
 export const PASSWORD_SCHEMA =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 export const DATE_SCHEMA =
-  /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/
+  /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
 export const BASE64_REGEX =
   /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/
 export const VIETNAMESE_NAME =
   /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/
-
+export const YEAR_SCHEMA = /^(19|20)\d{2}$/
+export const DATE_REGEX =
+  /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+export const BASE64_READER_REGEX = /^data:image\/\w+;base64,/
 export const FIREBASE_API_KEY = "AIzaSyBFTcgvxkTVzziiIlEOhvoAbP1bLpTpwsg"
 export const FIREBASE_AUTH_DOMAIN = "womart-3a686.firebaseapp.com"
 export const FIREBASE_DATABASE_URL =
@@ -41,3 +44,15 @@ export const DEFAULT_TRANSITION = {
     transform: "translateY(100%)",
   },
 }
+
+export const CAR_ACCOUNT_TYPE_KEY = "car_account_type_key"
+export const CURRENT_TOKEN_KEY = "current_token_key"
+export const VERIFY_REGISTER_OTP_KEY = "verify_register_otp_key"
+
+export const SWRConfig = {
+  shouldRetryOnError: false,
+  revalidateOnFocus: false,
+}
+export const GOOGLE_MAP_API_KEY = "AIzaSyDr3nOk0D6tpZjLKMJ65ElQlynRvvxo2j0"
+export const DEFAULT_DATE_TIME_VALUE = "00-00-0000 00:00:00"
+export const DEFAULT_HOUR_BACK_VALUE = "00_hour"

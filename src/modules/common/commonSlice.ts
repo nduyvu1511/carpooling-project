@@ -1,4 +1,5 @@
-import { CommonSlice, PayloadBoolean } from "@/models"
+import { toggleBodyOverflow } from "@/helper"
+import { CommonSlice, LocationType, PayloadBoolean } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState: CommonSlice = {
@@ -6,6 +7,7 @@ const initialState: CommonSlice = {
   isScreenLoading: false,
   isOpenPromotionModal: false,
   isOpenAlertModal: false,
+  isOpenLocationFormModal: undefined,
 }
 
 const commonSlice = createSlice({
@@ -18,6 +20,15 @@ const commonSlice = createSlice({
 
     setScreenLoading: (state, { payload }: PayloadBoolean) => {
       state.isScreenLoading = payload
+      try {
+        if (payload) {
+          toggleBodyOverflow("hidden")
+        } else {
+          toggleBodyOverflow("unset")
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     setOpenPromotionModal: (state, { payload }: PayloadBoolean) => {
@@ -26,6 +37,13 @@ const commonSlice = createSlice({
 
     setOpenAlertModal: (state, { payload }: PayloadBoolean) => {
       state.isOpenAlertModal = payload
+    },
+
+    setOpenLocationFormModal: (
+      state,
+      { payload }: { payload: LocationType | undefined }
+    ) => {
+      state.isOpenLocationFormModal = payload
     },
   },
 })
@@ -36,4 +54,5 @@ export const {
   setScreenLoading,
   setOpenPromotionModal,
   setOpenAlertModal,
+  setOpenLocationFormModal,
 } = commonSlice.actions

@@ -1,8 +1,8 @@
-import { addCircleIcon, arrowRightIcon, blankAvatar } from "@/assets"
+import { addCircleIcon, arrowRightIcon } from "@/assets"
 import { Modal, UserForm } from "@/components"
 import { ProfileContainer } from "@/container"
 import { PRIMARY_COLOR } from "@/helper"
-import { MainNoFooter } from "@/layout"
+import { MainlayoutWithNavNoFooter } from "@/layout"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -122,6 +122,6 @@ const MenuProfile = () => {
   )
 }
 
-MenuProfile.Layout = MainNoFooter
+MenuProfile.Layout = MainlayoutWithNavNoFooter
 
 export default MenuProfile

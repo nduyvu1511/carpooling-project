@@ -1,0 +1,80 @@
+.screen__container {
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    @include flex(flex-start, center);
+    padding-block: 1rem;
+    margin-bottom: 1rem;
+
+    @include responsive(md-screen) {
+      padding-block: 2rem;
+    }
+
+    &-heading {
+      @include style-text(2rem, 500, 3rem, $text-color);
+      flex: 1;
+      margin-left: 10px;
+
+      @include responsive(lg-screen) {
+        font-size: 2.4rem;
+        line-height: 3.4rem;
+        margin-left: 20px;
+      }
+    }
+
+    &-btn {
+      & svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &-body {
+    flex: 1;
+
+    & .driver-bio__form {
+      &-label {
+        margin-bottom: 0.6rem;
+        display: block;
+      }
+    }
+  }
+}
+
+.driver-bio__form-input {
+  @include flex-center;
+}
+
+.form__container {
+  &-body {
+    // padding-bottom: 60px;
+  }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+    background-color: $white;
+
+    &-inner {
+      @include flex-center;
+
+      @include responsive(sm-screen) {
+        padding-inline: 24px;
+        padding-block: 10px;
+      }
+    }
+
+    & button {
+      flex: 1;
+      border-radius: 0;
+    }
+
+    &-skip-btn {
+      background-color: $secondary;
+
+      &:hover {
+        background-color: $secondary;
+      }
+    }
+  }
+}

@@ -5,9 +5,29 @@
   & .modal {
     padding-bottom: 0;
   }
+
+  & .map-current-btn {
+    position: absolute;
+    z-index: 10;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: $white;
+    @include flex-center;
+    box-shadow: $shadow-1;
+
+    bottom: 114px;
+    right: 10px;
+
+    & svg {
+      color: $primary-color;
+      font-size: 2rem;
+    }
+  }
 }
 
 .map-modal {
+  z-index: 20000;
   & .modal {
     padding-bottom: 0;
   }
@@ -18,16 +38,105 @@
   height: 100%;
   background-color: $white;
 
-  &-header {
-    height: 62px;
-    padding-inline: 24px;
-    @include flex(flex-end, center);
-
-    & button {
-    }
+  &-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $white;
+    @include flex-center;
   }
 
   &-body {
     height: 100%;
+  }
+}
+
+.location-center-icon {
+  @include center-absolute();
+
+  & svg {
+    font-size: 3rem;
+    color: $primary-color;
+  }
+}
+
+.map__info-container {
+  @include absolute(0, 0, 0, unset);
+  background-color: $white;
+  z-index: 10;
+
+  & .map__info {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid $gray-color-2;
+
+    &-address {
+      flex: 1;
+      padding: 8px 24px;
+      flex: 1;
+      @include flex(space-between, center);
+      display: flex;
+      align-items: center;
+
+      & h3 {
+        display: flex;
+        align-items: center;
+
+        & svg {
+          font-size: 1.8rem;
+          margin-right: 1rem;
+          color: $danger;
+        }
+
+        & span {
+          flex: 1;
+          @include style-text(1.3rem, 400, 1.8rem, $text-color);
+          @include limit-line-text(2);
+        }
+      }
+    }
+
+    &-action {
+      &-btn {
+        padding-block: 1.6rem;
+        width: 100%;
+        border-radius: 0;
+        height: 45px;
+
+        &:hover {
+          background-color: $primary-color;
+        }
+
+        & svg {
+          margin-left: 10px;
+          font-size: 2rem;
+          color: $white;
+        }
+
+        &-disabled {
+          cursor: default;
+          pointer-events: none;
+        }
+      }
+    }
+
+    &-confirm {
+      border-radius: 0;
+    }
+  }
+}
+
+.map-loader {
+  @include flex-center;
+  padding: 40px;
+
+  & svg {
+    font-size: 3rem;
+    color: $primary-color;
   }
 }

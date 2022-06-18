@@ -123,6 +123,7 @@ video {
   padding: 0;
   border: 0;
   font-family: "Poppins", sans-serif;
+  // font-family: "Dosis", sans-serif;
   vertical-align: baseline;
 }
 html {
@@ -178,9 +179,13 @@ body {
 .header-container {
   max-width: $header-container-width;
   width: 100%;
-  padding-inline: 2.4rem;
+  padding-inline: 12px;
   margin-left: auto;
   margin-right: auto;
+
+  @include responsive(sm-screen) {
+    padding-inline: 24px;
+  }
 }
 
 .container {
@@ -188,7 +193,11 @@ body {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding-inline: 24px;
+  padding-inline: 12px;
+
+  @include responsive(sm-screen) {
+    padding-inline: 24px;
+  }
 }
 
 .container-fluild {
@@ -317,6 +326,21 @@ textarea {
   }
 }
 
+.btn-cancel {
+  padding: 1.6rem 2.4rem;
+  background-color: $secondary;
+  @include style-text(1.4rem, 500, 1.6rem, $text-color);
+  white-space: nowrap;
+  border-radius: 48px;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  @include flex-center;
+  min-width: 48px;
+  max-width: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
 .btn-primary-text {
   background-color: unset;
   @include style-text(1.4rem, 600, 1.6rem, $primary-color);
@@ -369,18 +393,20 @@ textarea {
 }
 
 .page-heading {
-  padding: 16px 24px 24px 24px;
+  padding: 8px 12px 8px 12px;
   text-align: center;
   @include style-text(2rem, 600, 3rem, $text-color);
 
   @include responsive(sm-screen) {
     font-size: 2.4rem;
     line-height: 3.4rem;
+    padding: 16px 24px 24px 24px;
   }
 
   @include responsive(lg-screen) {
     font-size: 3rem;
     line-height: 4rem;
+    padding: 16px 24px 24px 24px;
   }
 }
 
@@ -388,6 +414,13 @@ textarea {
   padding-inline: 12px;
   @include responsive(sm-screen) {
     padding-inline: 24px;
+  }
+}
+
+.py-24 {
+  padding-block: 12px;
+  @include responsive(sm-screen) {
+    padding-block: 24px;
   }
 }
 
@@ -401,6 +434,15 @@ textarea {
 .btn-disabled {
   cursor: default;
   opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-not-allowed {
+  opacity: 0.5;
+  cursor: not-allowed;
+  &:hover {
+    background-color: $primary-color;
+  }
 }
 
 @keyframes spinner {
@@ -420,13 +462,36 @@ textarea {
   @include show;
 }
 
-.form-label-warning {
-  @include style-text(1.3rem, 500, 2rem, $warning);
+@keyframes skeleton-loading {
+  0% {
+    background-color: #f2f2f2;
+  }
+  100% {
+    background-color: #dad8d8;
+  }
 }
 
-.form-item-select-error {
-  & .css-1s2u09g-control {
-    background-color: $danger-opacity !important;
-    border: 1px solid $danger !important;
-  }
+input[type="date"] {
+  text-transform: uppercase;
+}
+
+.loader {
+  animation: spinner 1.5s linear infinite;
+}
+
+.pointer-event-none {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.px-12 {
+  padding-inline: 12px;
+}
+
+.py-12 {
+  padding-block: 12px;
 }

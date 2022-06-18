@@ -1,0 +1,125 @@
+.rides-confirm-container {
+  .rides__confirm {
+    &-map {
+      margin-bottom: 10px;
+    }
+
+    &-item {
+      padding-block: 16px;
+      border-bottom: 1px solid $gray-color-2;
+
+      &:first-child {
+        padding-bottom: 6px;
+      }
+
+      &-title {
+        @include style-text(1.8rem, 500, 2.6rem, $text-color);
+        margin-bottom: 10px;
+      }
+
+      & .rides__confirm-date {
+        @include flex(flex-start, center);
+
+        &-icon {
+          margin-right: 16px;
+
+          & svg {
+            font-size: 1.8rem;
+            color: $text-color;
+          }
+        }
+
+        &-content {
+          flex: 1;
+        }
+      }
+
+      & .rides__confirm-location {
+        display: flex;
+        flex-wrap: wrap;
+
+        &-item {
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          margin-bottom: 10px;
+
+          &-l {
+            display: flex;
+            align-items: center;
+            @include style-text(1.4rem, 500, 2.2rem, $text-color-2);
+            margin-right: 10px;
+
+            & svg {
+              margin-right: 3px;
+            }
+          }
+
+          &-r {
+            @include style-text(1.4rem, 500, 2.2rem, $text-color);
+          }
+        }
+      }
+    }
+
+    &-map {
+      & .map-container {
+        height: 200px;
+      }
+
+      & .rides__map-info {
+      }
+    }
+
+    &-note {
+      display: flex;
+      align-items: center;
+      & svg {
+        font-size: 2rem;
+        color: $text-color-2;
+      }
+
+      &-content {
+        margin-left: 10px;
+        @include style-text(1.4rem, 500, 2.2rem, $text-color);
+      }
+    }
+  }
+}
+
+.rides__checkout {
+  &-header {
+    &-title {
+      @include style-text(1.8rem, 500, 2.6rem, $text-color);
+      text-align: center;
+      margin-bottom: 20px;
+
+      & span {
+        font-weight: 600;
+      }
+    }
+
+    &-remains {
+      @include flex(space-between, flex-start);
+      flex-direction: column;
+      @include responsive(xs-screen) {
+        align-items: center;
+        flex-direction: row;
+      }
+      padding-block: 16px;
+      background-color: $yellow-opacity;
+
+      &-l {
+        @include style-text(1.4rem, 500, 2rem, $text-color-2);
+        margin-bottom: 6px;
+        @include responsive(xs-screen) {
+          margin-bottom: 0;
+        }
+      }
+
+      &-r {
+        @include style-text(1.8rem, 600, 2.2rem, $text-color);
+      }
+    }
+  }
+}

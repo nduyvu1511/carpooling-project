@@ -1,0 +1,46 @@
+.register-option__container {
+  & .register__option {
+  }
+}
+
+.register-option__item {
+  padding-inline: 12px;
+  padding-block: 16px;
+  @include flex(space-between, center);
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-color-2;
+  }
+
+  @include responsive(md-screen) {
+    padding-inline: 24px;
+  }
+
+  &-name {
+    @include style-text(1.6rem, 500, 2.2rem, $text-color);
+    display: flex;
+    align-items: center;
+
+    svg {
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+  }
+}
+
+.register-login-link {
+  margin-top: 20px;
+  @include style-text(1.4rem, 500, 2rem, $text-color);
+  @include flex-center;
+
+  @include responsive(md-screen) {
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+  }
+
+  & a {
+    color: $primary-color;
+    margin-left: 4px;
+  }
+}
