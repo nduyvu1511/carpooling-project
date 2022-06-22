@@ -50,7 +50,7 @@
 }
 
 .drawer-left {
-  @include fixed(0, unset, 0, $header-mobile-height);
+  @include fixed(unset, 0, 0, $header-mobile-height);
   background-color: $white;
   max-width: 400px;
   width: 100%;

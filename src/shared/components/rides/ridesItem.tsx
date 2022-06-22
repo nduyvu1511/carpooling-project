@@ -1,25 +1,50 @@
-import { formatMoneyVND, PRIMARY_COLOR } from "@/helper"
+import { menWalkIcon } from "@/assets"
+import { formatMoneyVND } from "@/helper"
+import { CompoundingCarRes } from "@/models"
+import { API_URL } from "@/services"
+import moment from "moment"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { AiFillStar } from "react-icons/ai"
 import { FaRegClock } from "react-icons/fa"
-import { RouteItem } from "./routeItem"
-import { menWalkIcon } from "@/assets"
 import {
   MdOutlineDirectionsCarFilled,
   MdOutlinePriceChange,
 } from "react-icons/md"
+import { RouteItem } from "./routeItem"
 
-export const RidesItem = () => {
+interface RidesItemProps {
+  rides: CompoundingCarRes
+  type?: "driver" | "customer"
+  view?: "detail" | "item"
+  onClick?: (params: number) => void
+}
+
+export const RidesItem = ({
+  rides,
+  type = "customer",
+  view = "item",
+  onClick,
+}: RidesItemProps) => {
   const router = useRouter()
 
   return (
     <div
-      onClick={() => router.push("/rides/detail")}
+      onClick={() =>
+        onClick
+          ? onClick(rides.compounding_car_id)
+          : router.push(`/rides/${rides.compounding_car_id}`)
+      }
       className="rides__item cursor-pointer"
     >
+      <p className="rides__item-title">{rides.compounding_car_name}</p>
       <div className="rides__item-top">
-        <RouteItem />
+        <RouteItem
+          fromDate={rides.expected_going_on_date}
+          toDate={rides.expected_picking_up_date}
+          fromProvince={rides.from_province.province_name}
+          toProvince={rides.to_province.province_name}
+        />
       </div>
 
       <div className="rides__item-content">
@@ -28,15 +53,31 @@ export const RidesItem = () => {
             <p className="rides__item-info-item-l">
               <FaRegClock /> <span>Ngày đi:</span>
             </p>
-            <p className="rides__item-info-item-r">12/06/2022</p>
+            <p className="rides__item-info-item-r">
+              {moment(rides.expected_going_on_date).format("HH:MM, DD/MM/YYYY")}
+            </p>
           </div>
+
+          {rides.expected_picking_up_date ? (
+            <div className="rides__item-info-item">
+              <p className="rides__item-info-item-l">
+                <FaRegClock /> <span>Ngày về:</span>
+              </p>
+              <p className="rides__item-info-item-r">
+                {moment(rides.expected_picking_up_date).format(
+                  "HH:MM, DD/MM/YYYY"
+                )}
+              </p>
+            </div>
+          ) : null}
 
           <div className="rides__item-info-item">
             <p className="rides__item-info-item-l">
-              <MdOutlinePriceChange /> <span>Giá / 1 khách:</span>
+              <MdOutlinePriceChange />{" "}
+              <span>{`Giá${type === "customer" ? " / 1 khách" : ""}:`}</span>
             </p>
             <p className="rides__item-info-item-r rides__item-info-item-price">
-              {formatMoneyVND(1200000)}
+              {formatMoneyVND(rides.price_unit.price_unit)}
             </p>
           </div>
 
@@ -45,55 +86,62 @@ export const RidesItem = () => {
               <MdOutlineDirectionsCarFilled /> <span>Loại xe:</span>
             </p>
             <p className="rides__item-info-item-r rides__item-info-item-price">
-              7 Chỗ
+              {rides.car.name}
             </p>
           </div>
 
           <div className="rides__item-info-item">
             <ul className="rides__item-info-passengers">
-              {Array.from({ length: 4 }).map((item, index) => (
-                <li
-                  key={index}
-                  className={`rides__item-info-passengers-item ${
-                    index < 2 ? "rides__item-info-passengers-item-active" : ""
-                  }`}
-                >
-                  {menWalkIcon()}
-                </li>
-              ))}
+              {Array.from({ length: rides.number_seat_in_car }).map(
+                (item, index) => (
+                  <li
+                    key={index}
+                    className={`rides__item-info-passengers-item ${
+                      index >= rides.number_available_seat
+                        ? "rides__item-info-passengers-item-active"
+                        : ""
+                    }`}
+                  >
+                    {menWalkIcon()}
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
 
-        <div className="rides__item-author">
-          <div className="rides__item-author-avatar">
-            <div className="image-container">
-              <Image
-                src={
-                  "https://cf.shopee.vn/file/09b9fbc2a9d3473a63969c2fc18a1c65_tn"
-                }
-                alt=""
-                layout="fill"
-                objectFit="cover"
-              />
+        {/* {type === "customer" ? (
+          <div className="rides__item-author">
+            <div className="rides__item-author-avatar">
+              <div className="image-container">
+                <Image
+                  src={`${API_URL}${rides?.car_driver_id?.avatar_url}`}
+                  alt=""
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="rides__item-author-info">
-            <div className="rides__item-author-info-inner">
-              <p className="rides__item-author-info-name">Nduyvu</p>
-              <p className="rides__item-author-info-star">
-                <AiFillStar />
-                4.3
-              </p>
+            <div className="rides__item-author-info">
+              <div className="rides__item-author-info-inner">
+                <p className="rides__item-author-info-name">
+                  {rides?.car_driver_id?.partner_name || ""}
+                </p>
+                <p className="rides__item-author-info-star">
+                  <AiFillStar />5
+                </p>
+              </div>
             </div>
           </div>
+        ) : null} */}
+      </div>
+
+      {view === "item" ? (
+        <div className="rides__item-action">
+          <button className="btn-primary-text">Xem Chi Tiết</button>
         </div>
-      </div>
-
-      <div className="rides__item-action">
-        <button className="btn-primary-text">Xem Chi Tiết</button>
-      </div>
+      ) : null}
     </div>
   )
 }

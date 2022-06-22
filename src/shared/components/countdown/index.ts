@@ -1,1 +1,1 @@
-export * from "./countdownMinute"
+export * from "./countdownCompounding"

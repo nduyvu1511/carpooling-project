@@ -1,5 +1,5 @@
 import { ImageFileLoading, InputLoading } from "@/components"
-import DrivingLicenseForm from "@/components/form/drivingLicenseForm"
+import DrivingLicenseForm from "@/components/form/driver/drivingLicenseForm"
 import { ScreenContainer } from "@/container"
 import { DriverLayout } from "@/layout"
 import { DrivingLicenseFormParams } from "@/models"

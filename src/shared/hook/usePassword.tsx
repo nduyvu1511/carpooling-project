@@ -36,8 +36,7 @@ interface UsePasswordRes {
 
 export const usePassword = (shouldFetch = false): UsePasswordRes => {
   const dispatch = useDispatch()
-  const { token, userInfo: { phone = "" } = { userInfo: undefined } } =
-    useSelector((state: RootState) => state.user)
+  const { token } = useSelector((state: RootState) => state.user)
 
   const { data, isValidating, mutate } = useSWR(
     "check_password",
@@ -58,7 +57,7 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
 
   const createPassword = async (props: CreatePasswordProps) => {
     const { password, handleSuccess, re_password } = props
-    if (!token || !password || !re_password || !phone) return
+    if (!token || !password || !re_password) return
     dispatch(setScreenLoading(true))
 
     try {
@@ -112,7 +111,7 @@ export const usePassword = (shouldFetch = false): UsePasswordRes => {
 
   const changePassword = async (props: ChangePasswordProps) => {
     const { password, handleSuccess, re_password, old_password } = props
-    if (!token || !password || !re_password || !phone) return
+    if (!token || !password || !re_password) return
     dispatch(setScreenLoading(true))
 
     try {

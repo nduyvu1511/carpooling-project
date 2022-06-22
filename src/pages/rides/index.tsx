@@ -1,14 +1,20 @@
-import { busIcon, carIcon, closeIcon } from "@/assets"
+import { closeIcon } from "@/assets"
 import { InfiniteScrollWrapper, RidesFilter, RidesItem } from "@/components"
 import { DEFAULT_TRANSITION, toggleBodyOverflow } from "@/helper"
 import { MainNoFooter } from "@/layout"
+import { useRouter } from "next/router"
 import { useState } from "react"
-import { useInView } from "react-intersection-observer"
-import { useTransition, animated } from "react-spring"
+import { animated, useTransition } from "react-spring"
+import { useCarpoolingList } from "shared/hook"
 
 export const Rides = () => {
+  const router = useRouter()
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false)
   const transition = useTransition(showFilterModal, DEFAULT_TRANSITION)
+  const { data: carpoolingList, isValidating } = useCarpoolingList({
+    token: "",
+    limit: 12,
+  })
 
   const toggleShowFilterModal = () => {
     if (showFilterModal) {
@@ -18,12 +24,6 @@ export const Rides = () => {
     }
   }
 
-  const [items, setItems] = useState<Array<number>>([1, 1, 1, 1, 1, 1])
-
-  const FetchMoreItems = () => {
-    setItems([...items, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-  }
-  console.log(items)
   return (
     <section className="rides-available__container">
       <div className="container rides__available">
@@ -61,19 +61,22 @@ export const Rides = () => {
             </ul> */}
           </div>
           <InfiniteScrollWrapper
-            // isLoading={true}
+            isLoading={isValidating}
             onBottom={() => {
-              FetchMoreItems()
-              console.log("fetch data..............")
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  offset: (Number(router.query?.offset) || 0) + 12,
+                },
+              })
             }}
           >
-            <ul className="rides__list">
-              {items.map((_, index) => (
-                <li key={index} className="rides__list-item">
-                  <RidesItem />
-                </li>
+            <div className="rides__list grid grid-col-1 grid-col-sm-2 grid-col-lg-3">
+              {carpoolingList.map((item, index) => (
+                <RidesItem rides={item} key={index} />
               ))}
-            </ul>
+            </div>
           </InfiniteScrollWrapper>
         </div>
       </div>

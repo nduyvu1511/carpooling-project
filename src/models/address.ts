@@ -55,6 +55,16 @@ export interface StationPickUpParams {
   street: string
 }
 
+export interface StationId {
+  station_name: string
+  station_id: number
+  province_name: string
+  province_id: number
+  address: string
+  lat: string
+  lng: string
+}
+
 export interface FromStationPickUpParams extends StationPickUpParams {
   from_station_location?: FromLocationRidesForm
 }

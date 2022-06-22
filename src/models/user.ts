@@ -139,7 +139,7 @@ export interface UserInfo {
   }
   gender: GenderType
   date_of_birth: string
-  car_account_type: false
+  car_account_type: CarAccountType
   verified_car_driver_account: DriverAccountStatus
   verified_account_date: string
   description: string

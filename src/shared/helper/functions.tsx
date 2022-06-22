@@ -140,8 +140,12 @@ export function isArrayHasValue(array: any): boolean {
 }
 
 export const getFromLocalStorage: any = (key: string) => {
-  if (typeof window === undefined) return
-  return JSON.parse(window.localStorage.getItem(key) as any)
+  let value
+  try {
+    if (typeof window === undefined) return
+    value = JSON.parse(window.localStorage.getItem(key) as any)
+  } catch (error) {}
+  return value
 }
 
 export const setToLocalStorage: any = (key: string, value: any) => {
@@ -150,8 +154,12 @@ export const setToLocalStorage: any = (key: string, value: any) => {
 }
 
 export const getFromSessionStorage: any = (key: string) => {
-  if (typeof window === undefined) return
-  return JSON.parse(window.sessionStorage.getItem(key) as any)
+  let value
+  try {
+    if (typeof window === undefined) return
+    value = JSON.parse(window.sessionStorage.getItem(key) as any)
+  } catch (error) {}
+  return value
 }
 
 export const setToSessionStorage = (key: string, value: any) => {

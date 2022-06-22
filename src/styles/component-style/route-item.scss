@@ -3,14 +3,13 @@
   display: flex;
   position: relative;
   @include style-text(1.5rem, 600, 2.2rem, $text-color);
+  padding-left: 10px;
 
   &-line {
-    position: absolute;
+    position: relative;
     width: 4px;
     background-color: $text-color;
-    left: -15px;
-    top: 6px;
-    bottom: 6px;
+    height: 100%;
 
     &::after,
     &::before {
@@ -34,29 +33,15 @@
     }
   }
 
-  &-time {
-    margin-right: 40px;
-    @include flex(space-between, start);
-    flex-direction: column;
-    @include style-text(1.3rem, 500, 1.8rem, $text-color);
-
-    &-start {
-      margin-bottom: 20px;
-
-      &-date {
-      }
-
-      &-duration {
-        color: $text-color-2;
-      }
-    }
+  &-r {
+    flex: 1;
+    margin-left: 16px;
   }
 
   &-location {
     flex: 1;
     position: relative;
     @include flex(space-between, flex-start);
-    flex-direction: column;
 
     &-name {
       & .route-item__location-name {

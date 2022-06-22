@@ -1,3 +1,5 @@
+import { CountryId, DistrictId, ProvinceId, WardId } from "./address"
+
 export interface locationHistory {
   longitude: number
   latitude: number
@@ -41,3 +43,19 @@ export interface LocationSearchHistory extends FromLocation {
 }
 
 export type LocationType = "from_location" | "to_location"
+
+export interface StationRes {
+  station_name: string
+  station_id: number
+  station_image: {
+    id: number
+    url: string
+  }
+  latitude: string
+  longitude: string
+  country_id: CountryId
+  province_id: ProvinceId
+  district_id: DistrictId
+  ward_id: WardId
+  street: string
+}

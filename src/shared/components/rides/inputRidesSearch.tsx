@@ -1,7 +1,7 @@
 import { circleIcon } from "@/assets"
 import { RootState } from "@/core/store"
 import { GOOGLE_MAP_API_KEY } from "@/helper"
-import { setOpenRidesModalSearch } from "@/modules/rides/ridesSlice"
+import { setOpenRidesModalSearch } from "@/modules/compounding/compoundingSlice"
 import { useLoadScript } from "@react-google-maps/api"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"

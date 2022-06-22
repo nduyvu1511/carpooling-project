@@ -1,6 +1,5 @@
 import { OTP } from "@/components"
 import { AuthContainer } from "@/container"
-import { MainNoFooter } from "@/layout"
 import { setToken, setUserInfo } from "@/modules"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
@@ -39,5 +38,5 @@ const Login = () => {
   )
 }
 
-Login.Layout = MainNoFooter
+// Login.Layout = MainNoFooter
 export default Login

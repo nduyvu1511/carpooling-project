@@ -1,14 +1,8 @@
 import { arrowRightIcon } from "@/assets"
 import { ProfileContainer } from "@/container"
+import { dashboardAccounts } from "@/helper"
 import { MainNoFooter } from "@/layout"
 import { useRouter } from "next/router"
-
-const dashboardAccounts = [
-  { name: "Đánh giá", path: "/dashboard/ratings/given" },
-  { name: "Kho voucher", path: "/dashboard/profile/password" },
-  { name: "Thanh toán", path: "/dashboard/profile/payment" },
-  { name: "Mật khẩu", path: "/dashboard/profile/password" },
-]
 
 const Account = () => {
   const router = useRouter()
@@ -32,9 +26,9 @@ const Account = () => {
           <li className="profile__account-list-item profile__account-list-item-primary">
             <a className="profile__account-list-item-link">Đăng xuất</a>
           </li>
-          <li className="profile__account-list-item profile__account-list-item-primary">
+          {/* <li className="profile__account-list-item profile__account-list-item-primary">
             <a className="profile__account-list-item-link">Đóng tài khoản</a>
-          </li>
+          </li> */}
         </ul>
       </div>
     </ProfileContainer>

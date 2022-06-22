@@ -1,7 +1,6 @@
 import { ChangePasswordForm, CreatePasswordForm } from "@/components"
 import { MainNoFooter } from "@/layout"
 import { useRouter } from "next/router"
-import React from "react"
 import { useDispatch } from "react-redux"
 import { animated, useSpring } from "react-spring"
 import { usePassword } from "shared/hook"
@@ -18,7 +17,10 @@ const Password = () => {
     data: hasPassword,
     createPassword,
     changePassword,
+    isValidating,
   } = usePassword(true)
+
+  if (isValidating) return null
 
   return (
     <animated.section style={animation} className="password-page">
@@ -33,7 +35,7 @@ const Password = () => {
               changePassword({
                 ...data,
                 handleSuccess: () => {
-                  router.push("/dashboard/profile/account")
+                  router.push("/dashboard/profile")
                 },
               })
             }
@@ -44,7 +46,7 @@ const Password = () => {
               createPassword({
                 ...data,
                 handleSuccess: () => {
-                  router.push("/dashboard/profile/account")
+                  router.push("/dashboard/profile")
                 },
               })
             }

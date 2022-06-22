@@ -1,26 +1,94 @@
-import { CreateRidesForm, SuccessScreen } from "@/components"
-import { OneWayCompoundingForm } from "@/components/form/oneWayCompoundingForm"
+import {
+  CarpoolingCompoundingForm,
+  OneWayCompoundingForm,
+  SuccessScreen,
+  TwoWayCompoundingForm,
+} from "@/components"
 import { RideContainer } from "@/container"
 import { RootState } from "@/core/store"
-import { DEFAULT_DATE_TIME_VALUE, DEFAULT_HOUR_BACK_VALUE } from "@/helper"
-import { CompoundingType, CreateCompoundingParams } from "@/models"
+import { CreateCompoundingParams, UpdateCompoundingCar } from "@/models"
+import { setCurrentCompoundingCarCustomer } from "@/modules"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useCreateRides } from "shared/hook"
+import { useCompoundingForm, useCreateRides, useToken } from "shared/hook"
 
 const OfferSeat = () => {
-  const router = useRouter()
+  const { token } = useToken()
   const dispatch = useDispatch()
-  const { createCompounding } = useCreateRides()
+  const router = useRouter()
+  const { createCompounding, updateCompounding } = useCreateRides()
   const [showSuccessScreen, setShowSuccessScreen] = useState<boolean>(false)
-  const ridesFormState = useSelector((state: RootState) => state.ridesForm)
   const compoundingType = router.query?.compounding_type
+  const {
+    currentCarpoolingCompoundingCarCustomer,
+    currentOneWayCompoundingCarCustomer,
+    currentTwoWayCompoundingCarCustomer,
+  } = useSelector((state: RootState) => state.compounding)
+  const {
+    oneWayCompoundingCarFormFromLocalStorage,
+    twoWayCompoundingCarFormFromLocalStorage,
+    carpoolingCompoundingFormFromLocalStorage,
+  } = useCompoundingForm()
+
+  const handleUpdateCompoundingCar = (params: UpdateCompoundingCar) => {
+    updateCompounding({
+      params: {
+        ...params,
+      } as UpdateCompoundingCar,
+      onSuccess: () => {
+        console.log("success")
+        router.push(
+          `offer-seats/confirm?compounding_car_customer_id=${params.compounding_car_customer_id}`
+        )
+      },
+    })
+  }
 
   const handleCreateCompoundingCar = (params: CreateCompoundingParams) => {
+    if (
+      params.compounding_type === "compounding" &&
+      currentCarpoolingCompoundingCarCustomer
+    ) {
+      handleUpdateCompoundingCar({
+        ...params,
+        token,
+        compounding_car_customer_id: currentCarpoolingCompoundingCarCustomer,
+      })
+      return
+    }
+    if (
+      params.compounding_type === "one_way" &&
+      currentOneWayCompoundingCarCustomer
+    ) {
+      handleUpdateCompoundingCar({
+        ...params,
+        token,
+        compounding_car_customer_id: currentOneWayCompoundingCarCustomer,
+      })
+      return
+    }
+    if (
+      params.compounding_type === "two_way" &&
+      currentTwoWayCompoundingCarCustomer
+    ) {
+      handleUpdateCompoundingCar({
+        ...params,
+        token,
+        compounding_car_customer_id: currentTwoWayCompoundingCarCustomer,
+      })
+      return
+    }
+
     createCompounding({
       params,
       onSuccess: (data) => {
+        dispatch(
+          setCurrentCompoundingCarCustomer({
+            key: data.compounding_type,
+            value: data.compounding_car_customer_id,
+          })
+        )
         router.push({
           pathname: "/offer-seats/confirm",
           query: {
@@ -47,55 +115,28 @@ const OfferSeat = () => {
     >
       <section className="booking">
         <div className="content-container px-24">
-          {/* {compoundingType ? (
-            <CreateRidesForm
+          {compoundingType === "one_way" ? (
+            <OneWayCompoundingForm
+              defaultValues={oneWayCompoundingCarFormFromLocalStorage()}
               onSubmit={(data) => handleCreateCompoundingCar(data)}
-              defaultValues={{
-                to_province_id:
-                  compoundingType !== "compounding"
-                    ? ridesFormState?.to_province_id?.province_id
-                    : 0,
-                from_province_id:
-                  compoundingType !== "compounding"
-                    ? ridesFormState?.from_province_id?.province_id
-                    : 0,
-                from_pick_up_station_id:
-                  compoundingType === "compounding"
-                    ? ridesFormState?.from_pick_up_station_id?.station_id
-                    : 0,
-                to_pick_up_station_id:
-                  compoundingType === "compounding"
-                    ? ridesFormState?.to_pick_up_station_id?.station_id
-                    : 0,
-                car_id: Number(ridesFormState?.car_id?.value),
-                compounding_type: compoundingType as CompoundingType,
-                expected_going_on_date:
-                  ridesFormState?.expected_going_on_date?.date_time,
-                expected_picking_up_date:
-                  compoundingType === "two_way"
-                    ? ridesFormState?.expected_picking_up_date
-                    : DEFAULT_DATE_TIME_VALUE,
-                number_seat:
-                  compoundingType === "compounding"
-                    ? Number(ridesFormState?.number_seat?.value)
-                    : 0,
-                quality_car: ridesFormState?.quality_car || "5_star",
-                hour_of_wait_time:
-                  compoundingType === "two_way"
-                    ? ridesFormState?.hour_of_wait_time?.value
-                    : DEFAULT_HOUR_BACK_VALUE,
-                is_a_day_tour:
-                  compoundingType === "two_way"
-                    ? ridesFormState?.is_a_day_tour
-                    : false,
-                note: ridesFormState?.note,
-                check_policy: undefined,
-              }}
-              type={router.query?.compounding_type as CompoundingType}
             />
-          ) : null} */}
-
-          <OneWayCompoundingForm />
+          ) : compoundingType === "two_way" ? (
+            <TwoWayCompoundingForm
+              defaultValues={twoWayCompoundingCarFormFromLocalStorage()}
+              onSubmit={(data) => {
+                const { mode, ...form } = data
+                handleCreateCompoundingCar(form)
+              }}
+            />
+          ) : compoundingType === "compounding" ? (
+            <CarpoolingCompoundingForm
+              defaultValues={carpoolingCompoundingFormFromLocalStorage()}
+              onSubmit={(data) => {
+                const { mode, ...form } = data
+                handleCreateCompoundingCar(form)
+              }}
+            />
+          ) : null}
         </div>
       </section>
 

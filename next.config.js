@@ -10,7 +10,7 @@ module.exports = withImages({
       "cf.shopee.vn",
       process.env.NEXT_PUBLIC_IMAGE_URL2,
       "f12.photo.talk.zdn.vn",
-      "172.16.0.48",
+      "192.168.1.22",
     ],
   },
 })

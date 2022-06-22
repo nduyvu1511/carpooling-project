@@ -7,70 +7,6 @@
     flex: 1;
   }
 
-  & .location__station {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    &-form {
-      & .form-item {
-        margin-bottom: 0;
-      }
-    }
-
-    &-result {
-      flex: 1;
-      overflow-y: auto;
-      @include hide-scrollbar;
-      display: flex;
-      flex-direction: column;
-
-      &-list {
-        flex: 1;
-      }
-    }
-
-    &-no-result {
-      @include flex-center;
-      padding-block: 24px;
-      @include style-text(1.5rem, 500, 2rem, $text-color-2);
-    }
-
-    &-loading {
-      padding-block: 24px;
-      @include flex-center;
-
-      & svg {
-        font-size: 3rem;
-        color: $text-color-2;
-      }
-    }
-
-    &-footer {
-      // padding-top: 24px;
-
-      &-remind {
-        @include flex-center;
-        margin-bottom: 10px;
-
-        & label {
-          margin-left: 10px;
-          @include style-text(1.4rem, 500, 2rem, $text-color);
-          flex: 1;
-        }
-
-        & span {
-          @include style-text(1.3rem, 500, 2rem, $text-color-2);
-        }
-      }
-
-      &-confirm {
-        border-radius: 0;
-        width: 100%;
-      }
-    }
-  }
-
   & .form-item .css-b62m3t-container {
     font-size: 1.6rem;
     font-weight: 600;
@@ -323,5 +259,62 @@
 
   & .location__no-result-desc {
     @include style-text(1.3rem, 500, 1.8rem, $text-color-2);
+  }
+}
+
+.modal {
+  &-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .location__station {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+
+    &-form {
+      & .form-item {
+        margin-bottom: 0;
+      }
+    }
+
+    &-result {
+      flex: 1;
+      overflow-y: auto;
+      @include hide-scrollbar;
+      display: flex;
+      flex-direction: column;
+
+      &-list {
+        flex: 1;
+      }
+    }
+
+    &-no-result {
+      @include flex-center;
+      padding-block: 24px;
+      @include style-text(1.5rem, 500, 2rem, $text-color-2);
+    }
+
+    &-loading {
+      padding-block: 24px;
+      @include flex-center;
+
+      & svg {
+        font-size: 3rem;
+        color: $text-color-2;
+      }
+    }
+
+    &-footer {
+      // padding-top: 24px;
+
+      &-confirm {
+        border-radius: 0;
+        width: 100%;
+      }
+    }
   }
 }

@@ -1,18 +1,15 @@
-import { getTimes, hoursBackList } from "@/helper"
 import {
-  CompoundingCar,
+  CompoundingCarRes,
   CompoundingCarCustomer,
   CreateCarpoolCompoundingNoToken,
   CreateCompoundingCarNoTokenParams,
   CreateCompoundingCarRes,
   CreateOneWayCompoundingNoToken,
   CreateTwoWayCompoundingNoToken,
-  HourWaitTimeType,
-  OptionModel,
   UpdateCompoundingCar,
   UseParams,
 } from "@/models"
-import { RidesFormSlice, setScreenLoading } from "@/modules"
+import { setScreenLoading } from "@/modules"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
@@ -35,7 +32,7 @@ interface UseCreateRidesRes {
     _params: UseParams<UpdateCompoundingCar, CreateCompoundingCarRes>
   ) => void
   getDetailCompoundingCar: (
-    _params: UseParams<{ compounding_car_id: number }, CompoundingCar>
+    _params: UseParams<{ compounding_car_id: number }, CompoundingCarRes>
   ) => void
   getDetailCompoundingCarCustomer: (
     _params: UseParams<
@@ -43,12 +40,15 @@ interface UseCreateRidesRes {
       CompoundingCarCustomer
     >
   ) => void
-  compoundingCarCustomerResToRidesFormSlice: (
-    params: CompoundingCarCustomer
-  ) => RidesFormSlice
+  createExistedCompoundingCar: (
+    _params: UseParams<CreateCarpoolCompoundingNoToken, CreateCompoundingCarRes>
+  ) => void
   compoundingCarCustomerResToRidesForm: (
     params: CompoundingCarCustomer
   ) => CreateCompoundingCarNoTokenParams
+  confirmExistedCompoundingCarCustomer: (
+    params: UseParams<{ compounding_car_customer_id: number }, any>
+  ) => any
 }
 
 export const useCreateRides = (): UseCreateRidesRes => {
@@ -76,6 +76,31 @@ export const useCreateRides = (): UseCreateRidesRes => {
         return
       }
 
+      onSuccess(res?.result?.data)
+    } catch (error) {
+      dispatch(setScreenLoading(false))
+      onError && onError()
+      console.log(error)
+    }
+  }
+
+  const createExistedCompoundingCar = async (
+    _params: UseParams<CreateCarpoolCompoundingNoToken, CreateCompoundingCarRes>
+  ) => {
+    if (!token) return
+    const { params, onSuccess, onError } = _params
+
+    try {
+      dispatch(setScreenLoading(true))
+      const res: any = await ridesApi.createExistedCarpoolingCompoundingCar({
+        ...params,
+        token,
+      })
+      dispatch(setScreenLoading(false))
+      if (!res?.result?.success) {
+        dispatch(notify(res?.result?.message || "Failure", "error"))
+        return
+      }
       onSuccess(res?.result?.data)
     } catch (error) {
       dispatch(setScreenLoading(false))
@@ -118,8 +143,40 @@ export const useCreateRides = (): UseCreateRidesRes => {
     }
   }
 
+  const confirmExistedCompoundingCarCustomer = async (
+    _params: UseParams<{ compounding_car_customer_id: number }, any>
+  ) => {
+    if (!token) {
+      router.push("/login")
+      return
+    }
+    const {
+      params: { compounding_car_customer_id },
+      onSuccess,
+      onError,
+    } = _params
+    try {
+      dispatch(setScreenLoading(true))
+      const res: any = await ridesApi.confirmCarpoolingCompoundingCarCustomer({
+        compounding_car_customer_id,
+        token,
+      })
+      dispatch(setScreenLoading(false))
+      if (!res?.result?.success) {
+        dispatch(notify(res?.result?.message || "Failure", "error"))
+        return
+      }
+
+      onSuccess(res?.result?.data)
+    } catch (error) {
+      dispatch(setScreenLoading(false))
+      onError && onError()
+      console.log(error)
+    }
+  }
+
   const getDetailCompoundingCar = async (
-    _params: UseParams<{ compounding_car_id: number }, CompoundingCar>
+    _params: UseParams<{ compounding_car_id: number }, CompoundingCarRes>
   ) => {
     if (!token) {
       router.push("/login")
@@ -138,6 +195,7 @@ export const useCreateRides = (): UseCreateRidesRes => {
         token,
       })
       if (!res?.result?.success) {
+        onError && onError()
         return
       }
 
@@ -171,6 +229,7 @@ export const useCreateRides = (): UseCreateRidesRes => {
         token,
       })
       if (!res?.result?.success) {
+        onError && onError()
         return
       }
 
@@ -199,6 +258,7 @@ export const useCreateRides = (): UseCreateRidesRes => {
       dispatch(setScreenLoading(false))
       if (!res?.result?.success) {
         dispatch(notify(res?.result?.message || "Failure", "error"))
+        onError && onError()
         return
       }
 
@@ -207,60 +267,6 @@ export const useCreateRides = (): UseCreateRidesRes => {
       dispatch(setScreenLoading(false))
       onError && onError()
       console.log(error)
-    }
-  }
-
-  const compoundingCarCustomerResToRidesFormSlice = (
-    params: CompoundingCarCustomer
-  ): RidesFormSlice => {
-    return {
-      car_id: {
-        label: params.car.name,
-        value: params.car.car_id,
-        number_seat: params.car.number_seat,
-      },
-      check_policy: true,
-      compounding_type: params.compounding_type,
-      distance: params.distance,
-      expected_going_on_date: {
-        date_time: params.expected_going_on_date,
-        time: getTimes().find(
-          (item) => item.value === params.expected_going_on_date.slice(11)
-        ) as OptionModel,
-      },
-      expected_picking_up_date: params.expected_picking_up_date,
-      from_pick_up_station_id: {
-        ...params.from_pick_up_station,
-        from_station_location: {
-          from_address: params.from_address,
-          from_latitude: params.from_latitude,
-          from_longitude: params.from_longitude,
-        },
-      },
-      from_province_id: {
-        province_id: params.from_province.province_id,
-        address: params.from_address,
-        lat: Number(params.from_latitude),
-        lng: Number(params.from_longitude),
-      },
-      hour_of_wait_time: hoursBackList.find(
-        (item) => item.value === params.hour_of_wait_time
-      ) as { value: HourWaitTimeType; label: string },
-      is_a_day_tour: params.is_a_day_tour,
-      note: params.note,
-      number_seat: {
-        label: params.car.name,
-        value: params.car.number_seat,
-      },
-      price_unit_id: 0,
-      quality_car: undefined,
-      to_pick_up_station_id: params.to_pick_up_station,
-      to_province_id: {
-        address: params.to_address,
-        lat: Number(params.to_latitude),
-        lng: Number(params.to_longitude),
-        province_id: params.to_province.province_id,
-      },
     }
   }
 
@@ -292,7 +298,8 @@ export const useCreateRides = (): UseCreateRidesRes => {
     updateCompounding,
     getDetailCompoundingCar,
     getDetailCompoundingCarCustomer,
-    compoundingCarCustomerResToRidesFormSlice,
     compoundingCarCustomerResToRidesForm,
+    createExistedCompoundingCar,
+    confirmExistedCompoundingCarCustomer,
   }
 }

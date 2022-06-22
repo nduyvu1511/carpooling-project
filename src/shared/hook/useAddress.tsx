@@ -1,5 +1,5 @@
 import { SWRConfig } from "@/helper"
-import { DistrictId, ProvinceId, WardId } from "@/models"
+import { DistrictId, OptionModel, ProvinceId, WardId } from "@/models"
 import { addressApi } from "@/services"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
@@ -16,6 +16,8 @@ interface UseAddress {
   setDistricts: Function
   setWards: Function
   getProvinceId: (stringTerms: string) => number | undefined
+  stateOptions: () => OptionModel[]
+  getProvinceOptionById: (id: number) => OptionModel | undefined
 }
 
 export const useAddress = (
@@ -44,6 +46,14 @@ export const useAddress = (
       getWards(district_id)
     }
   }, [])
+
+  const stateOptions = (): OptionModel[] =>
+    !data?.length
+      ? []
+      : data?.map((item) => ({
+          label: item.province_name,
+          value: item.province_id,
+        }))
 
   const getDistricts = (state_id: number) => {
     addressApi
@@ -89,6 +99,13 @@ export const useAddress = (
     return provinceId
   }
 
+  const getProvinceOptionById = (
+    id: number | undefined
+  ): OptionModel | undefined => {
+    if (!id) return
+    return stateOptions()?.find((item) => item.value === id)
+  }
+
   return {
     getWards,
     getDistricts,
@@ -101,5 +118,7 @@ export const useAddress = (
     setDistricts,
     setWards,
     getProvinceId,
+    stateOptions,
+    getProvinceOptionById,
   }
 }

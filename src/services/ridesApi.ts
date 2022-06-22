@@ -1,20 +1,27 @@
 import {
   ConfirmCompoundingCar,
+  ConfirmTransactionParams,
+  CreateCarpoolCompounding,
+  CreateCompoundinCarDriver,
   CreateCompoundingCarCustomerParams,
   CreateCompoundingParams,
-  CreateExistedCarpoolingCompoundingCar,
-  GetCompoundingCarParams,
+  CreatePaymentDriverParams,
+  CreatePaymentParams,
+  GetCarpoolingListParams,
+  GetCompoundingListWithoutADriverParams,
   GetDetailCompounding,
   GetDetailCompoundingCustomer,
+  RidesDraftParams,
   UpdateCompoundingCar,
   UpdateCompoundingCarCustomer,
+  UpdateCompoundingCarDriver,
 } from "@/models"
 import axiosClient from "."
 
 const ridesApi = {
-  getCarpoolTrips: (params: GetCompoundingCarParams) => {
+  getCarpoolingCompoundingList: (params: GetCarpoolingListParams) => {
     return axiosClient.post(
-      "/compounding_car_controller/get_compounding_compounding_car",
+      "/compounding_car_controller/get_compounding_car_by_compounding",
       {
         params,
       }
@@ -33,17 +40,17 @@ const ridesApi = {
   },
 
   createCompoundingCarCustomer: (
-    params: CreateCompoundingCarCustomerParams
+    params: GetDetailCompoundingCustomer
   ) => {
     return axiosClient.post(
-      "/compounding_car_controller/create_compounding_car",
+      "/compounding_car_controller/create_compounding_car_customer",
       {
         params,
       }
     )
   },
 
-  confirmCreateCompoundingCar: (params: GetCompoundingCarParams) => {
+  confirmCreateCompoundingCar: (params: UpdateCompoundingCarCustomer) => {
     return axiosClient.post(
       "/compounding_car_controller/confirm_compounding_car",
       {
@@ -52,7 +59,7 @@ const ridesApi = {
     )
   },
 
-  confirmCreateCarpoolingCompoundingCar: (
+  confirmCarpoolingCompoundingCarCustomer: (
     params: GetDetailCompoundingCustomer
   ) => {
     return axiosClient.post(
@@ -81,9 +88,7 @@ const ridesApi = {
     )
   },
 
-  createExistedCarpoolingCompoundingCar: (
-    params: CreateExistedCarpoolingCompoundingCar
-  ) => {
+  createExistedCarpoolingCompoundingCar: (params: CreateCarpoolCompounding) => {
     return axiosClient.post(
       "/compounding_car_controller/create_compounding_car_customer",
       {
@@ -92,11 +97,11 @@ const ridesApi = {
     )
   },
 
-  getPendingCompoundingCar: (token: string) => {
+  getPendingCompoundingCar: (params: RidesDraftParams) => {
     return axiosClient.post(
       "/compounding_car_controller/get_pending_compounding_car",
       {
-        params: { token },
+        params,
       }
     )
   },
@@ -119,7 +124,7 @@ const ridesApi = {
     )
   },
 
-  getHistoryCompounding: (token: string) => {
+  getHistoryCompoundingCarCustomer: (token: string) => {
     return axiosClient.post(
       "/compounding_car_controller/get_history_compounding_car_customer",
       {
@@ -130,9 +135,9 @@ const ridesApi = {
     )
   },
 
-  getCustomerCompoundingList: (token: string) => {
+  getHistoryCompoundingCarDrive: (token: string) => {
     return axiosClient.post(
-      "/compounding_car_controller/get_compounding_car_by_compounding",
+      "/compounding_car_controller/get_history_compounding_car_driver",
       {
         params: {
           token,
@@ -141,7 +146,9 @@ const ridesApi = {
     )
   },
 
-  getDepositCompoundingCarCustomer: (params: GetDetailCompoundingCustomer) => {
+  confirmDepositCompoundingCarCustomer: (
+    params: GetDetailCompoundingCustomer
+  ) => {
     return axiosClient.post(
       "/compounding_car_controller/deposit_compounding_car_customer",
       {
@@ -150,22 +157,119 @@ const ridesApi = {
     )
   },
 
-  // getCheckoutListCompoundingCarCustomer: (
-  //   params: GetDetailCompoundingCustomer
-  // ) => {
-  //   return axiosClient.post(
-  //     "/compounding_car_controller/payment_compounding_car_customer",
-  //     {
-  //       params,
-  //     }
-  //   )
-  // },
-
   confirmPaidForCompoundingCarCustomer: (
     params: GetDetailCompoundingCustomer
   ) => {
     return axiosClient.post(
       "/compounding_car_controller/confirm_cash_payment_compounding_car_customer",
+      {
+        params,
+      }
+    )
+  },
+
+  getPaymentMethods: (token: string) => {
+    return axiosClient.post("/payment_controller/get_payment_method_in_app", {
+      params: {
+        token,
+      },
+    })
+  },
+
+  createPayment: (params: CreatePaymentParams) => {
+    return axiosClient.post(
+      "/vpnay_for_compounding_car_app_controller/create_payment",
+      {
+        params,
+      }
+    )
+  },
+
+  confirmTransaction: (params: ConfirmTransactionParams) => {
+    return axiosClient.post("/payment/vnpay/confirm_transaction", {
+      params,
+    })
+  },
+
+  getCompoundingListWithoutADriver: (
+    params: GetCompoundingListWithoutADriverParams
+  ) => {
+    return axiosClient.post(
+      "/compounding_car_controller/get_compounding_car_by_no_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  getDepositCompoundingCarDriver: (params: GetDetailCompounding) => {
+    return axiosClient.post(
+      "/compounding_car_controller/get_deposit_compounding_car_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  createPaymentForDriver: (params: CreatePaymentDriverParams) => {
+    return axiosClient.post(
+      "/vpnay_for_compounding_car_app_controller/create_payment_for_car_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  confirmDepositForDriver: (params: GetDetailCompounding) => {
+    return axiosClient.post(
+      "/compounding_car_controller/confirm_deposit_compounding_car_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  cancelDepositForDriver: (params: GetDetailCompounding) => {
+    return axiosClient.post(
+      "/compounding_car_controller/cancel_deposit_compounding_car_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  getPendingDepositCompoundingList: (token: string) => {
+    return axiosClient.post(
+      "/compounding_car_controller/get_pending_deposit_compounding_car_driver",
+      {
+        params: {
+          token,
+        },
+      }
+    )
+  },
+
+  createCompoundingCarForDriver: (params: CreateCompoundinCarDriver) => {
+    return axiosClient.post(
+      "/compounding_car_for_driver_controller/create_compounding_car",
+      {
+        params,
+      }
+    )
+  },
+
+  confirmCompoundingCarForDriver: (params: GetDetailCompounding) => {
+    return axiosClient.post(
+      "/compounding_car_for_driver_controller/confirm_compounding_car",
+      {
+        params,
+      }
+    )
+  },
+
+  updateCompoundingCarForDriver: (params: UpdateCompoundingCarDriver) => {
+    return axiosClient.post(
+      "/compounding_car_for_driver_controller/update_compounding_car",
       {
         params,
       }

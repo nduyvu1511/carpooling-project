@@ -28,7 +28,7 @@ export const FIREBASE_VAPID_KEY = "G-Y65TNJYHSL"
 export const LIMIT_MESSAGES = 30
 export const PRIMARY_COLOR = "#0BB2F5"
 export const REMEMBER_PASSWORD_KEY = "is_remember_password_KEY"
-export const FORM_LOGIN_KEY = "form_login_KEY"
+export const FORM_LOGIN_KEY = "form_login_key"
 export const HEADER_HEIGHT = 72
 export const DEFAULT_TRANSITION = {
   from: {
@@ -55,4 +55,44 @@ export const SWRConfig = {
 }
 export const GOOGLE_MAP_API_KEY = "AIzaSyDr3nOk0D6tpZjLKMJ65ElQlynRvvxo2j0"
 export const DEFAULT_DATE_TIME_VALUE = "00-00-0000 00:00:00"
-export const DEFAULT_HOUR_BACK_VALUE = "00_hour"
+export const DEFAULT_HOUR_BACK_VALUE = { value: "00_hour", label: "Số giờ chờ" }
+
+export const ONE_WAY_FROM_LOCATION = "one_way_from_location"
+export const ONE_WAY_DISTANCE = "one_way_distance"
+export const ONE_WAY_TO_LOCATION = "one_way_to_location"
+export const ONE_WAY_CAR_ID = "one_way_car_id"
+export const ONE_WAY_EXPECTED_GOING_ON_DATE = "one_way_expected_going_on_date"
+export const ONE_WAY_NOTE = "one_way_note"
+export const ONE_WAY_IS_CHECKED_POLICY = "one_way_is_checked_policy"
+export const ONE_WAY_PRICE = "one_way_price"
+
+export const TWO_WAY_FROM_LOCATION = "two_way_from_location"
+export const TWO_WAY_DISTANCE = "two_way_distance"
+export const TWO_WAY_PRICE = "two_way_price"
+export const TWO_WAY_TO_LOCATION = "two_way_to_location"
+export const TWO_WAY_CAR_ID = "two_way_car_id"
+export const TWO_WAY_EXPECTED_GOING_ON_DATE = "two_way_expected_going_on_date"
+export const TWO_WAY_NOTE = "two_way_note"
+export const TWO_WAY_IS_A_DAY_TOUR = "two_way_is_a_day_tour"
+export const TWO_WAY_HOUR_OF_WAIT_TIME = "two_way_hour_of_wait_time"
+export const TWO_WAY_IS_CHECKED_POLICY = "two_way_is_checked_policy"
+export const TWO_WAY_EXPECTED_PICKING_UP_DATE =
+  "two_way_expected_picking_up_date"
+
+export const CARPOOLING_FROM_STATION = "carpooling_from_station"
+export const CARPOOLING_FROM_LOCATION = "carpooling_from_location"
+export const CARPOOLING_FROM_PICK_UP_STATION_ID = "carpooling_from_station"
+export const CARPOOLING_DISTANCE = "carpooling_distance"
+export const CARPOOLING_TO_STATION = "carpooling_to_station"
+export const CARPOOLING_CAR_ID = "carpooling_car_id"
+export const CARPOOLING_EXPECTED_GOING_ON_DATE =
+  "carpooling_expected_going_on_date"
+export const CARPOOLING_NOTE = "carpooling_note"
+export const CARPOOLING_IS_CHECKED_POLICY = "carpooling_is_checked_policy"
+export const CARPOOLING_PRICE_PER_PASSENGER = "carpooling_price_per_passenger"
+export const CARPOOLING_NUMBER_SEAT = "carpooling_number_seat"
+export const CARPOOLING_IS_PICKING_UP_FROM_START =
+  "carpooling_is_picking_up_from_start"
+
+export const COMPOUNDING_VNPAY_CODE = "compounding_vnpay_code"
+export const LIMIT_COMPOUNDING_LIST = 12

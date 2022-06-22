@@ -13,7 +13,7 @@ import useSWR from "swr"
 
 interface UseVehicleDrivingLicenseRes {
   data: DrivingLicenseRes | undefined
-  isValidating: boolean
+  isValidating: boolean 
   createVehicleDrivingLicense: (
     para: UseParams<DrivingLicenseParams, DrivingLicenseRes>
   ) => void

@@ -43,7 +43,7 @@ const Picture = () => {
               bạn đang ở một mình.
             </h3>
             <button className="btn-primary picture__inner-action-btn">
-              Chọn hình ảnh
+              Tải hình ảnh
             </button>
           </div>
         </div>

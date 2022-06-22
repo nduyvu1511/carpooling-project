@@ -1,0 +1,43 @@
+.compounding__filter {
+  height: 100vh;
+  overflow-y: auto;
+  @include hide-scrollbar;
+  @include responsive(md-sceeen) {
+    height: unset;
+  }
+
+  &-item {
+    margin-bottom: 20px;
+  }
+
+  &-title {
+    @include style-text(1.8rem, 600, 2.4rem, $text-color);
+    margin-bottom: 10px;
+  }
+
+  &-item {
+    &-item {
+      margin-bottom: 6px;
+    }
+
+    &-title {
+      margin-bottom: 5px;
+      @include style-text(1.4rem, 500, 2.2rem, $text-color);
+    }
+  }
+
+  &-sort {
+    & .px-24 {
+      padding-inline: 12px;
+    }
+
+    & .item__select-info-title {
+      font-size: 1.4rem;
+      line-height: 2rem;
+    }
+  }
+
+  &-clear {
+    margin-inline: auto;
+  }
+}

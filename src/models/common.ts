@@ -44,6 +44,12 @@ export interface OptionModel {
   value: string | number
 }
 
+export interface NumberSeatOptionModel {
+  label: string
+  value: number
+  number_seat: number
+}
+
 export interface UseParams<T, U> {
   params: T
   onSuccess: (params: U) => void

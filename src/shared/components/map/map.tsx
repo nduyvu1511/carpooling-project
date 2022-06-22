@@ -33,16 +33,18 @@ interface MapProps {
     origin: LatLng
     destination: LatLng
   }
+  prevProvinceId?: number
 }
 export const Map = ({
   onChooseLocation,
   defaultLocation,
   viewOnly = false,
   direction,
+  prevProvinceId,
 }: MapProps) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAP_API_KEY,
-    libraries: ["geometry"],
+    libraries: ["geometry", "places"],
   })
 
   const dispatch = useDispatch()
@@ -88,8 +90,6 @@ export const Map = ({
       })
   }
   useEffect(() => {
-    // if (viewOnly) return
-
     if (defaultLocation?.province_id) {
       setCurrentAddress(defaultLocation)
       setCurrenLocation(defaultLocation)
@@ -100,7 +100,6 @@ export const Map = ({
       navigator.geolocation.getCurrentPosition(
         ({ coords: { latitude, longitude } }) => {
           setCurrenLocation({ lat: latitude, lng: longitude })
-
           getLocationFromLatlng({
             params: { lat: latitude, lng: longitude },
             onSuccess: (address) => {
@@ -141,19 +140,20 @@ export const Map = ({
 
   const handleConfirmLocation = () => {
     if (!currentAddress?.address) return
-
     const provinceName = getProvinceName(currentAddress?.address || "")
     if (!provinceName) {
       dispatch(notify("Vui lòng chọn vị trí hợp lệ", "warning"))
       return
     }
-
     const province_id = getProvinceId(provinceName)
     if (!province_id) {
       dispatch(notify("Vui lòng chọn vị trí hợp lệ", "warning"))
       return
     }
-
+    if (province_id === prevProvinceId) {
+      dispatch(notify("Exxe chỉ hỗ chợ những quốc xe khác tỉnh", "warning"))
+      return
+    }
     onChooseLocation && onChooseLocation({ ...currentAddress, province_id })
     dispatch(setOpenLocationFormModal(undefined))
   }
@@ -221,14 +221,16 @@ export const Map = ({
           {!viewOnly ? (
             <>
               <div className="map__search">
-                <MapSearch
-                  onSelect={(address) => {
-                    mapRef.current?.panTo({
-                      lat: address.lat,
-                      lng: address.lng,
-                    })
-                  }}
-                />
+                {mapRef?.current ? (
+                  <MapSearch
+                    onSelect={(address) => {
+                      mapRef.current?.panTo({
+                        lat: address.lat,
+                        lng: address.lng,
+                      })
+                    }}
+                  />
+                ) : null}
               </div>
 
               <span className="location-center-icon">

@@ -1,4 +1,6 @@
 .rides-available__container {
+  padding-bottom: 24px;
+
   & .rides__available {
     display: grid;
     grid-template-columns: 1fr;
@@ -66,7 +68,6 @@
     padding-block: 2rem;
     grid-gap: 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
     @include responsive(md-screen) {
       padding-bottom: 2rem;
     }
@@ -202,4 +203,56 @@
       color: $text-color-2;
     }
   }
+}
+
+.rides-driver__detail {
+  &-title {
+    @include style-text(1.8rem, 500, 2.4rem, $text-color);
+    margin-bottom: 10px;
+  }
+
+  & .rides__item {
+    box-shadow: unset;
+  }
+
+  &-map {
+    height: 200px;
+  }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+
+    & .btn-primary {
+      width: 100%;
+      border-radius: 0;
+    }
+  }
+}
+
+.draft-order-container {
+  & .draft-order__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+}
+
+.rides__filter-mobile {
+  position: fixed;
+  @include fixed(0, 0, 0, unset);
+  background-color: $white;
+  padding-block: 10px;
+
+  @include responsive(lg-screen) {
+    display: none;
+  }
+
+  & button {
+    margin: 0 auto;
+  }
+}
+
+.checkout-success {
+  @include flex-center;
+  flex-direction: column;
 }

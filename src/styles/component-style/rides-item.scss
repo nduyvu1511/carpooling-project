@@ -48,9 +48,15 @@
   @include flex(space-between, unset);
   flex-direction: column;
 
+  &-title {
+    @include style-text(1.6rem, 600, 2.2rem, $text-color);
+    margin-bottom: 10px;
+    @include limit-line-text(2);
+  }
+
   &-top {
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
   }
 
   &-content {

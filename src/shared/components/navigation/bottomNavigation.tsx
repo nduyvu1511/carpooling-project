@@ -35,10 +35,10 @@ export const BottomNavigation = () => {
         isActive: router.pathname === "/chat",
       },
       {
-        path: "/dashboard/profile/menu",
+        path: "/dashboard/profile",
         label: "Tài khoản",
         icon: <MdOutlineAccountCircle />,
-        isActive: router.pathname === "/dashboard/profile/menu",
+        isActive: router.pathname === "/dashboard/profile",
       },
     ],
     [router.pathname]

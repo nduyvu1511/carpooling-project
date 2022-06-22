@@ -1,6 +1,6 @@
 import { Input, Modal, RideResultItem } from "@/components"
 import { RootState } from "@/core/store"
-import { setOpenRidesModalSearch } from "@/modules/rides/ridesSlice"
+import { setOpenRidesModalSearch } from "@/modules/compounding/compoundingSlice"
 import { useDispatch, useSelector } from "react-redux"
 
 export const InputRidesSearchModal = () => {

@@ -1,6 +1,3 @@
-export * from "./inputCheckbox"
-export * from "./inputQuantity"
-export * from "./inputRange"
-export * from "./itemSelect"
-export * from "./Input"
-export * from "./inputSelect"
+export * from "./common"
+export * from "./compounding"
+

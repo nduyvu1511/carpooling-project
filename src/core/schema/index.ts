@@ -226,3 +226,140 @@ export const createCompoundingCarSchema = Yup.object().shape({
   ),
   description: Yup.string(),
 })
+
+export const oneWayCompoundingCarSchema = Yup.object().shape({
+  expected_going_on_date: Yup.string()
+    .typeError("Vui lòng đúng định dạng ngày đi")
+    .matches(DATE_REGEX, "Vui lòng nhập đúng định dạng giờ")
+    .required("Vui lòng nhập ngày đi"),
+  quality_car: Yup.string().oneOf(["5_star", "4_star", "3_star"]).nullable(),
+  from_location: Yup.object()
+    .shape({
+      lng: Yup.string().required(),
+      lat: Yup.string().required(),
+      address: Yup.string().required(),
+      province_id: Yup.number().required(),
+    })
+    .required("Vui lòng nhập nơi đi"),
+  to_location: Yup.object()
+    .shape({
+      lng: Yup.string().required(),
+      lat: Yup.string().required(),
+      address: Yup.string().required(),
+      province_id: Yup.number().required(),
+    })
+    .required("Vui lòng nhập nơi đi"),
+  car_id: Yup.object()
+    .shape({
+      label: Yup.string().required(),
+      value: Yup.number().required(),
+    })
+    .required("Vui lòng nhập loại xe"),
+  is_checked_policy: Yup.boolean().required(
+    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
+  ),
+  note: Yup.string().nullable(),
+  distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
+  price: Yup.number(),
+})
+
+export const twoWayCompoundingCarSchema = Yup.object().shape({
+  expected_going_on_date: Yup.string()
+    .typeError("Vui lòng đúng định dạng ngày đi")
+    .matches(DATE_REGEX, "Vui lòng nhập đúng định dạng giờ")
+    .required("Vui lòng nhập ngày đi"),
+  quality_car: Yup.string().oneOf(["5_star", "4_star", "3_star"]).nullable(),
+  from_location: Yup.object()
+    .shape({
+      lng: Yup.string().required(),
+      lat: Yup.string().required(),
+      address: Yup.string().required(),
+      province_id: Yup.number().required(),
+    })
+    .required("Vui lòng nhập nơi đi"),
+  to_location: Yup.object()
+    .shape({
+      lng: Yup.string().required(),
+      lat: Yup.string().required(),
+      address: Yup.string().required(),
+      province_id: Yup.number().required(),
+    })
+    .required("Vui lòng nhập nơi đi"),
+  car_id: Yup.object()
+    .shape({
+      label: Yup.string().required(),
+      value: Yup.number().required(),
+    })
+    .required("Vui lòng nhập loại xe"),
+  is_checked_policy: Yup.boolean().required(
+    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
+  ),
+  note: Yup.string().nullable(),
+  distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
+  is_a_day_tour: Yup.boolean().required(),
+  hour_of_wait_time: Yup.object()
+    .shape({
+      label: Yup.string().required(),
+      value: Yup.string().required(),
+    })
+    .required(),
+  expected_picking_up_date: Yup.string().required(),
+  price: Yup.number(),
+})
+
+export const carpoolingCompoundingCarSchema = Yup.object().shape({
+  from_station: Yup.object()
+    .shape({
+      station_name: Yup.string().required(),
+      station_id: Yup.number().required(),
+      province_id: Yup.number().required(),
+      address: Yup.string().required(),
+      lat: Yup.string().required(),
+      lng: Yup.string().required(),
+      province_name: Yup.string(),
+    })
+    .required("Vui lòng nhập trường này"),
+  to_station: Yup.object()
+    .shape({
+      station_name: Yup.string().required(),
+      station_id: Yup.number().required(),
+      province_id: Yup.number().required(),
+      address: Yup.string().required(),
+      lat: Yup.string().required(),
+      lng: Yup.string().required(),
+      province_name: Yup.string(),
+    })
+    .required("Vui lòng nhập trường này"),
+  from_location: Yup.object()
+    .shape({
+      lng: Yup.string(),
+      lat: Yup.string(),
+      address: Yup.string(),
+      province_id: Yup.number(),
+    })
+    .nullable(),
+  expected_going_on_date: Yup.string()
+    .typeError("Vui lòng đúng định dạng ngày đi")
+    .matches(DATE_REGEX, "Vui lòng nhập đúng định dạng giờ")
+    .required("Vui lòng nhập ngày đi"),
+  quality_car: Yup.string().oneOf(["5_star", "4_star", "3_star"]).nullable(),
+  car_id: Yup.object()
+    .shape({
+      label: Yup.string().required(),
+      value: Yup.number().required(),
+    })
+    .required("Vui lòng nhập loại xe"),
+  is_checked_policy: Yup.boolean().required(
+    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
+  ),
+  note: Yup.string().nullable(),
+  distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
+  number_seat: Yup.object()
+    .shape({
+      value: Yup.number().required(),
+      label: Yup.string().required(),
+    })
+    .required("Vui lòng nhập trường này"),
+  // is_picking_up_from_start: Yup.boolean().nullable(),
+  price_per_passenger: Yup.number().nullable(),
+})

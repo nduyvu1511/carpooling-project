@@ -1,5 +1,5 @@
 export * from "./ridesSearchItem"
-export * from "../form/ridesSearchForm"
+export * from "../form/compounding/ridesSearchForm"
 export * from "./ridesResult"
 export * from "./rideResultItem"
 export * from "./inputRidesSearchModal"

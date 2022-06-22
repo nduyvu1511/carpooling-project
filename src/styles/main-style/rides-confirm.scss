@@ -31,6 +31,12 @@
 
         &-content {
           flex: 1;
+          display: flex;
+          flex-wrap: wrap;
+
+          & .rides__confirm-date-date-from {
+            margin-right: 20px;
+          }
         }
       }
 
@@ -88,9 +94,19 @@
 }
 
 .rides__checkout {
+  &-loading {
+    padding-block: 4rem;
+    @include flex-center;
+
+    & svg {
+      font-size: 3rem;
+      color: $text-color-2;
+    }
+  }
+
   &-header {
     &-title {
-      @include style-text(1.8rem, 500, 2.6rem, $text-color);
+      @include style-text(1.6rem, 500, 2.4rem, $text-color);
       text-align: center;
       margin-bottom: 20px;
 
@@ -119,6 +135,54 @@
 
       &-r {
         @include style-text(1.8rem, 600, 2.2rem, $text-color);
+      }
+    }
+  }
+
+  &-checkout-btn {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  &-loading {
+    padding-block: 40px;
+    @include flex-center;
+
+    & svg {
+      font-size: 3rem;
+      color: $text-color-2;
+    }
+  }
+
+  &-failure {
+    padding-block: 32px;
+
+    &-title {
+      @include style-text(1.8rem, 500, 2.6rem, $yellow);
+      margin-bottom: 16px;
+
+      & span {
+        color: $black;
+        font-weight: 600;
+      }
+    }
+
+    &-deposit {
+      @include flex-center;
+      flex-direction: column;
+
+      &-name {
+        // @include
+      }
+      &-action {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      & button:first-child {
+        background-color: $danger;
+        margin-right: 10px;
       }
     }
   }

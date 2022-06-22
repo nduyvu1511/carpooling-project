@@ -8,6 +8,8 @@ import {
 } from "@/assets"
 import {
   CertificateInspectionFormKey,
+  CompoundingOrderField,
+  CompoundingType,
   DepartureFormKey,
   DriverFormKey,
   DrivingLicenseClassType,
@@ -28,9 +30,19 @@ import { ReactNode } from "react"
 import { BiMerge } from "react-icons/bi"
 import { CgArrowRight, CgArrowsExchange } from "react-icons/cg"
 import { FiSearch } from "react-icons/fi"
-import { HiOutlineLocationMarker } from "react-icons/hi"
-import { MdOutlineDateRange } from "react-icons/md"
-import { RiCarWashingLine } from "react-icons/ri"
+import {
+  HiOutlineClipboardList,
+  HiOutlineLocationMarker,
+  HiOutlineTrash,
+  HiStar,
+} from "react-icons/hi"
+import {
+  MdLockOutline,
+  MdOutlineDateRange,
+  MdPayment,
+  MdPendingActions,
+} from "react-icons/md"
+import { RiCarWashingLine, RiCouponLine } from "react-icons/ri"
 
 export const notifications = [{}]
 
@@ -75,7 +87,7 @@ export const headerUserOptions = [
   {
     icon: userCircleIcon(24),
     name: "Thông tin cá nhân",
-    path: "/dashboard/profile/menu",
+    path: "/dashboard/profile",
   },
   {
     icon: dbIcon(24),
@@ -127,11 +139,11 @@ export const headerNavs: {
     icon: <BiMerge />,
     path: "/offer-seats?compounding_type=compounding",
   },
-  {
-    label: "Tìm kiếm",
-    icon: <FiSearch />,
-    path: "/search",
-  },
+  // {
+  //   label: "Tìm kiếm",
+  //   icon: <FiSearch />,
+  //   path: "/search",
+  // },
 ]
 
 export const userFormFields: {
@@ -586,7 +598,6 @@ export const userInfoFormfields: {
   placeholder: string
   type: "file" | "text" | "select" | "date" | "textarea"
   isRequired: boolean
-  options?: OptionModel[]
 }[] = [
   {
     name: "avatar_attachment_id",
@@ -611,14 +622,12 @@ export const userInfoFormfields: {
     isRequired: true,
     placeholder: "Giới tính",
     type: "select",
-    options: genderList,
   },
   {
     name: "description",
     isRequired: false,
     placeholder: "Mô tả bản thân",
     type: "textarea",
-    options: genderList,
   },
 ]
 
@@ -668,6 +677,56 @@ export const certificatesRegistrationFormFields: {
     name: "date_of_expiry",
     isRequired: true,
     label: "Ngày Hết Hạn",
+  },
+]
+
+export const dashboardAccounts: {
+  name: string
+  path: string
+  icon: ReactNode
+  type: "both" | "customer" | "driver"
+}[] = [
+  {
+    name: "Hoạt động",
+    path: "/activities",
+    icon: <HiOutlineClipboardList />,
+    type: "both",
+  },
+  {
+    name: "Đơn hàng nháp",
+    path: "/dashboard/profile/draft-order",
+    icon: <HiOutlineTrash />,
+    type: "both",
+  },
+  {
+    name: "Đơn hàng đang thanh toán",
+    path: "/dashboard/profile/pending-deposit",
+    icon: <MdPendingActions />,
+    type: "both",
+  },
+  {
+    name: "Đánh giá",
+    path: "/dashboard/ratings/given",
+    icon: <HiStar />,
+    type: "both",
+  },
+  {
+    name: "Kho voucher",
+    path: "/dashboard/profile/promotion",
+    icon: <RiCouponLine />,
+    type: "both",
+  },
+  // {
+  //   name: "Thanh toán",
+  //   path: "/dashboard/profile/payment",
+  //   icon: <MdPayment />,
+  // type: 'both'
+  // },
+  {
+    name: "Mật khẩu",
+    path: "/dashboard/profile/password",
+    icon: <MdLockOutline />,
+    type: "both",
   },
 ]
 
@@ -819,4 +878,31 @@ export const hoursBackList: { label: string; value: HourWaitTimeType }[] = [
     label: "12 Giờ",
     value: "12_hour",
   },
+]
+
+export const compoundingTypeFilters: {
+  label: string
+  value: CompoundingType
+}[] = [
+  {
+    label: "Một Chiều",
+    value: "one_way",
+  },
+  {
+    label: "Hai Chiều",
+    value: "two_way",
+  },
+  {
+    label: "Đi Ghép",
+    value: "compounding",
+  },
+]
+
+export const compoundingOrderList: {
+  value: CompoundingOrderField
+  label: string
+}[] = [
+  { value: "sort_by_lowest_price", label: "Giá thấp đến cao" },
+  { value: "sort_by_highest_price", label: "Giá cao đến thấp" },
+  { value: "sort_by_distance", label: "Vị trí gần nhất" },
 ]

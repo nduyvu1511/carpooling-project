@@ -1,12 +1,8 @@
-import {
-  CountryId,
-  DistrictId,
-  ProvinceId,
-  StationPickUpParams,
-  WardId,
-} from "./address"
-import { CarAccountType, GenderType } from "./user"
-import { CarId, CarIdType } from "./vehicle"
+import { ProvinceId, StationId, StationPickUpParams } from "./address"
+import { OptionModel } from "./common"
+import { FromLocation } from "./location"
+import { CarAccountType, GenderType, UserInfo } from "./user"
+import { CarId } from "./vehicle"
 
 export interface DepartureForm {
   date: string
@@ -108,18 +104,6 @@ export interface CreateCommonCompounding {
   distance: number
 }
 
-export interface CreateExistedCarpoolingCompoundingCarNoToken {
-  compounding_car_id: string
-  from_pick_up_station_id: string
-  is_picking_up_from_start: string
-  to_pick_up_station_id: string
-}
-
-export interface CreateExistedCarpoolingCompoundingCar
-  extends CreateExistedCarpoolingCompoundingCarNoToken {
-  token: string
-}
-
 export interface CreateOneWayCompoundingNoToken
   extends CreateCommonCompounding {}
 
@@ -145,6 +129,48 @@ export interface CreateTwoWayCompoundingNoToken
   expected_picking_up_date?: string | false
 }
 
+export interface CreateTwoWayCompoundingSubmitForm
+  extends CreateTwoWayCompoundingNoToken {
+  mode: "create" | "update"
+}
+
+export interface CreateCommonCompoundingForm {
+  from_location: FromLocation
+  to_location: FromLocation
+  car_id: OptionModel
+  note?: string
+  expected_going_on_date: string
+  distance: number
+  is_checked_policy: boolean
+}
+
+export interface CreateOneWayCompoundingForm
+  extends CreateCommonCompoundingForm {
+  price?: number
+}
+
+export interface CreateTwoWayCompoundingForm
+  extends CreateCommonCompoundingForm {
+  is_a_day_tour: boolean
+  hour_of_wait_time?: OptionModel
+  expected_picking_up_date?: string
+  price?: number
+}
+
+export interface CreateCarpoolingCompoundingForm {
+  car_id: OptionModel & { number_seat: number }
+  // is_picking_up_from_start: boolean
+  price_per_passenger?: number
+  number_seat: OptionModel
+  from_station: StationId
+  to_station: StationId
+  from_location?: FromLocation
+  note?: string
+  expected_going_on_date: string
+  distance: number
+  is_checked_policy: boolean
+}
+
 export interface CreateTwoWayCompounding
   extends CreateTwoWayCompoundingNoToken {
   token: string
@@ -165,8 +191,9 @@ export interface CreateCarpoolCompoundingNoToken
   from_pick_up_station_id: number
   to_pick_up_station_id: number
   number_seat: number
-  distance: number
   is_picking_up_from_start: boolean
+  price_per_passenger?: number
+  compounding_car_id?: number
 }
 
 export interface UpdateCarpoolCompoundingNoToken
@@ -186,6 +213,12 @@ export interface CreateCarpoolCompounding
 
 export interface UpdateCompoundingCarCustomer {
   compounding_car_customer_id: number
+  token: string
+}
+
+export interface GetDetailCompoundingCarCustomer {
+  compounding_car_customer_id?: number
+  compounding_customer_id?: number
   token: string
 }
 
@@ -212,17 +245,6 @@ export type HourWaitTimeType =
 export interface CreateCompoundingCarParams
   extends CreateCompoundingCarNoTokenParams {
   token: string
-}
-
-export interface GetCompoundingCarParams {
-  token: string
-  from_province_id: number
-  to_province_id: number
-  car_id: number
-  number_seat: number
-  expected_going_on_date: string
-  limit?: number
-  offset?: number
 }
 
 export interface GetDetailCompounding {
@@ -269,9 +291,9 @@ export type CreateCompoundingCarCustomerParams = CreateCompoundingParams & {
 
 export interface CreateCompoundingCarRes extends CompoundingCarCustomer {}
 
-export interface CompoundingCar {
+export interface CompoundingCarRes {
   compounding_car_id: number
-  compounding_car_code: boolean
+  compounding_car_code: string
   compounding_car_name: string
   car_driver_id: CarDriverId
   compounding_type: CompoundingType
@@ -280,7 +302,7 @@ export interface CompoundingCar {
   to_province: ProvinceId
   to_pick_up_station: StationPickUpParams
   expected_going_on_date: string
-  expected_picking_up_date: boolean
+  expected_picking_up_date: string
   car: CarId
   quality_car: QualityCarType
   number_seat_in_car: number
@@ -289,7 +311,25 @@ export interface CompoundingCar {
     name: string
     price_unit: number
   }
-  state: string
+  state:
+    | "draft"
+    | "waiting"
+    | "waiting_deposit"
+    | "confirm_deposit"
+    | "confirm"
+    | "start_running"
+    | "stop_picking"
+    | "done"
+    | "cancel"
+  note: string
+  second_remains: number
+  from_address: string
+  from_longitude: string
+  from_latitude: string
+  to_address: string
+  to_longitude: string
+  to_latitude: string
+  distance: number
 }
 
 export interface CompoundingCarCustomer {
@@ -315,18 +355,18 @@ export interface CompoundingCarCustomer {
   amount_total: number
   down_payment: number
   amount_due: number
-  state: string
+  state: CompoundingCarCustomerStatus
   compounding_type: CompoundingType
   expected_going_on_date: string
   expected_picking_up_date: string
   car: CarId
   car_driver_id: CarDriverId
   distance: number
-  price_unit_id: number
   note: string
   hour_of_wait_time: HourWaitTimeType
   is_a_day_tour: boolean
-  seconds_remains: number
+  second_remains: number
+  number_available_seat: number
 }
 
 export interface PartnerCompoundingCar {
@@ -374,4 +414,147 @@ export interface GetCompoundingCarCustomerList {
   car_id: number
   number_seat: number
   expected_going_on_date: string
+}
+
+export interface CreatePaymentParams {
+  token: string
+  acquirer_id: number
+  compounding_car_customer_id: number
+  returned_url: string
+}
+
+export interface CreatePaymentDriverParams {
+  token: string
+  acquirer_id: number
+  compounding_car_id: number
+  returned_url: string
+  payment_id: number
+}
+
+export interface ConfirmTransactionParams {
+  token: string
+  sale_order_id: number
+}
+
+export interface CompoundingDriverListParams {
+  from_province_id?: number
+  to_province_id?: number
+  car_id?: number
+  from_expected_going_on_date?: string
+  to_expected_going_on_date?: string
+  compounding_type?: CompoundingType
+  sort_by_lowest_price?: boolean
+  sort_by_highest_price?: boolean
+  sort_by_distance?: boolean
+  limit?: number
+  offset?: number
+  current_latitude?: string
+  current_longitude?: string
+}
+
+export interface GetCompoundingListWithoutADriverParams
+  extends CompoundingDriverListParams {
+  token: string
+}
+
+export interface PaymentRes {
+  acquirer_id: number
+  name: string
+  provider: string
+  state: "enabled"
+  image: string
+}
+
+export interface CreatePaymentRes {
+  vnpay_payment_url: string
+  vnpay_code: string
+}
+
+export type CompoundingCarCustomerStatus =
+  | "draft"
+  | "confirm"
+  | "deposit"
+  | "waiting"
+  | "assign"
+  | "in_process"
+  | "done"
+  | "customer_pay"
+  | "confirm_pay"
+  | "cancel"
+
+export type CompoundingOrderField =
+  | "sort_by_lowest_price"
+  | "sort_by_highest_price"
+  | "sort_by_distance"
+
+export interface CompoundingFilterFormParams {
+  order_by?: CompoundingOrderField
+  from_province_id?: number
+  to_province_id?: number
+  car_id?: number
+  from_expected_going_on_date?: string
+  to_expected_going_on_date?: string
+  compounding_type?: CompoundingType
+  current_latitude?: string
+  current_longitude?: string
+}
+
+export interface CompoundingCarCustomerFilterForm
+  extends CompoundingFilterFormParams {
+  number_seat?: number
+}
+
+export interface GetCarpoolingListParams {
+  token: string
+  from_province_id?: number
+  to_province_id?: number
+  car_id?: number
+  number_seat?: number
+  from_expected_going_on_date?: string
+  to_expected_going_on_date?: string
+  sort_by_lowest_price?: boolean
+  sort_by_highest_price?: boolean
+  sort_by_distance?: boolean
+  current_latitude?: string
+  current_longitude?: string
+  limit?: number
+  offset?: number
+}
+
+export interface CompoundingDriverDepositRes {
+  payment_id: number
+  payment_type: string
+  partner_type: string
+  partner_id: UserInfo
+  amount_total: number
+  state: "draft" | "posted" | "cancel"
+  date: string
+  compounding_car: {
+    compounding_car_id: number
+    compounding_car_name: string
+  }
+}
+
+export interface RidesDraftParams {
+  token: string
+  limit?: number
+  offset?: number
+}
+
+export interface CreateCompoundinCarDriver {
+  token: string
+  compounding_type: CompoundingType
+  from_province_id: number
+  to_province_id: number
+  expected_going_on_date: string
+  car_id: number
+  note?: string
+  from_longitude: string
+  from_latitude: string
+  to_longitude: string
+  to_latitude: string
+}
+
+export interface UpdateCompoundingCarDriver extends CreateCompoundinCarDriver {
+  compounding_car_id: number
 }

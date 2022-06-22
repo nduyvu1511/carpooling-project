@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux"
 import NotificationsSystem, {
   atalhoTheme,
   dismissNotification,
-  setUpNotifications
+  setUpNotifications,
 } from "reapop"
+import { useUserInfo } from "shared/hook"
 import { RootState } from "../core"
 
 const App = ({ children }: { children: ReactNode }) => {
   const dispatch = useDispatch()
   const notifications = useSelector((state: RootState) => state.notifications)
+  useUserInfo(true, true)
 
   useEffect(() => {
     setUpNotifications({
@@ -36,4 +38,3 @@ const App = ({ children }: { children: ReactNode }) => {
 }
 
 export { App }
-

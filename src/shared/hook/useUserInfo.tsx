@@ -1,6 +1,6 @@
 import { RootState } from "@/core/store"
 import { CreateUserFormParams, UseParams, UserInfo } from "@/models"
-import { setScreenLoading } from "@/modules"
+import { setScreenLoading, setToken, setUserInfo } from "@/modules"
 import { userApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
 import { notify } from "reapop"
@@ -13,18 +13,33 @@ interface UserRes {
   updateUserInfo: (para: UseParams<CreateUserFormParams, UserInfo>) => void
 }
 
-const useUserInfo = (shouldFetch = false): UserRes => {
+const useUserInfo = (
+  shouldFetch = false,
+  shouldValidateToken = false
+): UserRes => {
   const { token } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
 
   const { data, isValidating } = useSWR<UserInfo>(
     "user_info",
     shouldFetch && token
-      ? () => userApi.getUserInfo(token).then((res: any) => res?.result?.data)
+      ? () =>
+          userApi.getUserInfo(token).then((res: any) => {
+            const userInfo = res?.result?.data
+            if (shouldValidateToken) {
+              if (!res?.result?.success) {
+                dispatch(setUserInfo(undefined))
+                dispatch(setToken(""))
+              } else {
+                dispatch(setUserInfo(userInfo))
+              }
+            }
+            return userInfo
+          })
       : null,
     {
       shouldRetryOnError: false,
-      dedupingInterval: 1000,
+      dedupingInterval: 10000,
       revalidateOnFocus: false,
     }
   )

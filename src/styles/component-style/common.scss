@@ -332,6 +332,10 @@
   }
 }
 
+.failure__screen {
+  background-color: $danger;
+}
+
 .alert__screen {
   @include fixed(0, 0, 0, 0);
   background-color: $alert-bg;

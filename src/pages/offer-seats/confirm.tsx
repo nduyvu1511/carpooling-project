@@ -1,9 +1,13 @@
-import { CreateRidesForm, Map } from "@/components"
+import { Map, OneWayCompoundingForm, TwoWayCompoundingForm } from "@/components"
+import { CarpoolingCompoundingForm } from "@/components/form/compounding/carpoolingCompoundingForm"
 import { RideContainer } from "@/container"
 import { formatMoneyVND, getCompoundingTypeName } from "@/helper"
-import { CreateCompoundingParams } from "@/models"
-import { resetRidesForm } from "@/modules"
+import {
+  CreateCompoundingCarRes,
+  CreateCompoundingParams
+} from "@/models"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { BsCalendar3 } from "react-icons/bs"
 import { FaCarSide, FaRegEdit } from "react-icons/fa"
 import { IoMdFlag, IoMdInformationCircle, IoMdPricetags } from "react-icons/io"
@@ -11,37 +15,65 @@ import { MdLocationOn } from "react-icons/md"
 import { RiPinDistanceFill } from "react-icons/ri"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useCreateRides, useFetchCompoundingCarCustomer } from "shared/hook"
+import { useCompoundingForm, useCreateRides, useToken } from "shared/hook"
 
 const Confirm = () => {
+  const { token } = useToken()
   const router = useRouter()
   const dispatch = useDispatch()
-
   const {
     confirmCompounding,
-    compoundingCarCustomerResToRidesForm,
     updateCompounding,
+    getDetailCompoundingCarCustomer,
   } = useCreateRides()
-
   const { compounding_car_customer_id } = router.query
+  // const { isValidating, data: compoundingCar } = useFetchCompoundingCarCustomer(
+  //   "get_detail_compounding_car_customer_confirm"
+  // )
+  const [compoundingCar, setCompoundingCar] =
+    useState<CreateCompoundingCarRes>()
+  const {
+    clearCarpoolingWayCompoundingCar,
+    clearOneWayCompoundingCar,
+    clearTwoWayCompoundingCar,
+    compoundingCarCustomerResToOneWayForm,
+    compoundingCarCustomerResToTwoWayForm,
+    compoundingCarCustomerResToCarpoolingForm,
+  } = useCompoundingForm()
 
-  const { isValidating, data: compoundingCar } =
-    useFetchCompoundingCarCustomer()
+  useEffect(() => {
+    if (!compounding_car_customer_id || !token) return
+
+    getDetailCompoundingCarCustomer({
+      params: {
+        compounding_car_customer_id: +compounding_car_customer_id,
+      },
+      onSuccess: (data) => {
+        setCompoundingCar(data)
+      },
+    })
+  }, [compounding_car_customer_id])
 
   const handleConfirmCompoundingCar = (compounding_car_customer_id: number) => {
     confirmCompounding({
       params: { compounding_car_customer_id },
       onSuccess: () => {
-        dispatch(resetRidesForm())
         router.push(
           `/offer-seats/checkout?compounding_car_customer_id=${compounding_car_customer_id}`
         )
       },
     })
+
+    if (compoundingCar?.compounding_type === "compounding") {
+      clearCarpoolingWayCompoundingCar()
+    } else if (compoundingCar?.compounding_type === "one_way") {
+      clearOneWayCompoundingCar()
+    } else {
+      clearTwoWayCompoundingCar()
+    }
   }
 
   const handleUpdateCompoundingCar = (data: CreateCompoundingParams) => {
-    // if(compoundingCar)
     updateCompounding({
       params: {
         ...data,
@@ -125,7 +157,7 @@ const Confirm = () => {
                   </p>
 
                   <p className="rides__confirm-location-item-r">
-                    {formatMoneyVND(1200000)}
+                    {formatMoneyVND(compoundingCar.amount_total)}
                   </p>
                 </li>
 
@@ -187,21 +219,57 @@ const Confirm = () => {
 
             <div className="rides__confirm-item">
               {compoundingCar?.compounding_type ? (
-                <CreateRidesForm
-                  onSubmit={() =>
-                    handleConfirmCompoundingCar(
-                      compoundingCar?.compounding_car_customer_id
-                    )
-                  }
-                  onUpdate={(data) => {
-                    handleUpdateCompoundingCar(data)
-                  }}
-                  mode="update"
-                  type={compoundingCar.compounding_type}
-                  defaultValues={compoundingCarCustomerResToRidesForm(
-                    compoundingCar
+                <>
+                  {compoundingCar.compounding_type === "one_way" ? (
+                    <OneWayCompoundingForm
+                      defaultValues={compoundingCarCustomerResToOneWayForm(
+                        compoundingCar
+                      )}
+                      mode="update"
+                      onSubmit={(data) => {
+                        if (data.mode === "update") {
+                          handleUpdateCompoundingCar(data)
+                        } else {
+                          handleConfirmCompoundingCar(
+                            compoundingCar.compounding_car_customer_id
+                          )
+                        }
+                      }}
+                    />
+                  ) : compoundingCar.compounding_type === "two_way" ? (
+                    <TwoWayCompoundingForm
+                      defaultValues={compoundingCarCustomerResToTwoWayForm(
+                        compoundingCar
+                      )}
+                      mode="update"
+                      onSubmit={(data) => {
+                        if (data.mode === "update") {
+                          handleUpdateCompoundingCar(data)
+                        } else {
+                          handleConfirmCompoundingCar(
+                            compoundingCar.compounding_car_customer_id
+                          )
+                        }
+                      }}
+                    />
+                  ) : (
+                    <CarpoolingCompoundingForm
+                      mode="update"
+                      defaultValues={compoundingCarCustomerResToCarpoolingForm(
+                        compoundingCar
+                      )}
+                      onSubmit={(data) => {
+                        if (data.mode === "update") {
+                          handleUpdateCompoundingCar(data)
+                        } else {
+                          handleConfirmCompoundingCar(
+                            compoundingCar.compounding_car_customer_id
+                          )
+                        }
+                      }}
+                    />
                   )}
-                />
+                </>
               ) : null}
             </div>
           </div>
