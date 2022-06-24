@@ -2,9 +2,7 @@ import {
   AddressTypeKey,
   CompoundingType,
   GroupTimeType,
-  OptionModel,
-  ProvinceId,
-  TIME_TYPE,
+  OptionModel, TIME_TYPE
 } from "@/models"
 import _ from "lodash"
 import { LatLng } from "use-places-autocomplete"

@@ -1,9 +1,9 @@
 import { LayoutProps } from "@/models"
-import { clearOrderData, logOut, setToken, setUserInfo } from "@/modules"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { useAuth } from "shared/hook"
+import useLogout from "shared/hook/user/useLogout"
 import { RootState } from "../core"
 import { MainLayout } from "./main"
 
@@ -11,7 +11,7 @@ export const MainAuthLayout = ({ children }: LayoutProps) => {
   const { token } = useSelector((state: RootState) => state.user)
   const router = useRouter()
   const { getUserInfo } = useAuth()
-  const dispatch = useDispatch()
+  const { handleLogout } = useLogout()
 
   useEffect(() => {
     if (!token) {
@@ -21,8 +21,7 @@ export const MainAuthLayout = ({ children }: LayoutProps) => {
         token,
         () => {},
         () => {
-          dispatch(logOut())
-          dispatch(clearOrderData())
+          handleLogout()
           router.push("/login")
         }
       )

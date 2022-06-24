@@ -3,7 +3,7 @@ import { CompoundingCarCustomer } from "@/models"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import useSWR from "swr"
-import { useToken } from "./useToken"
+import { useToken } from "../user"
 
 interface Res {
   data: CompoundingCarCustomer

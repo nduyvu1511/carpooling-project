@@ -37,7 +37,6 @@ const OfferSeat = () => {
         ...params,
       } as UpdateCompoundingCar,
       onSuccess: () => {
-        console.log("success")
         router.push(
           `offer-seats/confirm?compounding_car_customer_id=${params.compounding_car_customer_id}`
         )

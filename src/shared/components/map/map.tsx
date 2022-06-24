@@ -14,7 +14,7 @@ import { RiLoader4Fill } from "react-icons/ri"
 import { TiLocation } from "react-icons/ti"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useAddress } from "shared/hook"
+import { useAddressOptions } from "shared/hook"
 import { MapSearch } from "./mapSearch"
 
 type MapOptions = google.maps.MapOptions
@@ -55,7 +55,7 @@ export const Map = ({
     []
   )
 
-  const { getProvinceId } = useAddress(true)
+  const { getProvinceId } = useAddressOptions()
 
   const [currentLocation, setCurrenLocation] = useState<LatLngLiteral>()
   const [markerPosition, setMarkerPosition] = useState<LatLngLiteral>()

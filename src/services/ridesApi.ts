@@ -3,12 +3,12 @@ import {
   ConfirmTransactionParams,
   CreateCarpoolCompounding,
   CreateCompoundinCarDriver,
-  CreateCompoundingCarCustomerParams,
   CreateCompoundingParams,
   CreatePaymentDriverParams,
   CreatePaymentParams,
-  GetCarpoolingListParams,
-  GetCompoundingListWithoutADriverParams,
+  GetCompoundingCarCustomerList,
+  GetCompoundingCarStateParams,
+  GetCompoundingListForDriver,
   GetDetailCompounding,
   GetDetailCompoundingCustomer,
   RidesDraftParams,
@@ -19,9 +19,18 @@ import {
 import axiosClient from "."
 
 const ridesApi = {
-  getCarpoolingCompoundingList: (params: GetCarpoolingListParams) => {
+  getCompoundingCarListForCustomer: (params: GetCompoundingCarCustomerList) => {
     return axiosClient.post(
       "/compounding_car_controller/get_compounding_car_by_compounding",
+      {
+        params,
+      }
+    )
+  },
+
+  getCompoundingCarListForDriver: (params: GetCompoundingListForDriver) => {
+    return axiosClient.post(
+      "/compounding_car_controller/get_compounding_car_by_no_driver",
       {
         params,
       }
@@ -39,9 +48,7 @@ const ridesApi = {
     )
   },
 
-  createCompoundingCarCustomer: (
-    params: GetDetailCompoundingCustomer
-  ) => {
+  createCompoundingCarCustomer: (params: GetDetailCompoundingCustomer) => {
     return axiosClient.post(
       "/compounding_car_controller/create_compounding_car_customer",
       {
@@ -124,13 +131,11 @@ const ridesApi = {
     )
   },
 
-  getHistoryCompoundingCarCustomer: (token: string) => {
+  getHistoryCompoundingCarCustomer: (params: GetCompoundingCarStateParams) => {
     return axiosClient.post(
       "/compounding_car_controller/get_history_compounding_car_customer",
       {
-        params: {
-          token,
-        },
+        params,
       }
     )
   },
@@ -189,17 +194,6 @@ const ridesApi = {
     return axiosClient.post("/payment/vnpay/confirm_transaction", {
       params,
     })
-  },
-
-  getCompoundingListWithoutADriver: (
-    params: GetCompoundingListWithoutADriverParams
-  ) => {
-    return axiosClient.post(
-      "/compounding_car_controller/get_compounding_car_by_no_driver",
-      {
-        params,
-      }
-    )
   },
 
   getDepositCompoundingCarDriver: (params: GetDetailCompounding) => {

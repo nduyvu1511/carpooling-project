@@ -2,7 +2,6 @@
 import { oneWayCompoundingCarSchema } from "@/core/schema"
 import {
   formatMoneyVND,
-  lngLatToKms,
   ONE_WAY_CAR_ID,
   ONE_WAY_DISTANCE,
   ONE_WAY_EXPECTED_GOING_ON_DATE,
@@ -17,14 +16,13 @@ import {
   CreateOneWayCompoundingForm,
   CreateOneWayCompoundingNoToken,
 } from "@/models"
-import { vehicleApi } from "@/services"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { HiOutlineLocationMarker } from "react-icons/hi"
 import { MdOutlineDateRange } from "react-icons/md"
 import { RiCarWashingLine } from "react-icons/ri"
-import { useCompoundingForm, useToken } from "shared/hook"
+import { useCompoundingForm } from "shared/hook"
 import {
   InputCarType,
   InputCheckbox,
@@ -45,7 +43,6 @@ export const OneWayCompoundingForm = ({
   defaultValues,
   mode = "create",
 }: OneWayCompoundingFormProps) => {
-  const { token } = useToken()
   const modeRef = useRef<"create" | "update">("create")
   const {
     register,
@@ -60,30 +57,31 @@ export const OneWayCompoundingForm = ({
     mode: "all",
     defaultValues,
   })
-  const { carTypes, calcPriceFromProvinceIds } = useCompoundingForm()
+  const {
+    vehicleTypeOptions,
+    calcPriceFromProvinceIds,
+    calculateDistanceBetweenTwoCoordinates,
+  } = useCompoundingForm()
   const [distance, setDistance] = useState<number>(getValues("distance"))
   const [price, setPrice] = useState<number>(getValues("price") || 0)
 
   // Get Distance
   const calcDistance = () => {
-    const fromStation = getValues("from_location")
-    const toStation = getValues("to_location")
-    if (!fromStation?.province_id || !toStation?.province_id) return
+    const fromLocation = getValues("from_location")
+    const toLocation = getValues("to_location")
+    if (!fromLocation?.province_id || !toLocation?.province_id) return
 
-    const distance = lngLatToKms({
-      from: {
-        lat: +fromStation.lat,
-        lng: +fromStation.lng,
+    calculateDistanceBetweenTwoCoordinates({
+      params: {
+        origin: { lat: +fromLocation.lat, lng: +fromLocation.lng },
+        destination: { lat: +toLocation.lat, lng: +toLocation.lng },
       },
-      to: {
-        lat: +toStation.lat,
-        lng: +toStation.lng,
+      onSuccess: (distance) => {
+        setDistance(distance)
+        setToLocalStorage(ONE_WAY_DISTANCE, distance)
+        setValue("distance", distance)
       },
     })
-
-    setToLocalStorage(ONE_WAY_DISTANCE, distance)
-    setValue("distance", distance)
-    setDistance(distance)
   }
 
   const calcPrice = async () => {
@@ -245,8 +243,9 @@ export const OneWayCompoundingForm = ({
               onChange={(option) => {
                 setToLocalStorage(ONE_WAY_CAR_ID, option)
                 onChange(option)
+                calcPrice()
               }}
-              options={carTypes}
+              options={vehicleTypeOptions}
             />
           )}
           rules={{ required: true }}

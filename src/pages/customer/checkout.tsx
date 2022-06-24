@@ -12,7 +12,7 @@ import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import { RiLoader4Line } from "react-icons/ri"
 import { useToken } from "shared/hook"
-import { usePayment } from "shared/hook/usePayment"
+import { usePayment } from "shared/hook/user/usePayment"
 import useSWR from "swr"
 
 const CustomerCheckout = () => {

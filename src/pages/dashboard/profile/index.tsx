@@ -2,17 +2,16 @@ import { arrowRightIcon } from "@/assets"
 import { RootState } from "@/core/store"
 import { dashboardAccounts } from "@/helper"
 import { MainlayoutWithNavNoFooter } from "@/layout"
-import { logOut } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useToken } from "shared/hook"
+import { useSelector } from "react-redux"
+import { useLogout, useToken } from "shared/hook"
 
 const MenuProfile = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
+  const { handleLogout } = useLogout()
   const { token } = useToken()
   const { userInfo } = useSelector((state: RootState) => state.user)
 
@@ -89,7 +88,7 @@ const MenuProfile = () => {
 
           <li className="profile__account-list-item profile__account-list-item-primary">
             <button
-              onClick={() => dispatch(logOut())}
+              onClick={() => handleLogout()}
               className="profile__account-list-item-link btn-reset"
             >
               Đăng xuất

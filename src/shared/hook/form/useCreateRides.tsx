@@ -14,7 +14,7 @@ import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useToken } from "./useToken"
+import { useToken } from "../user/useToken"
 
 interface UseCreateRidesRes {
   createCompounding: (

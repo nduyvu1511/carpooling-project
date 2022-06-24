@@ -4,7 +4,7 @@ import { vehicleApi } from "@/services"
 import { useEffect, useState } from "react"
 import { RiLoader4Line } from "react-icons/ri"
 import Select from "react-select"
-import { useAddress } from "shared/hook"
+import { useAddressOptions } from "shared/hook"
 
 interface StationProps {
   defaultValue?: StationId
@@ -17,7 +17,7 @@ export const Station = ({
   onChooseStation,
   onSelectStation,
 }: StationProps) => {
-  const { states } = useAddress(true)
+  const { provinceOptions } = useAddressOptions()
 
   const [stations, setStations] = useState<StationRes[]>([])
   const [station, setStation] = useState<StationId | undefined>(defaultValue)
@@ -70,10 +70,7 @@ export const Station = ({
               setStationLoading(true)
               fetchStations(val.value)
             }}
-            options={states?.map((item) => ({
-              label: item.province_name,
-              value: item.province_id,
-            }))}
+            options={provinceOptions as any}
           />
         </div>
       </div>

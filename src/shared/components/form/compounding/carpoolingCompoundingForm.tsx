@@ -15,7 +15,6 @@ import {
   CARPOOLING_PRICE_PER_PASSENGER,
   CARPOOLING_TO_STATION,
   formatMoneyVND,
-  lngLatToKms,
   setToLocalStorage,
 } from "@/helper"
 import {
@@ -69,7 +68,12 @@ export const CarpoolingCompoundingForm = ({
     mode: "all",
     defaultValues,
   })
-  const { carTypes, seats, calcPriceFromProvinceIds } = useCompoundingForm()
+  const {
+    vehicleTypeOptions,
+    seats,
+    calcPriceFromProvinceIds,
+    calculateDistanceBetweenTwoCoordinates,
+  } = useCompoundingForm()
   const [numberSeat, setNumberSeat] = useState<number>(
     limitNumberSeat || getValues("car_id.number_seat")
   )
@@ -85,21 +89,20 @@ export const CarpoolingCompoundingForm = ({
     const fromStation = getValues("from_station")
     const toStation = getValues("to_station")
     if (!fromStation?.province_id || !toStation?.province_id) return
-    const distance = lngLatToKms({
-      from: {
-        lat: +fromStation.lat,
-        lng: +fromStation.lng,
+
+    calculateDistanceBetweenTwoCoordinates({
+      params: {
+        origin: { lat: +fromStation.lat, lng: +fromStation.lng },
+        destination: { lat: +toStation.lat, lng: +toStation.lng },
       },
-      to: {
-        lat: +toStation.lat,
-        lng: +toStation.lng,
+      onSuccess: (distance) => {
+        setToLocalStorage(CARPOOLING_DISTANCE, distance)
+        setValue("distance", distance)
+        setDistance(distance)
       },
     })
-    setToLocalStorage(CARPOOLING_DISTANCE, distance)
-    setValue("distance", distance)
-    setDistance(distance)
   }
-  console.log(getValues("from_location")?.province_id)
+
   const handleGetFromLocation = () => {
     const value = getValues("from_location")?.province_id
     if (value) {
@@ -293,7 +296,7 @@ export const CarpoolingCompoundingForm = ({
                   onChange(option)
                   calcPrice()
                 }}
-                options={carTypes}
+                options={vehicleTypeOptions}
               />
             )}
             rules={{ required: true }}
@@ -311,7 +314,7 @@ export const CarpoolingCompoundingForm = ({
             name={"expected_going_on_date"}
             render={({ field: { onChange, onBlur } }) => (
               <InputDateTime
-                value={defaultValues?.expected_going_on_date}
+                value={getValues("expected_going_on_date")}
                 label=""
                 onBlur={onBlur}
                 onChange={(val) => {
@@ -324,7 +327,7 @@ export const CarpoolingCompoundingForm = ({
             rules={{ required: true }}
           />
         </div>
-        {console.log(seats(numberSeat))}
+
         <div className="form-item">
           <label htmlFor={"number_seat"} className="form-item-label">
             <RiCarWashingLine />
@@ -378,7 +381,7 @@ export const CarpoolingCompoundingForm = ({
             id="note"
             cols={10}
             placeholder="Ghi chú thêm cho chuyến đi..."
-            defaultValue={defaultValues?.note}
+            defaultValue={getValues("note")}
             onChange={(e) => {
               setValue("note", e.target.value)
               setToLocalStorage(CARPOOLING_NOTE, e.target.value)

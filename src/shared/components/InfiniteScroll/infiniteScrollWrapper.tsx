@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useEffect, useRef } from "react"
 import { RiLoader4Line } from "react-icons/ri"
 import { useInView } from "react-intersection-observer"
 
@@ -16,16 +16,21 @@ export const InfiniteScrollWrapper = ({
   isLimit = false,
 }: InfiniteScrollWrapper) => {
   const { ref, inView } = useInView()
+  const secondRef = useRef<boolean>()
 
   useEffect(() => {
     document?.documentElement?.scrollTo({ top: 0 })
   }, [])
 
   useEffect(() => {
+    if (!secondRef?.current) {
+      secondRef.current = true
+      return
+    }
     if (isLimit) return
     if (isLoading) return
     if (!inView) return
-
+    console.log("bottom")
     onBottom()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView])

@@ -8,7 +8,7 @@ import {
 import { setScreenLoading } from "@/modules"
 import { ridesApi } from "@/services"
 import { useDispatch } from "react-redux"
-import { useToken } from "./useToken"
+import { useToken } from "../user/useToken"
 
 interface Res {
   createCompoundingCar: (

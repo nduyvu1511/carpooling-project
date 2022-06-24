@@ -1,6 +1,6 @@
-import { RootState } from "@/core/store"
 import {
   ConfirmTransactionParams,
+  CreateCompoundingCarRes,
   CreatePaymentDriverParams,
   CreatePaymentParams,
   CreatePaymentRes,
@@ -9,13 +9,13 @@ import {
 } from "@/models"
 import { setScreenLoading } from "@/modules"
 import { ridesApi } from "@/services"
-import { useDispatch, useSelector } from "react-redux"
-import useSWR from "swr"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { useToken } from "./useToken"
 
 interface UsePasswordRes {
-  data: PaymentRes[]
-  isValidating: boolean
+  paymentList: PaymentRes[]
+  isPaymentListLoading: boolean
   createPayment: (
     props: UseParams<CreatePaymentParams, CreatePaymentRes>
   ) => void
@@ -23,26 +23,37 @@ interface UsePasswordRes {
   createPaymentForDriver: (
     props: UseParams<CreatePaymentDriverParams, CreatePaymentRes>
   ) => void
+  getCompoundingCarCustomerDetail: (
+    compounding_car_customer_id: number,
+    cb: (params: CreateCompoundingCarRes | undefined) => void
+  ) => void
+  currentSelectPayment: PaymentRes | undefined
+  setCurrentSelectPayment: (params: PaymentRes) => void
 }
 
 export const usePayment = (shouldFetch = false): UsePasswordRes => {
   const dispatch = useDispatch()
   const { token } = useToken()
+  const [currentSelectPayment, setCurrentSelectPayment] = useState<
+    PaymentRes | undefined
+  >(undefined)
+  const [isPaymentListLoading, setPaymentListLoading] = useState<boolean>(false)
+  const [paymentList, setPaymentList] = useState<PaymentRes[]>([])
 
-  const { data, isValidating, mutate } = useSWR(
-    "compounding_payment",
-    shouldFetch && token
-      ? () =>
-          ridesApi
-            .getPaymentMethods(token)
-            .then((res: any) => res?.result?.data)
-            .catch((err) => console.log(err))
-      : null,
-    {
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  )
+  useEffect(() => {
+    if (!token) return
+    setPaymentListLoading(true)
+    ridesApi
+      .getPaymentMethods(token)
+      .then((res: any) => {
+        setPaymentListLoading(false)
+        setPaymentList(res?.result?.data)
+      })
+      .catch((err) => {
+        setPaymentListLoading(false)
+        console.log(err)
+      })
+  }, [token])
 
   const createPayment = async (
     props: UseParams<CreatePaymentParams, CreatePaymentRes>
@@ -119,11 +130,27 @@ export const usePayment = (shouldFetch = false): UsePasswordRes => {
     }
   }
 
+  const getCompoundingCarCustomerDetail = (
+    compounding_car_customer_id: number,
+    cb: (params: CreateCompoundingCarRes | undefined) => void
+  ) => {
+    if (!token) return
+    ridesApi
+      .getDetailCompoundingCarCustomer({
+        token,
+        compounding_car_customer_id,
+      })
+      .then((res: any) => cb(res?.result?.data))
+      .catch((err) => console.log(err))
+  }
   return {
-    data,
-    isValidating,
     confirmTransaction,
     createPaymentForDriver,
     createPayment,
+    getCompoundingCarCustomerDetail,
+    currentSelectPayment,
+    setCurrentSelectPayment,
+    isPaymentListLoading,
+    paymentList,
   }
 }

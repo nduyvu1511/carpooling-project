@@ -1,15 +1,12 @@
 import { arrowRightIcon } from "@/assets"
 import { headerUserOptions } from "@/helper"
-import { logOut } from "@/modules"
 import { useRouter } from "next/router"
-import React from "react"
-import { useDispatch } from "react-redux"
-import { useToken } from "shared/hook"
+import { useLogout, useToken } from "shared/hook"
 
 export const Navigation = () => {
   const router = useRouter()
   const { token } = useToken()
-  const dispatch = useDispatch()
+  const { handleLogout } = useLogout()
 
   return (
     <ul className="navigation">
@@ -46,7 +43,7 @@ export const Navigation = () => {
             <li key={item.name} className="navigation-item">
               <div
                 onClick={() =>
-                  item?.path ? router.push(item.path) : dispatch(logOut())
+                  item?.path ? router.push(item.path) : handleLogout()
                 }
                 className="navigation-item-link"
               >

@@ -5,10 +5,15 @@ import {
   CompoundingFilterFormParams,
 } from "@/models"
 import { setScreenLoading } from "@/modules"
+import { useRouter } from "next/router"
 import { useMemo } from "react"
 import { useDispatch } from "react-redux"
 import Select from "react-select"
-import { useAddress, useFetchCarType, useInputText } from "shared/hook"
+import {
+  useAddressOptions,
+  useCompoundingForm,
+  useInputText,
+} from "shared/hook"
 
 type CompoundingFilterForm = CompoundingFilterFormParams &
   CompoundingCarCustomerFilterForm
@@ -25,14 +30,11 @@ export const CompoundingFilterForm = ({
   type,
 }: CompoundingFilterFormProps) => {
   const dispatch = useDispatch()
-  const { stateOptions, getProvinceOptionById } = useAddress(true)
-  const { vehicleTypeOptions } = useFetchCarType()
+  const router = useRouter()
+  const { provinceOptions, getProvinceOptionById } = useAddressOptions()
+  const { vehicleTypeOptions } = useCompoundingForm()
   const { onChange: onChangeFromDate, value: valueFromDate } = useInputText()
   const { onChange: onChangeToDate, value: valueToDate } = useInputText()
-
-  const provinces = useMemo(() => {
-    return stateOptions()
-  }, [])
 
   return (
     <div className="compounding__filter">
@@ -90,7 +92,7 @@ export const CompoundingFilterForm = ({
           <div className="form-select">
             <Select
               placeholder="Từ tỉnh"
-              options={provinces}
+              options={provinceOptions}
               defaultValue={getProvinceOptionById(
                 Number(defaultValues?.from_province_id) || 0
               )}
@@ -111,7 +113,7 @@ export const CompoundingFilterForm = ({
           <div className="form-select">
             <Select
               placeholder="Đến tỉnh"
-              options={stateOptions()}
+              options={provinceOptions}
               onChange={(data) => {
                 if (!data?.value) return
                 onChange({
@@ -139,7 +141,10 @@ export const CompoundingFilterForm = ({
                 }
                 onChange(val)
               }}
-              options={vehicleTypeOptions()}
+              defaultValue={vehicleTypeOptions.find(
+                (item) => item?.value === Number(router.query?.car_id)
+              )}
+              options={vehicleTypeOptions}
             />
           </div>
         </div>

@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import Select from "react-select"
 import { notify } from "reapop"
-import { useAddress } from "shared/hook"
+import { useAddressOptions } from "shared/hook"
 
 interface IdentityCardFormProps {
   onSubmit: (params: IdCardParamsNoToken) => void
@@ -26,8 +26,13 @@ export const IdentityCardForm = ({
   defaultValues,
 }: IdentityCardFormProps) => {
   const dispatch = useDispatch()
-  const { states, wards, districts, getDistricts, getWards } = useAddress(
-    true,
+  const {
+    provinceOptions,
+    wardOptions,
+    districtOptions,
+    getDistricts,
+    getWards,
+  } = useAddressOptions(
     defaultValues?.province_id?.province_id,
     defaultValues?.district_id?.district_id
   )
@@ -77,13 +82,13 @@ export const IdentityCardForm = ({
 
   const getOptionsSelect = (name: IdCardName): OptionModel[] => {
     if (name === "province_id" || name === "place_of_issue") {
-      return addressToOptions(states, "province")
+      return provinceOptions
     }
     if (name === "ward_id") {
-      return addressToOptions(wards, "ward")
+      return wardOptions
     }
     if (name === "district_id") {
-      return addressToOptions(districts, "district")
+      return districtOptions
     }
 
     return []
@@ -195,13 +200,13 @@ export const IdentityCardForm = ({
                       )
 
                       if (field.name === "province_id") {
-                        if (districts?.length) {
+                        if (districtOptions?.length) {
                           resetField("district_id")
                           dispatch(
                             notify("Vui lòng chọn lại Quận/Huyện", "warning")
                           )
                         }
-                        if (wards?.length) {
+                        if (wardOptions?.length) {
                           resetField("ward_id")
                           dispatch(
                             notify("Vui lòng chọn lại Phường/Xã", "warning")
@@ -213,7 +218,7 @@ export const IdentityCardForm = ({
 
                       if (field.name === "district_id") {
                         getWards(Number(val?.value))
-                        if (wards?.length) {
+                        if (wardOptions?.length) {
                           dispatch(
                             notify("Vui lòng chọn lại Phường/Xã", "warning")
                           )

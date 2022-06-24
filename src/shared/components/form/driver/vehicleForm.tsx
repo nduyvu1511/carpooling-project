@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import Select from "react-select"
-import { useFetchCarBrand, useFetchCarType } from "shared/hook"
+import { useCompoundingForm, useFetchCarBrand } from "shared/hook"
 
 interface VehicleFormProps {
   defaultValues?: RegistrationCertificateRes
@@ -18,7 +18,7 @@ interface VehicleFormProps {
 }
 
 export const VehicleForm = ({ onSubmit, defaultValues }: VehicleFormProps) => {
-  const { data: vehicleTypeList } = useFetchCarType()
+  const { vehicleTypeOptions } = useCompoundingForm()
   const { data: vehicleBrandList } = useFetchCarBrand()
 
   const {
@@ -53,13 +53,6 @@ export const VehicleForm = ({ onSubmit, defaultValues }: VehicleFormProps) => {
         car_brand_id: Number(data.car_brand_id),
       })
   }
-
-  const vehicleTypeOptions = useMemo(() => {
-    return vehicleTypeList?.map((item) => ({
-      label: item.name,
-      value: item.car_id,
-    }))
-  }, [vehicleTypeList])
 
   const vehicleBrandOptions = useMemo(() => {
     return vehicleBrandList?.map((item) => ({

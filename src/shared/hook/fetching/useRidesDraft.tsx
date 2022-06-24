@@ -2,8 +2,8 @@ import { LIMIT_COMPOUNDING_LIST, SWRConfig } from "@/helper"
 import { CompoundingCarRes } from "@/models"
 import { ridesApi } from "@/services"
 import { useState } from "react"
-import useSWR, { mutate } from "swr"
-import { useToken } from "./useToken"
+import useSWR from "swr"
+import { useToken } from "../user/useToken"
 
 interface UseDraftOrder {
   data: CompoundingCarRes[]

@@ -7,7 +7,7 @@ import { ScreenContainer } from "@/container"
 import { DriverLayout } from "@/layout"
 import { VehicleInsuranceParamsNoToken } from "@/models"
 import { useRouter } from "next/router"
-import { useVehicleInsurance } from "shared/hook/useVehicleInsurance"
+import { useVehicleInsurance } from "shared/hook/form/useVehicleInsurance"
 
 const VehicleInsurance = () => {
   const router = useRouter()

@@ -17,13 +17,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logOut: (state) => {
-      state.token = ""
-      state.userInfo = {} as UserInfo
-      state.fcmToken = ""
-      location.reload()
-    },
-
     setToken: (state, { payload }: { payload: string }) => {
       state.token = payload
     },
@@ -34,6 +27,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { logOut, setToken, setUserInfo } = userSlice.actions
+export const { setToken, setUserInfo } = userSlice.actions
 
 export default userSlice.reducer

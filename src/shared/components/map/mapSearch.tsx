@@ -5,10 +5,10 @@ import { addLocationSearchHistory } from "@/modules"
 import { useRef, useState } from "react"
 import { MdOutlineLocationOff } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
-import { useAddress, useClickOutside } from "shared/hook"
+import { useAddressOptions, useClickOutside } from "shared/hook"
 import usePlacesAutocomplete, {
   getGeocode,
-  getLatLng,
+  getLatLng
 } from "use-places-autocomplete"
 import { Input } from "../inputs"
 import { LocationItem, LocationItemHistory } from "../location"
@@ -18,7 +18,7 @@ interface MapSearchProps {
 }
 
 export const MapSearch = ({ onSelect }: MapSearchProps) => {
-  const { getProvinceId } = useAddress(true)
+  const { getProvinceId } = useAddressOptions()
   const dispatch = useDispatch()
   const { searchHistory } = useSelector(
     (state: RootState) => state.locationHistory

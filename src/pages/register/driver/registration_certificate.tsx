@@ -7,7 +7,7 @@ import { ScreenContainer } from "@/container"
 import { DriverLayout } from "@/layout"
 import { CertificateInspectionParamsNoToken } from "@/models"
 import { useRouter } from "next/router"
-import { useCertificateInspection } from "shared/hook/useCertificateInspection"
+import { useCertificateInspection } from "shared/hook/form/useCertificateInspection"
 
 const RegistrationCertificate = () => {
   const router = useRouter()

@@ -5,7 +5,6 @@ import {
   DEFAULT_HOUR_BACK_VALUE,
   formatMoneyVND,
   hoursBackList,
-  lngLatToKms,
   setToLocalStorage,
   TWO_WAY_CAR_ID,
   TWO_WAY_DISTANCE,
@@ -17,12 +16,12 @@ import {
   TWO_WAY_IS_CHECKED_POLICY,
   TWO_WAY_NOTE,
   TWO_WAY_PRICE,
-  TWO_WAY_TO_LOCATION
+  TWO_WAY_TO_LOCATION,
 } from "@/helper"
 import {
   CreateTwoWayCompoundingForm,
   CreateTwoWayCompoundingSubmitForm,
-  HourWaitTimeType
+  HourWaitTimeType,
 } from "@/models"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useEffect, useRef, useState } from "react"
@@ -32,13 +31,13 @@ import { HiOutlineLocationMarker } from "react-icons/hi"
 import { MdOutlineDateRange } from "react-icons/md"
 import { RiCarWashingLine } from "react-icons/ri"
 import Select from "react-select"
-import { useCompoundingForm, useToken } from "shared/hook"
+import { useCompoundingForm } from "shared/hook"
 import {
   InputCarType,
   InputCheckbox,
   InputDateTime,
   InputLocation,
-  InputRadio
+  InputRadio,
 } from "../../inputs"
 
 interface TwoWayCompoundingFormProps {
@@ -52,9 +51,7 @@ export const TwoWayCompoundingForm = ({
   defaultValues,
   mode = "create",
 }: TwoWayCompoundingFormProps) => {
-  const { token } = useToken()
   const modeRef = useRef<"create" | "update">("create")
-
   const {
     register,
     handleSubmit,
@@ -69,8 +66,11 @@ export const TwoWayCompoundingForm = ({
     mode: "all",
     defaultValues,
   })
-  const { carTypes, calcPriceFromProvinceIds } = useCompoundingForm()
-
+  const {
+    vehicleTypeOptions,
+    calcPriceFromProvinceIds,
+    calculateDistanceBetweenTwoCoordinates,
+  } = useCompoundingForm()
   const [isADayTour, setADayTour] = useState<boolean>(
     getValues("is_a_day_tour")
   )
@@ -78,24 +78,20 @@ export const TwoWayCompoundingForm = ({
   const [price, setPrice] = useState<number>(getValues("price") || 0)
 
   const calcDistance = () => {
-    const fromStation = getValues("from_location")
-    const toStation = getValues("to_location")
-    if (!fromStation?.province_id || !toStation?.province_id) return
-
-    const distance = lngLatToKms({
-      from: {
-        lat: +fromStation.lat,
-        lng: +fromStation.lng,
+    const fromLocation = getValues("from_location")
+    const toLocation = getValues("to_location")
+    if (!fromLocation?.province_id || !toLocation?.province_id) return
+    calculateDistanceBetweenTwoCoordinates({
+      params: {
+        destination: { lat: fromLocation.lat, lng: fromLocation.lng },
+        origin: { lat: toLocation.lat, lng: toLocation.lng },
       },
-      to: {
-        lat: +toStation.lat,
-        lng: +toStation.lng,
+      onSuccess: (distance) => {
+        setToLocalStorage(TWO_WAY_DISTANCE, distance)
+        setValue("distance", distance)
+        setDistance(distance)
       },
     })
-
-    setToLocalStorage(TWO_WAY_DISTANCE, distance)
-    setValue("distance", distance)
-    setDistance(distance)
   }
 
   const calcPrice = async () => {
@@ -166,8 +162,6 @@ export const TwoWayCompoundingForm = ({
     }
     handleSetDefaultValueForPickingUpdate(getValues("is_a_day_tour"))
   }, [])
-
-  console.log(errors)
 
   const onSubmitHandler = (data: CreateTwoWayCompoundingForm) => {
     const { is_a_day_tour } = data
@@ -310,7 +304,7 @@ export const TwoWayCompoundingForm = ({
                 onChange(option)
                 calcPrice()
               }}
-              options={carTypes}
+              options={vehicleTypeOptions}
             />
           )}
           rules={{ required: true }}
@@ -328,7 +322,7 @@ export const TwoWayCompoundingForm = ({
           name={"expected_going_on_date"}
           render={({ field: { onChange, onBlur } }) => (
             <InputDateTime
-              value={defaultValues?.expected_going_on_date}
+              value={getValues("expected_going_on_date")}
               label=""
               onBlur={onBlur}
               onChange={(val) => {
@@ -391,7 +385,7 @@ export const TwoWayCompoundingForm = ({
                     }
                   }}
                   onBlur={onBlur}
-                  defaultValue={defaultValues?.hour_of_wait_time}
+                  defaultValue={getValues("hour_of_wait_time")}
                   id={"hour_of_wait_time"}
                   className={`${
                     errors?.hour_of_wait_time ? "form-item-select-error" : ""
@@ -414,13 +408,12 @@ export const TwoWayCompoundingForm = ({
               name={"expected_picking_up_date"}
               render={({ field: { onChange, onBlur } }) => (
                 <InputDateTime
-                  value={defaultValues?.expected_picking_up_date}
+                  value={getValues("expected_picking_up_date")}
                   label=""
                   onBlur={onBlur}
                   onChange={(val) => {
                     setToLocalStorage(TWO_WAY_EXPECTED_PICKING_UP_DATE, val)
                     onChange(val)
-
                     if (!getValues("hour_of_wait_time")) {
                       setValue("hour_of_wait_time", DEFAULT_HOUR_BACK_VALUE)
                     }
@@ -518,7 +511,7 @@ export const TwoWayCompoundingForm = ({
               handleSubmit((data) => onSubmitHandler(data))
             }}
             className={`btn-primary rides__form-submit ${
-              !isValid ? "btn-not-allowed" : ""
+              !isValid && mode === "create" ? "btn-not-allowed" : ""
             }`}
           >
             {mode === "create" ? "Tiếp tục" : "Xác nhận"}

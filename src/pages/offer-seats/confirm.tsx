@@ -2,10 +2,7 @@ import { Map, OneWayCompoundingForm, TwoWayCompoundingForm } from "@/components"
 import { CarpoolingCompoundingForm } from "@/components/form/compounding/carpoolingCompoundingForm"
 import { RideContainer } from "@/container"
 import { formatMoneyVND, getCompoundingTypeName } from "@/helper"
-import {
-  CreateCompoundingCarRes,
-  CreateCompoundingParams
-} from "@/models"
+import { CreateCompoundingCarRes, CreateCompoundingParams } from "@/models"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsCalendar3 } from "react-icons/bs"
@@ -100,16 +97,16 @@ const Confirm = () => {
                 {window?.google ? (
                   <Map
                     viewOnly
-                    direction={{
-                      destination: {
-                        lng: 9.188576,
-                        lat: 105.177556,
-                      },
-                      origin: {
-                        lng: 10.829326,
-                        lat: 106.604024,
-                      },
-                    }}
+                    // direction={{
+                    //   destination: {
+                    //     lng: 9.188576,
+                    //     lat: 105.177556,
+                    //   },
+                    //   origin: {
+                    //     lng: 10.829326,
+                    //     lat: 106.604024,
+                    //   },
+                    // }}
                   />
                 ) : null}
               </div>

@@ -2,17 +2,22 @@
 import { logoIcon } from "@/assets"
 import {
   CompoundingFilterForm,
-  InfiniteScrollWrapper,
-  RidesItem,
+  HeaderAccount,
+  Modal,
+  RidesItem
 } from "@/components"
-import { HeaderAccount } from "@/components/header/headerAccount"
 import { compoundingTypeFilters, LIMIT_COMPOUNDING_LIST } from "@/helper"
-import { CompoundingDriverListParams, CompoundingOrderField } from "@/models"
+import {
+  CompoundingFilterFormParams,
+  CompoundingListDriverParams,
+  CompoundingOrderField
+} from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { FiPlusCircle } from "react-icons/fi"
-import { useCompoundingDriverList, useScrollTop } from "shared/hook"
+import InfiniteScroll from "react-infinite-scroll-component"
+import { useCompoundingCarDriverList, useScrollTop } from "shared/hook"
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const height = useScrollTop()
@@ -28,19 +33,53 @@ export const HomeDriver = () => {
   const {
     data: carpoolingList,
     isLimit,
-    isValidating,
-    isFetchingMore,
     filterRides,
-  } = useCompoundingDriverList({
-    limit: LIMIT_COMPOUNDING_LIST,
-  })
+    fetchMoreRides,
+  } = useCompoundingCarDriverList(getQueryParams(router.query))
+  const [showFilter, setShowFilter] = useState<boolean>(false)
+
+  const handleCloseFilter = (status: boolean) => {
+    setShowFilter(status)
+    // toggleBodyOverflow(status ? "hidden" : "unset")
+  }
+
+  const handleFetchMoreRides = () => {
+    router.push(
+      {
+        query: {
+          ...router.query,
+          offset: (Number(router.query?.offset) || 0) + LIMIT_COMPOUNDING_LIST,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: false,
+      }
+    )
+  }
 
   useEffect(() => {
-    if (!router?.query) return
-    const { order_by, from_province_id, to_province_id, car_id } = router.query
+    if (!router.isReady) return
+    const offset = Number(router.query?.offset)
+    if (offset) {
+      fetchMoreRides({
+        ...getQueryParams(router.query),
+        offset,
+      })
+    } else {
+      filterRides(getQueryParams(router.query))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query])
 
-    let queryObj: CompoundingDriverListParams = {
-      ...router.query,
+  function getQueryParams(
+    params: CompoundingFilterFormParams
+  ): CompoundingListDriverParams {
+    const { order_by, from_province_id, to_province_id, car_id } = params
+
+    let queryObj: CompoundingListDriverParams = {
+      ...params,
       offset: Number(router.query?.offset) || 0,
       limit: LIMIT_COMPOUNDING_LIST,
     }
@@ -57,14 +96,25 @@ export const HomeDriver = () => {
     if (car_id) {
       queryObj.car_id = Number(car_id)
     }
-    filterRides(queryObj)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
-
-  const handleFilter = () => { 
-    
+    Object.keys(queryObj).forEach(
+      (item) => !(queryObj as any)?.[item] && delete (queryObj as any)[item]
+    )
+    return queryObj
   }
 
+  const handleFilterRides = (params: CompoundingFilterFormParams) => {
+    router.push(
+      {
+        query: params ? { ...router.query, ...params, offset: 0 } : {},
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: true,
+      }
+    )
+    // filterRides({ ...getQueryParams(params), offset: 0 })
+  }
 
   return (
     <section className="home-customer__container">
@@ -111,20 +161,7 @@ export const HomeDriver = () => {
                   <CompoundingFilterForm
                     type="driver"
                     defaultValues={router.query}
-                    onChange={(data) => {
-                      router.push(
-                        {
-                          query: data
-                            ? { ...router.query, ...data, offset: 0 }
-                            : {},
-                        },
-                        undefined,
-                        {
-                          shallow: true,
-                          scroll: true,
-                        }
-                      )
-                    }}
+                    onChange={(data) => data && handleFilterRides(data)}
                   />
                 </Wrapper>
               </div>
@@ -134,19 +171,10 @@ export const HomeDriver = () => {
                     {compoundingTypeFilters.map((item) => (
                       <div
                         onClick={() => {
-                          router.push(
-                            {
-                              query: {
-                                ...router.query,
-                                compounding_type: item.value,
-                                offset: 0,
-                              },
-                            },
-                            undefined,
-                            {
-                              shallow: true,
-                            }
-                          )
+                          handleFilterRides({
+                            ...router.query,
+                            compounding_type: item.value,
+                          })
                         }}
                         key={item.value}
                         className={`rides__filter-type-item ${
@@ -160,35 +188,55 @@ export const HomeDriver = () => {
                     ))}
                   </div>
                 </div>
-                <InfiniteScrollWrapper
-                  onBottom={() => {
-                    const offset =
-                      (Number(router.query?.offset) || 0) +
-                      LIMIT_COMPOUNDING_LIST
-                    router.push(
-                      {
-                        query: {
-                          ...router.query,
-                          offset,
-                        },
-                      },
-                      undefined,
-                      {
-                        scroll: false,
-                        shallow: true,
-                      }
-                    )
-                  }}
-                  isLimit={isLimit}
-                  isLoading={isValidating || isFetchingMore}
+
+                <InfiniteScroll
+                  dataLength={carpoolingList.length}
+                  next={handleFetchMoreRides}
+                  hasMore={!isLimit}
+                  loader={<h4>Loading...</h4>}
                 >
                   <div className="home-customer__rides grid grid-col-1 grid-col-sm-2 grid-col-lg-2 grid-col-2xl-3">
                     {carpoolingList.map((item, index) => (
                       <RidesItem type="driver" rides={item} key={index} />
                     ))}
                   </div>
-                </InfiniteScrollWrapper>
+                </InfiniteScroll>
               </div>
+            </div>
+
+            <div className="rides__filter-mobile">
+              <button
+                onClick={() => handleCloseFilter(true)}
+                className="btn-primary"
+              >
+                Lọc
+              </button>
+              {showFilter ? (
+                <Modal onClose={() => handleCloseFilter(false)}>
+                  <div className="px-24 py-12">
+                    {router.isReady ? (
+                      <CompoundingFilterForm
+                        type="customer"
+                        defaultValues={router.query}
+                        onChange={(data) => {
+                          router.push(
+                            {
+                              query: data
+                                ? { ...router.query, ...data, offset: 0 }
+                                : {},
+                            },
+                            undefined,
+                            {
+                              shallow: true,
+                              scroll: true,
+                            }
+                          )
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                </Modal>
+              ) : null}
             </div>
           </div>
         </div>

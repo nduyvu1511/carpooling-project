@@ -1,17 +1,21 @@
 import { getFromSessionStorage, setToSessionStorage } from "@/helper"
-import { CompoundingType } from "@/models"
+import { CarIdType, CompoundingType, ProvinceId } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
 
 interface CompoundingSlice {
   currentTwoWayCompoundingCarCustomer: number | undefined
   currentOneWayCompoundingCarCustomer: number | undefined
   currentCarpoolingCompoundingCarCustomer: number | undefined
+  vehicleTypes: CarIdType[]
+  provinces: ProvinceId[]
 }
 
 let initialState: CompoundingSlice = {
   currentCarpoolingCompoundingCarCustomer: undefined,
   currentOneWayCompoundingCarCustomer: undefined,
   currentTwoWayCompoundingCarCustomer: undefined,
+  provinces: [],
+  vehicleTypes: [],
 }
 
 try {
@@ -24,9 +28,10 @@ try {
   initialState.currentTwoWayCompoundingCarCustomer = getFromSessionStorage(
     "currentTwoWayCompoundingCarCustomer"
   )
-} catch (error) {
-  console.log(error)
-}
+  // initialState.vehicleTypes =
+  //   getFromSessionStorage("compounding_vehicleTypes") || []
+  // initialState.provinces = getFromSessionStorage("compounding_provinces") || []
+} catch (error) {}
 
 const locationSlice = createSlice({
   name: "compounding",
@@ -55,8 +60,29 @@ const locationSlice = createSlice({
         return
       }
     },
+
+    setVehicleTypes: (state, { payload }: { payload: CarIdType[] }) => {
+      state.vehicleTypes = payload
+      // setToSessionStorage("compounding_vehicleTypes", payload)
+    },
+
+    setProvinces: (state, { payload }: { payload: ProvinceId[] }) => {
+      state.provinces = payload
+      // setToSessionStorage("compounding_provinces", payload)
+    },
+
+    clearAllCurrentCompoundingCarId: (state) => {
+      state.currentCarpoolingCompoundingCarCustomer = undefined
+      state.currentOneWayCompoundingCarCustomer = undefined
+      state.currentTwoWayCompoundingCarCustomer = undefined
+    },
   },
 })
 
 export default locationSlice.reducer
-export const { setCurrentCompoundingCarCustomer } = locationSlice.actions
+export const {
+  setCurrentCompoundingCarCustomer,
+  clearAllCurrentCompoundingCarId,
+  setProvinces,
+  setVehicleTypes,
+} = locationSlice.actions

@@ -1,3 +1,4 @@
+import { number } from "yup"
 import { ProvinceId, StationId, StationPickUpParams } from "./address"
 import { OptionModel } from "./common"
 import { FromLocation } from "./location"
@@ -407,15 +408,6 @@ export interface CompoundingOrderLine {
   line_product_qty: number
 }
 
-export interface GetCompoundingCarCustomerList {
-  token: string
-  from_province_id: number
-  to_province_id: number
-  car_id: number
-  number_seat: number
-  expected_going_on_date: string
-}
-
 export interface CreatePaymentParams {
   token: string
   acquirer_id: number
@@ -436,7 +428,7 @@ export interface ConfirmTransactionParams {
   sale_order_id: number
 }
 
-export interface CompoundingDriverListParams {
+export interface CompoundingListDriverParams {
   from_province_id?: number
   to_province_id?: number
   car_id?: number
@@ -452,8 +444,8 @@ export interface CompoundingDriverListParams {
   current_longitude?: string
 }
 
-export interface GetCompoundingListWithoutADriverParams
-  extends CompoundingDriverListParams {
+export interface GetCompoundingListForDriver
+  extends CompoundingListDriverParams {
   token: string
 }
 
@@ -504,7 +496,7 @@ export interface CompoundingCarCustomerFilterForm
   number_seat?: number
 }
 
-export interface GetCarpoolingListParams {
+export interface GetCompoundingCarCustomerList {
   token: string
   from_province_id?: number
   to_province_id?: number
@@ -557,4 +549,23 @@ export interface CreateCompoundinCarDriver {
 
 export interface UpdateCompoundingCarDriver extends CreateCompoundinCarDriver {
   compounding_car_id: number
+}
+
+export type CompoundingCarCustomerState =
+  | "confirm"
+  | "confirm"
+  | "deposit"
+  | "waiting"
+  | "assign"
+  | "in_process"
+  | "done"
+  | "customer_pay"
+  | "confirm_pay"
+  | "cancel"
+
+export interface GetCompoundingCarStateParams {
+  token: string
+  compounding_car_state?: CompoundingCarCustomerState
+  limit?: number
+  offset?: number
 }

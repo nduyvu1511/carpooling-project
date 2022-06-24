@@ -19,7 +19,7 @@ import { RiLoader4Line } from "react-icons/ri"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
 import { useToken } from "shared/hook"
-import { usePayment } from "shared/hook/usePayment"
+import { usePayment } from "shared/hook/user/usePayment"
 import useSWR from "swr"
 
 const DriverCheckout = () => {

@@ -1,3 +1,4 @@
+import { RootState } from "@/core/store"
 import {
   CARPOOLING_CAR_ID,
   CARPOOLING_DISTANCE,
@@ -9,11 +10,10 @@ import {
   CARPOOLING_NOTE,
   CARPOOLING_NUMBER_SEAT,
   CARPOOLING_PRICE_PER_PASSENGER,
-  CARPOOLING_TO_PICK_UP_FROM_START,
   CARPOOLING_TO_STATION,
-  COMPOUNDING_VNPAY_CODE,
   getFromLocalStorage,
   hoursBackList,
+  lngLatToKms,
   ONE_WAY_CAR_ID,
   ONE_WAY_DISTANCE,
   ONE_WAY_EXPECTED_GOING_ON_DATE,
@@ -23,6 +23,7 @@ import {
   ONE_WAY_PRICE,
   ONE_WAY_TO_LOCATION,
   setToLocalStorage,
+  setToSessionStorage,
   TWO_WAY_CAR_ID,
   TWO_WAY_DISTANCE,
   TWO_WAY_EXPECTED_GOING_ON_DATE,
@@ -36,6 +37,8 @@ import {
   TWO_WAY_TO_LOCATION,
 } from "@/helper"
 import {
+  CalculateDistanceBetweenTwoCoordinatesParams,
+  CarIdType,
   CompoundingCarRes,
   CreateCarpoolingCompoundingForm,
   CreateCommonCompoundingForm,
@@ -43,11 +46,13 @@ import {
   CreateOneWayCompoundingForm,
   CreateTwoWayCompoundingForm,
   OptionModel,
+  UseParams,
 } from "@/models"
+import { setCurrentCompoundingCarCustomer } from "@/modules"
 import { vehicleApi } from "@/services"
-import { useMemo } from "react"
-import { useFetchCarType } from "./useFetchCarType"
-import { useToken } from "./useToken"
+import { useDispatch, useSelector } from "react-redux"
+import { useCalcDistance } from "./useCalcDistance"
+import { useToken } from "../user/useToken"
 
 export interface CalcPriceParams {
   params: { to_province_id: number; from_province_id: number; car_id: number }
@@ -56,7 +61,7 @@ export interface CalcPriceParams {
 }
 
 interface Res {
-  carTypes: { value: number; label: string; number_seat: number }[]
+  vehicleTypeOptions: CarIdType[]
   seats: (limit: number) => OptionModel[]
   clearOneWayCompoundingCar: Function
   clearTwoWayCompoundingCar: Function
@@ -77,23 +82,24 @@ interface Res {
   compoundingCarResToCarpoolingForm: (
     compoundingCar: CompoundingCarRes
   ) => CreateCarpoolingCompoundingForm
+  calculateDistanceBetweenTwoCoordinates: (
+    _params: UseParams<CalculateDistanceBetweenTwoCoordinatesParams, number>
+  ) => void
 }
 
 export const useCompoundingForm = (): Res => {
-  const { vehicleTypeOptions: vehicleTypeOptionsProps } = useFetchCarType()
   const { token } = useToken()
+  const { vehicleTypes } = useSelector((state: RootState) => state.compounding)
+  const { calcDistance } = useCalcDistance()
+  const dispatch = useDispatch()
 
   const seats = (limit: number) =>
     Array.from({
       length: limit - 1,
-    }).map((item, index) => ({
+    }).map((_, index) => ({
       label: `${index + 1} hành khách`,
       value: index + 1 + "",
     }))
-
-  const carTypes = useMemo(() => {
-    return vehicleTypeOptionsProps()
-  }, [vehicleTypeOptionsProps])
 
   const clearOneWayCompoundingCar = () => {
     setToLocalStorage(ONE_WAY_FROM_LOCATION, undefined)
@@ -104,6 +110,9 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(ONE_WAY_NOTE, undefined)
     setToLocalStorage(ONE_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(ONE_WAY_PRICE, undefined)
+    dispatch(
+      setCurrentCompoundingCarCustomer({ key: "one_way", value: undefined })
+    )
   }
 
   const clearTwoWayCompoundingCar = () => {
@@ -118,6 +127,9 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(TWO_WAY_HOUR_OF_WAIT_TIME, undefined)
     setToLocalStorage(TWO_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(TWO_WAY_EXPECTED_PICKING_UP_DATE, undefined)
+    dispatch(
+      setCurrentCompoundingCarCustomer({ key: "two_way", value: undefined })
+    )
   }
 
   const clearCarpoolingWayCompoundingCar = () => {
@@ -129,11 +141,13 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(CARPOOLING_EXPECTED_GOING_ON_DATE, undefined)
     setToLocalStorage(CARPOOLING_NOTE, undefined)
     setToLocalStorage(CARPOOLING_IS_CHECKED_POLICY, undefined)
-    setToLocalStorage(CARPOOLING_TO_PICK_UP_FROM_START, undefined)
     setToLocalStorage(CARPOOLING_PRICE_PER_PASSENGER, undefined)
     setToLocalStorage(CARPOOLING_NUMBER_SEAT, undefined)
     setToLocalStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
-    setToLocalStorage(COMPOUNDING_VNPAY_CODE, undefined)
+    dispatch(
+      setCurrentCompoundingCarCustomer({ key: "compounding", value: undefined })
+    )
+    setToSessionStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
   }
 
   const calcPriceFromProvinceIds = async (params: CalcPriceParams) => {
@@ -156,7 +170,6 @@ export const useCompoundingForm = (): Res => {
       }
       const price = Number(res?.result?.data?.[0]?.price_unit)
       onSuccess(price || 0)
-      setToLocalStorage(CARPOOLING_PRICE_PER_PASSENGER, price)
     } catch (error) {
       onErr && onErr()
       console.log(error)
@@ -204,7 +217,6 @@ export const useCompoundingForm = (): Res => {
         station_id: compoundingCar.to_pick_up_station.station_id,
         station_name: compoundingCar.to_pick_up_station.station_name,
       },
-      is_picking_up_from_start: compoundingCar.is_picking_up_from_start,
       number_seat: {
         label: `${compoundingCar.number_seat} hành khách`,
         value: compoundingCar.number_seat,
@@ -278,7 +290,6 @@ export const useCompoundingForm = (): Res => {
       value: compoundingCar.number_available_seat,
     },
     price_per_passenger: compoundingCar.price_unit.price_unit,
-    is_picking_up_from_start: false,
     car_id: {
       label: compoundingCar.car.name,
       number_seat: compoundingCar.car.number_seat,
@@ -310,9 +321,6 @@ export const useCompoundingForm = (): Res => {
       to_station: getFromLocalStorage(CARPOOLING_TO_STATION),
       is_checked_policy: getFromLocalStorage(CARPOOLING_IS_CHECKED_POLICY),
       note: getFromLocalStorage(CARPOOLING_NOTE),
-      is_picking_up_from_start: getFromLocalStorage(
-        CARPOOLING_IS_PICKING_UP_FROM_START
-      ),
       number_seat: getFromLocalStorage(CARPOOLING_NUMBER_SEAT),
       price_per_passenger: getFromLocalStorage(CARPOOLING_PRICE_PER_PASSENGER),
     })
@@ -348,9 +356,41 @@ export const useCompoundingForm = (): Res => {
       note: getFromLocalStorage(ONE_WAY_NOTE),
     })
 
+  const calculateDistanceBetweenTwoCoordinates = (
+    _params: UseParams<CalculateDistanceBetweenTwoCoordinatesParams, number>
+  ) => {
+    const {
+      onSuccess,
+      params: { destination, origin },
+      onError,
+    } = _params
+
+    calcDistance(
+      {
+        origin,
+        destination,
+      },
+      (data) => {
+        const distance = data?.rows?.[0]?.elements?.[0]?.distance?.value
+        if (!distance) {
+          const distance = lngLatToKms({
+            from: origin,
+            to: destination,
+          })
+          onSuccess(distance)
+        } else {
+          onSuccess(distance / 1000)
+        }
+      },
+      () => {
+        onError && onError()
+      }
+    )
+  }
+
   return {
     seats,
-    carTypes,
+    vehicleTypeOptions: vehicleTypes,
     clearCarpoolingWayCompoundingCar,
     clearOneWayCompoundingCar,
     clearTwoWayCompoundingCar,
@@ -362,5 +402,6 @@ export const useCompoundingForm = (): Res => {
     oneWayCompoundingCarFormFromLocalStorage,
     twoWayCompoundingCarFormFromLocalStorage,
     compoundingCarResToCarpoolingForm,
+    calculateDistanceBetweenTwoCoordinates,
   }
 }

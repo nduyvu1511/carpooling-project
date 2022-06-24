@@ -2,7 +2,7 @@ import { SWRConfig } from "@/helper"
 import { FilledDataFieldsKey, FilledDataFieldsRes } from "@/models"
 import { userApi } from "@/services"
 import useSWR from "swr"
-import { useToken } from "./useToken"
+import { useToken } from "../user/useToken"
 
 interface Res {
   isValidating: boolean

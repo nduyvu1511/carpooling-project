@@ -1,39 +1,32 @@
-import { SWRConfig } from "@/helper"
+import { RootState } from "@/core/store"
 import { DistrictId, OptionModel, ProvinceId, WardId } from "@/models"
 import { addressApi } from "@/services"
-import { useEffect, useState } from "react"
-import useSWR from "swr"
+import { useEffect, useMemo, useState } from "react"
+import { useSelector } from "react-redux"
 
 interface UseAddress {
   getWards: (id: number) => void
   getDistricts: (id: number) => void
-  states: ProvinceId[]
+  provinces: ProvinceId[]
+  provinceOptions: OptionModel[]
   districts: DistrictId[]
+  districtOptions: OptionModel[]
   wards: WardId[]
+  wardOptions: OptionModel[]
   clearDistricts: Function
   clearWards: Function
   clearAddressList: Function
   setDistricts: Function
   setWards: Function
   getProvinceId: (stringTerms: string) => number | undefined
-  stateOptions: () => OptionModel[]
   getProvinceOptionById: (id: number) => OptionModel | undefined
 }
 
-export const useAddress = (
-  shouldFetch = true,
+export const useAddressOptions = (
   state_id?: number,
   district_id?: number
 ): UseAddress => {
-  const { data, isValidating } = useSWR<ProvinceId[]>(
-    "address_form",
-    shouldFetch ? () => getStates() : null,
-    {
-      dedupingInterval: 10000000,
-      ...SWRConfig,
-    }
-  )
-
+  const { provinces } = useSelector((state: RootState) => state.compounding)
   const [districts, setDistricts] = useState<DistrictId[]>([])
   const [wards, setWards] = useState<WardId[]>([])
 
@@ -45,15 +38,8 @@ export const useAddress = (
     if (district_id) {
       getWards(district_id)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const stateOptions = (): OptionModel[] =>
-    !data?.length
-      ? []
-      : data?.map((item) => ({
-          label: item.province_name,
-          value: item.province_id,
-        }))
 
   const getDistricts = (state_id: number) => {
     addressApi
@@ -61,12 +47,6 @@ export const useAddress = (
       .then((res: any) => setDistricts(res?.result?.data || []))
       .catch((err) => console.log(err))
   }
-
-  const getStates = () =>
-    addressApi
-      .getProvinces()
-      .then((res: any) => res?.result?.data || [])
-      .catch((err) => console.log(err))
 
   const getWards = (district_id: number) => {
     addressApi
@@ -90,9 +70,9 @@ export const useAddress = (
   }
 
   const getProvinceId = (stringTerms: string): number | undefined => {
-    if (!data?.length) return
+    if (!provinces?.length) return
 
-    const provinceId = data.find(
+    const provinceId = provinces.find(
       (item) => item.province_vietnamese_name === stringTerms
     )?.province_id
 
@@ -103,22 +83,48 @@ export const useAddress = (
     id: number | undefined
   ): OptionModel | undefined => {
     if (!id) return
-    return stateOptions()?.find((item) => item.value === id)
+    return provinceOptions?.find((item) => item.value === id)
   }
+
+  const provinceOptions: OptionModel[] = useMemo(() => {
+    if (!provinces?.length) return []
+    return provinces.map((item) => ({
+      value: item.province_id,
+      label: item.province_name,
+    }))
+  }, [provinces])
+
+  const districtOptions: OptionModel[] = useMemo(() => {
+    if (!districts?.length) return []
+    return districts.map((item) => ({
+      value: item.district_id,
+      label: item.district_name,
+    }))
+  }, [districts])
+
+  const wardOptions: OptionModel[] = useMemo(() => {
+    if (!wards?.length) return []
+    return wards.map((item) => ({
+      value: item.ward_id,
+      label: item.ward_name,
+    }))
+  }, [wards])
 
   return {
     getWards,
     getDistricts,
     districts,
+    districtOptions,
     wards,
-    states: data || [],
+    provinces,
     clearDistricts,
     clearWards,
     clearAddressList,
     setDistricts,
     setWards,
     getProvinceId,
-    stateOptions,
+    provinceOptions,
+    wardOptions,
     getProvinceOptionById,
   }
 }

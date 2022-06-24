@@ -63,3 +63,5 @@ export const Header = () => {
     </div>
   )
 }
+
+export * from "./headerAccount"

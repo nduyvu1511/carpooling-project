@@ -1,3 +1,4 @@
+import { LatLng } from "./location"
 import { FromLocationRidesForm } from "./rides"
 
 export type GetAddressFormParams =
@@ -73,4 +74,9 @@ export interface CountryId {
   country_id: number
   country_name: string
   country_vietnamese_name: string
+}
+
+export interface CalculateDistanceBetweenTwoCoordinatesParams {
+  origin: LatLng
+  destination: LatLng
 }

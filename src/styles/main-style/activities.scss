@@ -1,0 +1,45 @@
+.activity__item {
+  padding-block: 8px;
+  @include flex(flex-start, center);
+  border: 1px solid $gray-color-1;
+  padding: 16px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+
+  &-content {
+    margin-right: 10px;
+    flex: 1;
+
+    & strong {
+      font-weight: 500;
+      width: 70px;
+      display: inline-block;
+    }
+
+    &-title {
+      @include style-text(1.6rem, 500, 2.2rem, $text-color);
+      margin-bottom: 8px;
+    }
+
+    &-type {
+      margin-bottom: 8px;
+    }
+
+    &-date {
+      @include style-text(1.3rem, 400, 1.8rem, $text-color-2);
+
+      &-from {
+        margin-bottom: 4px;
+      }
+
+      &-to {
+      }
+    }
+  }
+
+  &-sub {
+    &-price {
+      @include style-text(1.5rem, 500, 2rem, $text-color);
+    }
+  }
+}

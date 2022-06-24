@@ -1,11 +1,15 @@
 import { Alert, InputCheckbox, ItemSelect, Map } from "@/components"
-import { FromLocation, LocationType, StationPickUpParams } from "@/models"
+import {
+  FromLocation,
+  LocationType,
+  OptionModel,
+  StationPickUpParams,
+} from "@/models"
 import { vehicleApi } from "@/services"
 import { useEffect, useState } from "react"
 import { RiLoader4Line } from "react-icons/ri"
-import { useDispatch } from "react-redux"
 import Select from "react-select"
-import { useAddress } from "shared/hook"
+import { useAddressOptions } from "shared/hook"
 
 interface LocationFormProps {
   showMap?: boolean
@@ -28,8 +32,7 @@ export const LocationForm = ({
   defaultStation,
   isPickingUpFromStart: isPickingUpFromStartProps,
 }: LocationFormProps) => {
-  const dispatch = useDispatch()
-  const { states } = useAddress(true)
+  const { provinceOptions } = useAddressOptions()
 
   const [stations, setStations] = useState<StationPickUpParams[]>([])
   const [station, setStation] = useState<StationPickUpParams | undefined>(
@@ -101,10 +104,7 @@ export const LocationForm = ({
                         console.log(err)
                       })
                   }}
-                  options={states?.map((item) => ({
-                    label: item.province_name,
-                    value: item.province_id,
-                  }))}
+                  options={provinceOptions as any}
                 />
               </div>
             </div>

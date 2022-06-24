@@ -1,19 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import { logoIcon } from "@/assets"
-import {
-  CompoundingFilterForm,
-  HomeNav,
-  InfiniteScrollWrapper,
-  Modal,
-  RidesItem
-} from "@/components"
+import { CompoundingFilterForm, HomeNav, Modal, RidesItem } from "@/components"
 import { HeaderAccount } from "@/components/header/headerAccount"
-import { LIMIT_COMPOUNDING_LIST } from "@/helper"
-import { CompoundingOrderField, GetCarpoolingListParams } from "@/models"
+import { isObjectHasValue, LIMIT_COMPOUNDING_LIST } from "@/helper"
+import {
+  CompoundingCarCustomerFilterForm,
+  CompoundingOrderField,
+  GetCompoundingCarCustomerList,
+} from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import { useCarpoolingList, useScrollTop } from "shared/hook"
+import InfiniteScroll from "react-infinite-scroll-component"
+import {
+  useCompoundingCarCustomerList,
+  useScrollTop,
+  useToken,
+} from "shared/hook"
+import { number } from "yup"
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const height = useScrollTop()
@@ -26,24 +30,47 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 
 export const HomeCustomer = () => {
   const router = useRouter()
+  const { token } = useToken()
   const {
     data: carpoolingList,
     isLimit,
     isValidating,
     isFetchingMore,
     filterRides,
-  } = useCarpoolingList({ token: "", limit: LIMIT_COMPOUNDING_LIST })
+    fetchMoreRides,
+  } = useCompoundingCarCustomerList(getQueryParams(router.query))
   const [showFilter, setShowFilter] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (!router?.query) return
-    const { order_by, from_province_id, to_province_id, car_id } = router.query
+  const handleCloseFilter = (status: boolean) => {
+    setShowFilter(status)
+    // toggleBodyOverflow(status ? "hidden" : "unset")
+  }
 
-    let queryObj: GetCarpoolingListParams = {
-      token: "",
-      ...router.query,
-      offset: Number(router.query?.offset) || 0,
+  const handleFilterRides = (params: CompoundingCarCustomerFilterForm) => {
+    router.push(
+      {
+        query: params ? { ...router.query, ...params, offset: 0 } : {},
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: true,
+      }
+    )
+    filterRides(getQueryParams(params))
+  }
+
+  function getQueryParams(
+    params: CompoundingCarCustomerFilterForm
+  ): GetCompoundingCarCustomerList {
+    const { order_by, from_province_id, to_province_id, car_id, number_seat } =
+      params
+
+    let queryObj: GetCompoundingCarCustomerList = {
+      ...params,
+      offset: 0,
       limit: LIMIT_COMPOUNDING_LIST,
+      token,
     }
     if (order_by) {
       delete (queryObj as any).order_by
@@ -58,14 +85,46 @@ export const HomeCustomer = () => {
     if (car_id) {
       queryObj.car_id = Number(car_id)
     }
-    filterRides(queryObj)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
-
-  const handleCloseFilter = (status: boolean) => {
-    setShowFilter(status)
-    // toggleBodyOverflow(status ? "hidden" : "unset")
+    if (number_seat) {
+      queryObj.number_seat = Number(number_seat)
+    }
+    Object.keys(queryObj).forEach(
+      (item) => !(queryObj as any)?.[item] && delete (queryObj as any)[item]
+    )
+    return queryObj
   }
+
+  const handleFetchMoreRides = () => {
+    const offset = (Number(router.query?.offset) || 0) + LIMIT_COMPOUNDING_LIST
+
+    router.push(
+      {
+        query: {
+          ...router.query,
+          offset,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: false,
+      }
+    )
+  }
+
+  useEffect(() => {
+    if (!router.isReady) return
+    const offset = Number(router.query?.offset)
+    if (offset) {
+      fetchMoreRides({
+        ...getQueryParams(router.query),
+        offset: offset + LIMIT_COMPOUNDING_LIST,
+      })
+    } else {
+      filterRides(getQueryParams(router.query))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query])
 
   return (
     <section className="home-customer__container">
@@ -118,27 +177,11 @@ export const HomeCustomer = () => {
                 </Wrapper>
               </div>
               <div className="rides__driver-right">
-                <InfiniteScrollWrapper
-                  onBottom={() => {
-                    const offset =
-                      (Number(router.query?.offset) || 0) +
-                      LIMIT_COMPOUNDING_LIST
-                    router.push(
-                      {
-                        query: {
-                          ...router.query,
-                          offset,
-                        },
-                      },
-                      undefined,
-                      {
-                        scroll: false,
-                        shallow: true,
-                      }
-                    )
-                  }}
-                  isLimit={isLimit}
-                  isLoading={isValidating || isFetchingMore}
+                <InfiniteScroll
+                  dataLength={carpoolingList.length}
+                  next={handleFetchMoreRides}
+                  hasMore={!isLimit}
+                  loader={<h4>Loading...</h4>}
                 >
                   <div className="home-customer__rides grid grid-col-1 grid-col-sm-2 grid-col-lg-2 grid-col-2xl-3">
                     {carpoolingList.map((item, index) => (
@@ -154,7 +197,7 @@ export const HomeCustomer = () => {
                       />
                     ))}
                   </div>
-                </InfiniteScrollWrapper>
+                </InfiniteScroll>
               </div>
             </div>
 
@@ -171,20 +214,7 @@ export const HomeCustomer = () => {
                     <CompoundingFilterForm
                       type="customer"
                       defaultValues={router.query}
-                      onChange={(data) => {
-                        router.push(
-                          {
-                            query: data
-                              ? { ...router.query, ...data, offset: 0 }
-                              : {},
-                          },
-                          undefined,
-                          {
-                            shallow: true,
-                            scroll: true,
-                          }
-                        )
-                      }}
+                      onChange={(data) => data && handleFilterRides(data)}
                     />
                   </div>
                 </Modal>
