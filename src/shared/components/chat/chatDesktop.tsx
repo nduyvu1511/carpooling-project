@@ -1,7 +1,6 @@
-import { cartEmptyIcon } from "@/assets"
 import { RootState } from "@/core/store"
 import { toggleBodyOverflow } from "@/helper"
-import { toggleExpandChatModal, setOpenChatDesktop } from "@/modules"
+import { setOpenChatDesktop, toggleExpandChatModal } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"
 import { CgArrowsExpandRight, CgClose, CgCompressRight } from "react-icons/cg"
@@ -32,12 +31,12 @@ export const ChatDesktop = () => {
             <Image
               alt=""
               objectFit="cover"
-              src={`${API_URL}${userInfo?.avatar}`}
+              src={`${API_URL}${userInfo?.avatar_url?.image_url}`}
               layout="fill"
               quality={40}
             />
           </div>
-          <p className="chat__header-info-name">{userInfo?.name}</p>
+          <p className="chat__header-info-name">{userInfo?.partner_name}</p>
         </div>
         <div className="chat__header-actions">
           <button

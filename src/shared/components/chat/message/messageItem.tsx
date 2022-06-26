@@ -1,6 +1,6 @@
 import { RootState } from "@/core/store"
 import { Message } from "@/models"
-import { setPreviewImageUrl, setReplyMessage } from "@/modules"
+import { setReplyMessage } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"
 import { useDispatch, useSelector } from "react-redux"
@@ -12,17 +12,11 @@ interface MessageItemProps {
   isBreak?: boolean
 }
 
-export const MessageItem = ({
-  message,
-  isLast = false,
-  isBreak = false,
-}: MessageItemProps) => {
+export const MessageItem = ({ message, isLast = false, isBreak = false }: MessageItemProps) => {
   const dispatch = useDispatch()
   const { isSendingMessage } = useSelector((state: RootState) => state.message)
   const { currentChannel } = useSelector((state: RootState) => state.channel)
-  const { isExpandChatModal } = useSelector(
-    (state: RootState) => state.chatModal
-  )
+  const { isExpandChatModal } = useSelector((state: RootState) => state.chatModal)
 
   return (
     <div
@@ -45,12 +39,8 @@ export const MessageItem = ({
               />
             </div>
 
-            {currentChannel &&
-            currentChannel?.channel_partner_ids?.length > 0 ? (
-              <p className="message__item-partner-name">
-                {" "}
-                {message.author.partner_name}
-              </p>
+            {currentChannel && currentChannel?.channel_partner_ids?.length > 0 ? (
+              <p className="message__item-partner-name"> {message.author.partner_name}</p>
             ) : null}
           </div>
         ) : null
@@ -88,9 +78,7 @@ export const MessageItem = ({
             }}
           ></div>
 
-          {isLast ? (
-            <p className="message__item-text-date">{message.create_date}</p>
-          ) : null}
+          {isLast ? <p className="message__item-text-date">{message.create_date}</p> : null}
         </div>
       ) : null}
 
@@ -108,12 +96,10 @@ export const MessageItem = ({
               : ""
           }`}
         >
-          {message.attachments.map((img) => (
+          {/* {message.attachments.map((img) => (
             <div
               key={img.attachment_id}
-              onClick={() =>
-                dispatch(setPreviewImageUrl(`${API_URL}${img.attachment_url}`))
-              }
+              onClick={() => dispatch(setPreviewImageUrl(`${API_URL}${img.attachment_url}`))}
               className="image-container message__item-image-list-image"
             >
               <Image
@@ -124,7 +110,7 @@ export const MessageItem = ({
                 quality={30}
               />
             </div>
-          ))}
+          ))} */}
         </div>
       ) : null}
     </div>

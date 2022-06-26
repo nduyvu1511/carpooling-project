@@ -18,7 +18,7 @@ const ResetPassword = () => {
       <div className="content-container px-24">
         <OTP
           heading="Cập nhật SĐT"
-          onVeifyOTP={() => {
+          onVerifyOTP={() => {
             dispatch(notify("Xác thực thành công", "success"))
           }}
         />

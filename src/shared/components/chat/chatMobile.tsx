@@ -1,9 +1,5 @@
 import { RootState } from "@/core/store"
-import {
-  setCurrentChannel,
-  setOpenChatMobile,
-  setShouldFetchChannels,
-} from "@/modules"
+import { setCurrentChannel, setOpenChatMobile, setShouldFetchChannels } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"
 import { CgClose } from "react-icons/cg"
@@ -24,7 +20,7 @@ export const ChatMobile = () => {
         <header className="chat__mobile-header">
           <div className="image-container">
             <Image
-              src={`${API_URL}${userInfo?.avatar || ""}`}
+              src={`${API_URL}${userInfo?.avatar_url?.image_url || ""}`}
               layout="fill"
               alt=""
               objectFit="cover"

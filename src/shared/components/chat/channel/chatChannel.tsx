@@ -1,4 +1,3 @@
-import { cartEmptyIcon } from "@/assets"
 import { RootState } from "@/core/store"
 import { convertViToEn } from "@/helper"
 import { Channel } from "@/models"
@@ -17,12 +16,7 @@ import { useEffect, useRef } from "react"
 import { FiSearch } from "react-icons/fi"
 import { IoIosCloseCircle } from "react-icons/io"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  useChatChannel,
-  useChatMessage,
-  useDebounce,
-  useInputText,
-} from "shared/hook"
+import { useChatChannel, useChatMessage, useDebounce, useInputText } from "shared/hook"
 import { ChannelItem } from "./channelItem"
 
 export const ChatChannel = () => {
@@ -33,17 +27,15 @@ export const ChatChannel = () => {
   const {
     searchChannel,
     createChannel,
-    channelsSearch: {
-      channels: channelsSearch = [],
-      isLoading: isSeachLoading,
-    },
+    channelsSearch: { channels: channelsSearch = [], isLoading: isSeachLoading },
     clearSearchChannelLoading,
     clearMessageUnreadInChannel,
     fetchChannels,
   } = useChatChannel()
   const { getMessagesInChannel } = useChatMessage()
-  const { currentChannel, channels, isLoading, shouldFetchChannels } =
-    useSelector((state: RootState) => state.channel)
+  const { currentChannel, channels, isLoading, shouldFetchChannels } = useSelector(
+    (state: RootState) => state.channel
+  )
   const { replyMessage } = useSelector((state: RootState) => state.message)
 
   useEffect(() => {
@@ -70,10 +62,7 @@ export const ChatChannel = () => {
 
     dispatch(setLimitMessage(undefined))
 
-    if (
-      channel.message_unread_counter > 0 ||
-      channel.last_message?.is_read === false
-    ) {
+    if (channel.message_unread_counter > 0 || channel.last_message?.is_read === false) {
       clearMessageUnreadInChannel(channel.channel_id)
       dispatch(subtractMessagesUnreadCount(1))
     }
@@ -82,9 +71,7 @@ export const ChatChannel = () => {
   const handleCreateChannel = (channel: any) => {
     if (channel?.channel_id) {
       handleSelectChannel(channel as Channel)
-      document
-        .querySelector(`.chat__channel-item-${channel.channel_id}`)
-        ?.scrollIntoView()
+      document.querySelector(`.chat__channel-item-${channel.channel_id}`)?.scrollIntoView()
       clearValue()
       clearSearchChannelLoading()
     } else {
@@ -137,7 +124,7 @@ export const ChatChannel = () => {
           <div className="chat__channel-search-result">
             {isSeachLoading === false && channelsSearch?.length === 0 ? (
               <div className="chat--no-result">
-                {cartEmptyIcon}
+                {/* {cartEmptyIcon} */}
                 <p>Không tìm thấy cuộc hội thoại nào</p>
               </div>
             ) : null}
@@ -152,17 +139,13 @@ export const ChatChannel = () => {
                   <div className="image-container chat__result-list-item-image">
                     <Image
                       objectFit="cover"
-                      src={`${API_URL}${
-                        item.channel_image?.image_url || item.channel_image
-                      }`}
+                      src={`${API_URL}${item.channel_image?.image_url || item.channel_image}`}
                       alt={item.channel_name}
                       layout="fill"
                     />
                   </div>
 
-                  <p className="chat__result-list-item-name">
-                    {item.channel_name}
-                  </p>
+                  <p className="chat__result-list-item-name">{item.channel_name}</p>
                 </li>
               ))}
 
@@ -212,7 +195,7 @@ export const ChatChannel = () => {
 
         {!isLoading && channels?.length === 0 ? (
           <div className="chat--no-result">
-            {cartEmptyIcon}
+            {/* {cartEmptyIcon} */}
             <p>Không tìm thấy cuộc hội thoại nào</p>
           </div>
         ) : null}

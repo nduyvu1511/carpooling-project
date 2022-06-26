@@ -1,11 +1,9 @@
 import { RootState } from "@/core/store"
 import {
-  reArrangeChannels,
-  setFetchingMoreMessages,
-  setLastedMessageToChannel,
-  setReplyMessage,
+  reArrangeChannels, setLastedMessageToChannel,
+  setReplyMessage
 } from "@/modules"
-import React, { ChangeEvent, useEffect, useRef } from "react"
+import { ChangeEvent, useEffect, useRef } from "react"
 import { MdOutlineInsertPhoto, MdSend } from "react-icons/md"
 import { RiLoader2Fill } from "react-icons/ri"
 import { useDispatch, useSelector } from "react-redux"

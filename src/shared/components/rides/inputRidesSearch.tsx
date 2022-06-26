@@ -1,7 +1,6 @@
 import { circleIcon } from "@/assets"
 import { RootState } from "@/core/store"
 import { GOOGLE_MAP_API_KEY } from "@/helper"
-import { setOpenRidesModalSearch } from "@/modules/compounding/compoundingSlice"
 import { useLoadScript } from "@react-google-maps/api"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -86,7 +85,7 @@ export const InputRidesSearch = ({
           readOnly
           onFocus={() => {
             onFocus && onFocus()
-            dispatch(setOpenRidesModalSearch({ isOpenSearchModal: true, type }))
+            // dispatch(setOpenRidesModalSearch({ isOpenSearchModal: true, type }))
           }}
           type="text"
           onChange={onChange}

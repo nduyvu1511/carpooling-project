@@ -7,7 +7,6 @@ import chatModalSlice from "./chat/modalSlice"
 import commonSlice from "./common/commonSlice"
 import compoundingSlice from "./compounding/compoundingSlice"
 import locationHistorySlice from "./location/locationHistorySlice"
-import locationSlice from "./location/locationSlice"
 import userSlice from "./user/userSlice"
 
 const rootReducer = combineReducers({
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   message: messageSlice,
   chatModal: chatModalSlice,
   notifications: notificationsReducer(),
-  location: locationSlice,
   locationHistory: locationHistorySlice,
   compounding: compoundingSlice,
 })
@@ -28,7 +26,7 @@ export default rootReducer
 export * from "./auth/authSlice"
 export * from "./chat"
 export * from "./common/commonSlice"
-export * from "./location/locationHistorySlice"
-export * from "./location/locationSlice"
-export * from "./user/userSlice"
 export * from "./compounding/compoundingSlice"
+export * from "./location/locationHistorySlice"
+export * from "./user/userSlice"
+
