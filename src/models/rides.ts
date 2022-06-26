@@ -1,4 +1,3 @@
-import { number } from "yup"
 import { ProvinceId, StationId, StationPickUpParams } from "./address"
 import { OptionModel } from "./common"
 import { FromLocation } from "./location"
@@ -105,33 +104,27 @@ export interface CreateCommonCompounding {
   distance: number
 }
 
-export interface CreateOneWayCompoundingNoToken
-  extends CreateCommonCompounding {}
+export interface CreateOneWayCompoundingNoToken extends CreateCommonCompounding {}
 
-export interface UpdateOneWayCompoundingCarParamsNoToken
-  extends CreateOneWayCompoundingNoToken {
+export interface UpdateOneWayCompoundingCarParamsNoToken extends CreateOneWayCompoundingNoToken {
   compounding_car_customer_id: number
 }
 
-export interface UpdateOneWayCompoundingCarParams
-  extends UpdateOneWayCompoundingCarParamsNoToken {
+export interface UpdateOneWayCompoundingCarParams extends UpdateOneWayCompoundingCarParamsNoToken {
   token: string
 }
 
-export interface CreateOneWayCompounding
-  extends CreateOneWayCompoundingNoToken {
+export interface CreateOneWayCompounding extends CreateOneWayCompoundingNoToken {
   token: string
 }
 
-export interface CreateTwoWayCompoundingNoToken
-  extends CreateOneWayCompoundingNoToken {
+export interface CreateTwoWayCompoundingNoToken extends CreateOneWayCompoundingNoToken {
   is_a_day_tour: boolean
   hour_of_wait_time?: HourWaitTimeType | false
   expected_picking_up_date?: string | false
 }
 
-export interface CreateTwoWayCompoundingSubmitForm
-  extends CreateTwoWayCompoundingNoToken {
+export interface CreateTwoWayCompoundingSubmitForm extends CreateTwoWayCompoundingNoToken {
   mode: "create" | "update"
 }
 
@@ -145,13 +138,11 @@ export interface CreateCommonCompoundingForm {
   is_checked_policy: boolean
 }
 
-export interface CreateOneWayCompoundingForm
-  extends CreateCommonCompoundingForm {
+export interface CreateOneWayCompoundingForm extends CreateCommonCompoundingForm {
   price?: number
 }
 
-export interface CreateTwoWayCompoundingForm
-  extends CreateCommonCompoundingForm {
+export interface CreateTwoWayCompoundingForm extends CreateCommonCompoundingForm {
   is_a_day_tour: boolean
   hour_of_wait_time?: OptionModel
   expected_picking_up_date?: string
@@ -172,23 +163,19 @@ export interface CreateCarpoolingCompoundingForm {
   is_checked_policy: boolean
 }
 
-export interface CreateTwoWayCompounding
-  extends CreateTwoWayCompoundingNoToken {
+export interface CreateTwoWayCompounding extends CreateTwoWayCompoundingNoToken {
   token: string
 }
 
-export interface UpdateTwoWayCompoundingCarParamsNoToken
-  extends CreateTwoWayCompoundingNoToken {
+export interface UpdateTwoWayCompoundingCarParamsNoToken extends CreateTwoWayCompoundingNoToken {
   compounding_car_customer_id: number
 }
 
-export interface UpdateTwoWayCompoundingCar
-  extends UpdateTwoWayCompoundingCarParamsNoToken {
+export interface UpdateTwoWayCompoundingCar extends UpdateTwoWayCompoundingCarParamsNoToken {
   token: string
 }
 
-export interface CreateCarpoolCompoundingNoToken
-  extends CreateCommonCompounding {
+export interface CreateCarpoolCompoundingNoToken extends CreateCommonCompounding {
   from_pick_up_station_id: number
   to_pick_up_station_id: number
   number_seat: number
@@ -197,18 +184,15 @@ export interface CreateCarpoolCompoundingNoToken
   compounding_car_id?: number
 }
 
-export interface UpdateCarpoolCompoundingNoToken
-  extends CreateCarpoolCompoundingNoToken {
+export interface UpdateCarpoolCompoundingNoToken extends CreateCarpoolCompoundingNoToken {
   compounding_car_customer_id: number
 }
 
-export interface UpdateCarpoolCompounding
-  extends UpdateCarpoolCompoundingNoToken {
+export interface UpdateCarpoolCompounding extends UpdateCarpoolCompoundingNoToken {
   token: string
 }
 
-export interface CreateCarpoolCompounding
-  extends CreateCarpoolCompoundingNoToken {
+export interface CreateCarpoolCompounding extends CreateCarpoolCompoundingNoToken {
   token: string
 }
 
@@ -243,8 +227,7 @@ export type HourWaitTimeType =
   | "11_hour"
   | "12_hour"
 
-export interface CreateCompoundingCarParams
-  extends CreateCompoundingCarNoTokenParams {
+export interface CreateCompoundingCarParams extends CreateCompoundingCarNoTokenParams {
   token: string
 }
 
@@ -444,8 +427,7 @@ export interface CompoundingListDriverParams {
   current_longitude?: string
 }
 
-export interface GetCompoundingListForDriver
-  extends CompoundingListDriverParams {
+export interface GetCompoundingListForDriver extends CompoundingListDriverParams {
   token: string
 }
 
@@ -491,8 +473,7 @@ export interface CompoundingFilterFormParams {
   current_longitude?: string
 }
 
-export interface CompoundingCarCustomerFilterForm
-  extends CompoundingFilterFormParams {
+export interface CompoundingCarCustomerFilterForm extends CompoundingFilterFormParams {
   number_seat?: number
 }
 
@@ -551,8 +532,19 @@ export interface UpdateCompoundingCarDriver extends CreateCompoundinCarDriver {
   compounding_car_id: number
 }
 
-export type CompoundingCarCustomerState =
+export type CompoundingCarDriverState =
+  | "draft"
+  | "waiting"
+  | "waiting_deposit"
+  | "confirm_deposit"
   | "confirm"
+  | "start_running"
+  | "stop_picking"
+  | "done"
+  | "cancel"
+
+export type CompoundingCarCustomerState =
+  | "draft"
   | "confirm"
   | "deposit"
   | "waiting"
@@ -563,9 +555,105 @@ export type CompoundingCarCustomerState =
   | "confirm_pay"
   | "cancel"
 
-export interface GetCompoundingCarStateParams {
+export interface GetCompoundingCarCustomerStateParams {
   token: string
-  compounding_car_state?: CompoundingCarCustomerState
+  compounding_car_state?: CompoundingCarCustomerState[]
   limit?: number
   offset?: number
+}
+
+export interface GetCompoundingCarDriverStateParams {
+  token: string
+  compounding_car_state?: CompoundingCarDriverState[]
+  limit?: number
+  offset?: number
+}
+
+export interface ActivityCarId extends CarId {
+  icon: {
+    icon_id: string
+    icon_url: string
+  }
+}
+
+export interface CustomerActivityItem {
+  compounding_car_id: number
+  compounding_car_name: string
+  compounding_car_customer_id: number
+  compounding_type: CompoundingType
+  expected_going_on_date: string
+  expected_picking_up_date: string
+  car: ActivityCarId
+  from_province: ProvinceId
+  from_pick_up_station: StationPickUpParams
+  is_picking_up_from_start: boolean
+  from_address: string
+  from_longitude: string
+  from_latitude: string
+  to_province: ProvinceId
+  to_pick_up_station: StationPickUpParams
+  is_taking_to_final_destination: boolean
+  to_address: string
+  to_longitude: string
+  to_latitude: string
+  is_a_day_tour: string
+  hour_of_wait_time: string
+  distance: number
+  number_seat: number
+  amount_total: number
+  down_payment: number
+  amount_due: number
+  state: CompoundingCarCustomerState
+  second_remains: number
+}
+
+export interface DepositCompoundingCarDriverRes {
+  payment_id: number
+  payment_type: string
+  partner_type: string
+  partner_id: UserInfo
+  amount_total: number
+  state: "draft" | "confirm_depost" | string
+  date: string
+  compounding_car: {
+    compounding_car_id: number
+    compounding_car_name: string
+  }
+  second_remains: number
+}
+
+export interface DepositCompoundingCarDriverFailureRes {
+  message: string
+  data: DepositCompoundingCarDriverRes[]
+}
+
+export interface DriverActivityItem {
+  compounding_car_id: number
+  compounding_car_name: string
+  compounding_car_customer_id: number
+  compounding_type: CompoundingType
+  expected_going_on_date: string
+  expected_picking_up_date: string
+  car: ActivityCarId
+  from_province: ProvinceId
+  from_pick_up_station: StationPickUpParams
+  is_picking_up_from_start: boolean
+  from_address: string
+  from_longitude: string
+  from_latitude: string
+  to_province: ProvinceId
+  to_pick_up_station: StationPickUpParams
+  is_taking_to_final_destination: boolean
+  to_address: string
+  to_longitude: string
+  to_latitude: string
+  is_a_day_tour: boolean
+  hour_of_wait_time: string
+  distance: number
+  number_seat: number
+  amount_total: number
+  down_payment: number
+  amount_due: number
+  state: CompoundingCarDriverState
+  second_remains: number
 }

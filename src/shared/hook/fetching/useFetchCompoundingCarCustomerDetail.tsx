@@ -10,7 +10,7 @@ interface Res {
   isValidating: boolean
 }
 
-export const useFetchCompoundingCarCustomer = (key: string): Res => {
+export const useFetchCompoundingCarCustomerDetail = (key: string): Res => {
   const router = useRouter()
   const { token } = useToken()
   const { compounding_car_customer_id } = router.query
@@ -28,8 +28,8 @@ export const useFetchCompoundingCarCustomer = (key: string): Res => {
             .catch((err) => console.log(err))
       : null,
     {
-      ...SWRConfig,
-      dedupingInterval: 1000,
+      dedupingInterval: 0,
+      revalidateOnFocus: true,
     }
   )
 

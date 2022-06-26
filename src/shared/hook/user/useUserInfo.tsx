@@ -5,6 +5,7 @@ import { userApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
 import { notify } from "reapop"
 import useSWR from "swr"
+import { useLogout } from "./useLogout"
 
 interface UserRes {
   data: UserInfo | undefined
@@ -19,6 +20,7 @@ const useUserInfo = (
 ): UserRes => {
   const { token } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
+  const { handleLogout } = useLogout()
 
   const { data, isValidating } = useSWR<UserInfo>(
     "user_info",
@@ -27,9 +29,8 @@ const useUserInfo = (
           userApi.getUserInfo(token).then((res: any) => {
             const userInfo = res?.result?.data
             if (shouldValidateToken) {
-              if (!res?.result?.success) {
-                dispatch(setUserInfo(undefined))
-                dispatch(setToken(""))
+              if (!res?.result?.validate_token) {
+                handleLogout()
               } else {
                 dispatch(setUserInfo(userInfo))
               }

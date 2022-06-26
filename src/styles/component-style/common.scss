@@ -539,3 +539,13 @@
 .countdown-minute {
   @include style-text(1.8rem, 600, 2.6rem, $text-color);
 }
+
+.deposit-loading {
+  @include flex-center;
+  padding-block: 100px;
+
+  & svg {
+    font-size: 7rem;
+    color: $primary-color;
+  }
+}

@@ -1,16 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { logoIcon } from "@/assets"
-import {
-  CompoundingFilterForm,
-  HeaderAccount,
-  Modal,
-  RidesItem
-} from "@/components"
+import { CompoundingFilterForm, HeaderAccount, Modal, RidesItem } from "@/components"
 import { compoundingTypeFilters, LIMIT_COMPOUNDING_LIST } from "@/helper"
 import {
   CompoundingFilterFormParams,
   CompoundingListDriverParams,
-  CompoundingOrderField
+  CompoundingOrderField,
 } from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -21,11 +16,7 @@ import { useCompoundingCarDriverList, useScrollTop } from "shared/hook"
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const height = useScrollTop()
-  return (
-    <div className={`${height > 400 ? "rides__driver-filter-active" : ""}`}>
-      {children}
-    </div>
-  )
+  return <div className={`${height > 400 ? "rides__driver-filter-active" : ""}`}>{children}</div>
 }
 
 export const HomeDriver = () => {
@@ -73,9 +64,7 @@ export const HomeDriver = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query])
 
-  function getQueryParams(
-    params: CompoundingFilterFormParams
-  ): CompoundingListDriverParams {
+  function getQueryParams(params: CompoundingFilterFormParams): CompoundingListDriverParams {
     const { order_by, from_province_id, to_province_id, car_id } = params
 
     let queryObj: CompoundingListDriverParams = {
@@ -102,7 +91,7 @@ export const HomeDriver = () => {
     return queryObj
   }
 
-  const handleFilterRides = (params: CompoundingFilterFormParams) => {
+  const handleFilterRides = (params: CompoundingFilterFormParams | undefined) => {
     router.push(
       {
         query: params ? { ...router.query, ...params, offset: 0 } : {},
@@ -161,7 +150,7 @@ export const HomeDriver = () => {
                   <CompoundingFilterForm
                     type="driver"
                     defaultValues={router.query}
-                    onChange={(data) => data && handleFilterRides(data)}
+                    onChange={(data) => handleFilterRides(data)}
                   />
                 </Wrapper>
               </div>
@@ -205,10 +194,7 @@ export const HomeDriver = () => {
             </div>
 
             <div className="rides__filter-mobile">
-              <button
-                onClick={() => handleCloseFilter(true)}
-                className="btn-primary"
-              >
+              <button onClick={() => handleCloseFilter(true)} className="btn-primary">
                 Lọc
               </button>
               {showFilter ? (
@@ -221,9 +207,7 @@ export const HomeDriver = () => {
                         onChange={(data) => {
                           router.push(
                             {
-                              query: data
-                                ? { ...router.query, ...data, offset: 0 }
-                                : {},
+                              query: data ? { ...router.query, ...data, offset: 0 } : {},
                             },
                             undefined,
                             {

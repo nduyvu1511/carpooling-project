@@ -8,6 +8,8 @@ import {
 } from "@/assets"
 import {
   CertificateInspectionFormKey,
+  CompoundingCarCustomerState,
+  CompoundingCarDriverState,
   CompoundingOrderField,
   CompoundingType,
   DepartureFormKey,
@@ -31,17 +33,14 @@ import { BiMerge } from "react-icons/bi"
 import { CgArrowRight, CgArrowsExchange } from "react-icons/cg"
 import { FiSearch } from "react-icons/fi"
 import {
+  HiCalculator,
+  HiCalendar,
   HiOutlineClipboardList,
   HiOutlineLocationMarker,
   HiOutlineTrash,
   HiStar,
 } from "react-icons/hi"
-import {
-  MdLockOutline,
-  MdOutlineDateRange,
-  MdPayment,
-  MdPendingActions,
-} from "react-icons/md"
+import { MdLockOutline, MdOutlineDateRange, MdPayment, MdPendingActions } from "react-icons/md"
 import { RiCarWashingLine, RiCouponLine } from "react-icons/ri"
 
 export const notifications = [{}]
@@ -693,17 +692,23 @@ export const dashboardAccounts: {
     type: "both",
   },
   {
-    name: "Đơn hàng nháp",
-    path: "/dashboard/profile/draft-order",
-    icon: <HiOutlineTrash />,
+    name: "Lịch trình sắp tới",
+    path: "/schedules",
+    icon: <HiCalendar />,
     type: "both",
   },
-  {
-    name: "Đơn hàng đang thanh toán",
-    path: "/dashboard/profile/pending-deposit",
-    icon: <MdPendingActions />,
-    type: "both",
-  },
+  // {
+  //   name: "Đơn hàng nháp",
+  //   path: "/dashboard/profile/draft-order",
+  //   icon: <HiOutlineTrash />,
+  //   type: "both",
+  // },
+  // {
+  //   name: "Đơn hàng đang thanh toán",
+  //   path: "/dashboard/profile/pending-deposit",
+  //   icon: <MdPendingActions />,
+  //   type: "both",
+  // },
   {
     name: "Đánh giá",
     path: "/dashboard/ratings/given",
@@ -772,62 +777,62 @@ interface CreateRidesOneWayFormFieldsParams {
   childs?: CreateRidesOneWayFormFieldsParams[]
 }
 
-export const createRidesOneWayFormFields: CreateRidesOneWayFormFieldsParams[] =
-  [
-    {
-      name: "from_pick_up_station_id",
-      isRequired: true,
-      label: "Chọn điểm đi",
-      type: "text",
-      icon: <HiOutlineLocationMarker />,
-    },
+export const createRidesOneWayFormFields: CreateRidesOneWayFormFieldsParams[] = [
+  {
+    name: "from_pick_up_station_id",
+    isRequired: true,
+    label: "Chọn điểm đi",
+    type: "text",
+    icon: <HiOutlineLocationMarker />,
+  },
 
-    {
-      name: "to_pick_up_station_id",
-      isRequired: true,
-      label: "Chọn điểm đến",
-      type: "text",
-      icon: <HiOutlineLocationMarker />,
-    },
-    {
-      name: "expected_going_on_date",
-      isRequired: true,
-      label: "Chọn ngày đi",
-      type: "date",
-      icon: <MdOutlineDateRange />,
-      childs: [
-        {
-          name: "expected_going_on_date",
-          isRequired: true,
-          label: "Chọn ngày đi",
-          type: "date",
-        },
-        {
-          name: "expected_going_on_date",
-          isRequired: true,
-          label: "Chọn giờ đi",
-          type: "text",
-        },
-      ],
-    },
-    {
-      name: "car_id",
-      isRequired: true,
-      label: "Chọn loại xe",
-      type: "select",
-      icon: <RiCarWashingLine />,
-    },
-    {
-      name: "number_seat",
-      isRequired: true,
-      label: "Chọn số ghế",
-      type: "select",
-      icon: <RiCarWashingLine />,
-    },
-  ]
+  {
+    name: "to_pick_up_station_id",
+    isRequired: true,
+    label: "Chọn điểm đến",
+    type: "text",
+    icon: <HiOutlineLocationMarker />,
+  },
+  {
+    name: "expected_going_on_date",
+    isRequired: true,
+    label: "Chọn ngày đi",
+    type: "date",
+    icon: <MdOutlineDateRange />,
+    childs: [
+      {
+        name: "expected_going_on_date",
+        isRequired: true,
+        label: "Chọn ngày đi",
+        type: "date",
+      },
+      {
+        name: "expected_going_on_date",
+        isRequired: true,
+        label: "Chọn giờ đi",
+        type: "text",
+      },
+    ],
+  },
+  {
+    name: "car_id",
+    isRequired: true,
+    label: "Chọn loại xe",
+    type: "select",
+    icon: <RiCarWashingLine />,
+  },
+  {
+    name: "number_seat",
+    isRequired: true,
+    label: "Chọn số ghế",
+    type: "select",
+    icon: <RiCarWashingLine />,
+  },
+]
 
-export const CreateRidesTwoWayFormFields: CreateRidesOneWayFormFieldsParams[] =
-  [...createRidesOneWayFormFields]
+export const CreateRidesTwoWayFormFields: CreateRidesOneWayFormFieldsParams[] = [
+  ...createRidesOneWayFormFields,
+]
 
 export const hoursBackList: { label: string; value: HourWaitTimeType }[] = [
   {
@@ -905,4 +910,92 @@ export const compoundingOrderList: {
   { value: "sort_by_lowest_price", label: "Giá thấp đến cao" },
   { value: "sort_by_highest_price", label: "Giá cao đến thấp" },
   { value: "sort_by_distance", label: "Vị trí gần nhất" },
+]
+
+export const activityStates: {
+  value: CompoundingCarCustomerState
+  label: string
+}[] = [
+  {
+    label: "Đơn nháp",
+    value: "draft",
+  },
+  {
+    label: "Đã xác nhận",
+    value: "confirm",
+  },
+  {
+    label: "Đã thanh toán",
+    value: "deposit",
+  },
+  {
+    label: "Chờ tài xế",
+    value: "waiting",
+  },
+  {
+    label: "Đã có tài xế",
+    value: "assign",
+  },
+  {
+    label: "Đang di chuyển",
+    value: "in_process",
+  },
+  {
+    label: "Đã hoàn thành",
+    value: "done",
+  },
+  {
+    label: "Khách hàng thanh toán",
+    value: "customer_pay",
+  },
+  {
+    label: "Xác nhận thanh toán",
+    value: "confirm_pay",
+  },
+  {
+    label: "Đã hủy",
+    value: "cancel",
+  },
+]
+
+export const driveractivityStates: {
+  value: CompoundingCarDriverState
+  label: string
+}[] = [
+  {
+    label: "Đã hủy",
+    value: "cancel",
+  },
+  {
+    label: "Đã xác nhận",
+    value: "confirm",
+  },
+  {
+    label: "Đã thanh toán",
+    value: "confirm_deposit",
+  },
+  {
+    label: "Đã hoàn thành",
+    value: "done",
+  },
+  {
+    label: "Đơn nháp",
+    value: "draft",
+  },
+  {
+    label: "Đang di chuyển",
+    value: "start_running",
+  },
+  {
+    label: "Ngừng chọn khách",
+    value: "stop_picking",
+  },
+  {
+    label: "Chờ hành khách",
+    value: "waiting",
+  },
+  {
+    label: "Chờ thanh toán",
+    value: "waiting_deposit",
+  },
 ]

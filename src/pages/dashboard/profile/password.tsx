@@ -1,4 +1,5 @@
 import { ChangePasswordForm, CreatePasswordForm } from "@/components"
+import { RideContainer } from "@/container"
 import { MainNoFooter } from "@/layout"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
@@ -23,39 +24,36 @@ const Password = () => {
   if (isValidating) return null
 
   return (
-    <animated.section style={animation} className="password-page">
-      <div className="page-heading">
-        {hasPassword ? "Đổi mật khẩu" : "Tạo mới mật khẩu"}
-      </div>
-
-      <div className="content-container password-page-form">
-        {hasPassword ? (
-          <ChangePasswordForm
-            onSubmit={(data) =>
-              changePassword({
-                ...data,
-                handleSuccess: () => {
-                  router.push("/dashboard/profile")
-                },
-              })
-            }
-          />
-        ) : (
-          <CreatePasswordForm
-            onSubmit={(data) =>
-              createPassword({
-                ...data,
-                handleSuccess: () => {
-                  router.push("/dashboard/profile")
-                },
-              })
-            }
-          />
-        )}
-      </div>
-    </animated.section>
+    <RideContainer heading={hasPassword ? "Đổi mật khẩu" : "Tạo mới mật khẩu"}>
+      <animated.section style={animation} className="password-page">
+        <div className="content-container password-page-form">
+          {hasPassword ? (
+            <ChangePasswordForm
+              onSubmit={(data) =>
+                changePassword({
+                  ...data,
+                  handleSuccess: () => {
+                    router.push("/dashboard/profile")
+                  },
+                })
+              }
+            />
+          ) : (
+            <CreatePasswordForm
+              onSubmit={(data) =>
+                createPassword({
+                  ...data,
+                  handleSuccess: () => {
+                    router.push("/dashboard/profile")
+                  },
+                })
+              }
+            />
+          )}
+        </div>
+      </animated.section>
+    </RideContainer>
   )
 }
 
-Password.Layout = MainNoFooter
 export default Password

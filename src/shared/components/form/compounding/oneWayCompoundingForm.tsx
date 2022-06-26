@@ -10,12 +10,9 @@ import {
   ONE_WAY_NOTE,
   ONE_WAY_PRICE,
   ONE_WAY_TO_LOCATION,
-  setToLocalStorage,
+  setToLocalStorage
 } from "@/helper"
-import {
-  CreateOneWayCompoundingForm,
-  CreateOneWayCompoundingNoToken,
-} from "@/models"
+import { CreateOneWayCompoundingForm, CreateOneWayCompoundingNoToken } from "@/models"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -23,17 +20,10 @@ import { HiOutlineLocationMarker } from "react-icons/hi"
 import { MdOutlineDateRange } from "react-icons/md"
 import { RiCarWashingLine } from "react-icons/ri"
 import { useCompoundingForm } from "shared/hook"
-import {
-  InputCarType,
-  InputCheckbox,
-  InputDateTime,
-  InputLocation,
-} from "../../inputs"
+import { InputCarType, InputCheckbox, InputDateTime, InputLocation } from "../../inputs"
 
 interface OneWayCompoundingFormProps {
-  onSubmit: (
-    params: CreateOneWayCompoundingNoToken & { mode: "update" | "create" }
-  ) => void
+  onSubmit: (params: CreateOneWayCompoundingNoToken & { mode: "update" | "create" }) => void
   defaultValues?: CreateOneWayCompoundingForm
   mode?: "create" | "update"
 }
@@ -57,11 +47,8 @@ export const OneWayCompoundingForm = ({
     mode: "all",
     defaultValues,
   })
-  const {
-    vehicleTypeOptions,
-    calcPriceFromProvinceIds,
-    calculateDistanceBetweenTwoCoordinates,
-  } = useCompoundingForm()
+  const { vehicleTypeOptions, calcPriceFromProvinceIds, calculateDistanceBetweenTwoCoordinates } =
+    useCompoundingForm()
   const [distance, setDistance] = useState<number>(getValues("distance"))
   const [price, setPrice] = useState<number>(getValues("price") || 0)
 
@@ -88,8 +75,7 @@ export const OneWayCompoundingForm = ({
     const fromLocation = getValues("from_location")
     const toLocation = getValues("to_location")
     const carId = getValues("car_id")
-    if (!fromLocation?.province_id || !toLocation?.province_id || !carId?.value)
-      return
+    if (!fromLocation?.province_id || !toLocation?.province_id || !carId?.value) return
 
     calcPriceFromProvinceIds({
       params: {
@@ -163,9 +149,7 @@ export const OneWayCompoundingForm = ({
                 type="from"
                 onBlur={onBlur}
                 value={
-                  getValues("from_location")?.address ||
-                  defaultValues?.from_location?.address ||
-                  ""
+                  getValues("from_location")?.address || defaultValues?.from_location?.address || ""
                 }
                 label="Điểm đi"
                 onChange={(location) => {
@@ -192,9 +176,7 @@ export const OneWayCompoundingForm = ({
                 type="to"
                 onBlur={onBlur}
                 value={
-                  getValues("to_location")?.address ||
-                  defaultValues?.to_location?.address ||
-                  ""
+                  getValues("to_location")?.address || defaultValues?.to_location?.address || ""
                 }
                 label="Điểm đến"
                 onChange={(location) => {
@@ -213,9 +195,7 @@ export const OneWayCompoundingForm = ({
 
         <div className="rides__form-location-info">
           {price ? (
-            <p className="rides__form-location-info-price">
-              Giá: {formatMoneyVND(price)}
-            </p>
+            <p className="rides__form-location-info-price">Giá: {formatMoneyVND(price)}</p>
           ) : null}
           {distance ? (
             <p className="rides__form-location-info-distance">
@@ -270,6 +250,7 @@ export const OneWayCompoundingForm = ({
                 setToLocalStorage(ONE_WAY_EXPECTED_GOING_ON_DATE, val)
                 onChange(val)
               }}
+              subtractHoursToSeven
               isError={!!errors?.expected_going_on_date}
             />
           )}
@@ -298,41 +279,40 @@ export const OneWayCompoundingForm = ({
           }}
         ></textarea>
       </div>
-
-      <Controller
-        control={control}
-        name={"is_checked_policy"}
-        render={({ field: { onChange, onBlur } }) => (
-          <div
-            className={`form-item-label-policy ${
-              errors?.is_checked_policy ? "form-item-label-policy-error" : ""
-            }`}
-          >
-            <InputCheckbox
-              isChecked={getValues("is_checked_policy")}
-              onCheck={() => {
-                onChange(handleTogglePolicy())
-                onBlur()
-              }}
-              type="square"
-            />
-            <span
-              className={`form-item-label-policy-text ${
-                errors?.is_checked_policy
-                  ? "form-item-label-policy-text-error"
-                  : ""
+      {mode === "create" ? (
+        <Controller
+          control={control}
+          name={"is_checked_policy"}
+          render={({ field: { onChange, onBlur } }) => (
+            <div
+              className={`form-item-label-policy ${
+                errors?.is_checked_policy ? "form-item-label-policy-error" : ""
               }`}
-              onClick={() => {
-                onChange(handleTogglePolicy())
-                onBlur()
-              }}
             >
-              Tôi đồng ý với tất cả điều khoản
-            </span>
-          </div>
-        )}
-        rules={{ required: true }}
-      />
+              <InputCheckbox
+                isChecked={getValues("is_checked_policy")}
+                onCheck={() => {
+                  onChange(handleTogglePolicy())
+                  onBlur()
+                }}
+                type="square"
+              />
+              <span
+                className={`form-item-label-policy-text ${
+                  errors?.is_checked_policy ? "form-item-label-policy-text-error" : ""
+                }`}
+                onClick={() => {
+                  onChange(handleTogglePolicy())
+                  onBlur()
+                }}
+              >
+                Tôi đồng ý với tất cả điều khoản
+              </span>
+            </div>
+          )}
+          rules={{ required: true }}
+        />
+      ) : null}
 
       <div className="rides__form-footer">
         <div className="content-container">
@@ -360,9 +340,7 @@ export const OneWayCompoundingForm = ({
                 onSubmitHandler(data)
               })
             }}
-            className={`btn-primary rides__form-submit ${
-              !isValid ? "btn-not-allowed" : ""
-            }`}
+            className={`btn-primary rides__form-submit ${!isValid ? "btn-not-allowed" : ""}`}
           >
             {mode === "create" ? "Tiếp tục" : "Xác nhận"}
           </button>

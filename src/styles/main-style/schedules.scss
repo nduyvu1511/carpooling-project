@@ -1,0 +1,86 @@
+.schedules-container {
+  & .schedules__inner {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-gap: 20px;
+
+    &-left {
+    }
+
+    &-right {
+      display: grid;
+      grid-gap: 10px;
+    }
+  }
+}
+
+.schedule__detail {
+  &-map {
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  &-info {
+    &-title {
+      @include style-text(2rem, 600, 2.8rem, $text-color);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  }
+
+  &-customers {
+    & .schedule__customer {
+      cursor: pointer;
+      padding-block: 16px;
+
+      &:hover {
+        background-color: $gray-color-2;
+      }
+
+      &-info {
+        margin-bottom: 10px;
+        @include flex(flex-start, center);
+
+        &-avatar {
+          width: 56px;
+          height: 56px;
+
+          & img {
+            border-radius: 50%;
+          }
+        }
+
+        &-content {
+          flex: 1;
+          margin-left: 16px;
+
+          &-name {
+            @include style-text(1.5rem, 500, 2rem, $text-color);
+          }
+        }
+
+        &-date {
+          @include style-text(1.4rem, 400, 2rem, $text-color);
+        }
+      }
+
+      &-action {
+        @include flex(flex-start, center);
+      }
+
+      &-address {
+        flex: 1;
+        @include style-text(1.5rem, 500, 2.2rem, $text-color);
+
+        & span {
+          display: inline-block;
+          width: 80px;
+        }
+
+        &-from {
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
+}

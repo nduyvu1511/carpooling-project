@@ -36,9 +36,7 @@ export const RouteItem = ({
             <div className="route__item-location-name">
               <p className="route-item__location-name">{fromProvince}</p>
               {type === "detail" ? (
-                <p className="route-item__location-desc">
-                  55/4a Quốc lộ 1a, Bà Điểm, Hóc Môn
-                </p>
+                <p className="route-item__location-desc">55/4a Quốc lộ 1a, Bà Điểm, Hóc Môn</p>
               ) : null}
             </div>
             {/* <div className="route__item-location-quantity">
@@ -52,9 +50,7 @@ export const RouteItem = ({
             <div className="route__item-location-name">
               <p className="route-item__location-name">{toProvince}</p>
               {type === "detail" ? (
-                <p className="route-item__location-desc">
-                  55/4a Quốc lộ 1a, Bà Điểm, Hóc Môn
-                </p>
+                <p className="route-item__location-desc">55/4a Quốc lộ 1a, Bà Điểm, Hóc Môn</p>
               ) : null}
             </div>
 

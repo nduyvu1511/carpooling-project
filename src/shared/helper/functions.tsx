@@ -1,10 +1,13 @@
 import {
   AddressTypeKey,
+  CompoundingCarCustomerState,
   CompoundingType,
   GroupTimeType,
-  OptionModel, TIME_TYPE
+  OptionModel,
+  TIME_TYPE,
 } from "@/models"
 import _ from "lodash"
+import moment from "moment"
 import { LatLng } from "use-places-autocomplete"
 import { BASE64_READER_REGEX } from "./constants"
 
@@ -13,9 +16,7 @@ export const correctEmail = (value: string) => {
 }
 
 export const correctPassword = (value: string) => {
-  return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/.test(
-    value
-  )
+  return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/.test(value)
 }
 
 export const isVietnamesePhoneNumberValid = (num: string) => {
@@ -58,11 +59,7 @@ export const FormatNumber = (money: number, separator = ",") => {
   return (money + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + separator)
 }
 
-export const formatNumberDec = (
-  nStr: string,
-  decSeparate: string,
-  groupSeparate: string
-) => {
+export const formatNumberDec = (nStr: string, decSeparate: string, groupSeparate: string) => {
   nStr += ""
   let x = nStr.split(decSeparate)
   let x1 = x[0]
@@ -279,8 +276,7 @@ export const getTimes = (): { label: string; value: string }[] => {
   for (prop in periods) {
     for (hour in hours) {
       for (min = 0; min < 60; min += 30) {
-        const timeStr =
-          ("0" + hours[hour]).slice(-2) + ":" + ("0" + min).slice(-2)
+        const timeStr = ("0" + hours[hour]).slice(-2) + ":" + ("0" + min).slice(-2)
 
         times.push({
           label: timeStr + " " + periods[prop],
@@ -303,13 +299,9 @@ export const convertToEnNoSpaceAndSpecialCharacter = (address: string) => {
   return address.replace(/\W/g, "")
 }
 
-export const removeBase64Reader = (str: string) =>
-  str.replace(BASE64_READER_REGEX, "")
+export const removeBase64Reader = (str: string) => str.replace(BASE64_READER_REGEX, "")
 
-export const addressToOptions = (
-  addressList: any[],
-  type: AddressTypeKey
-): OptionModel[] =>
+export const addressToOptions = (addressList: any[], type: AddressTypeKey): OptionModel[] =>
   addressList?.length
     ? addressList.map((item) => ({
         label: item[`${type}_name`],
@@ -329,13 +321,7 @@ export const getProvinceName = (address: string): string => {
     .replace("tp", "")
 }
 
-export const lngLatToKms = ({
-  from,
-  to,
-}: {
-  from: LatLng
-  to: LatLng
-}): number => {
+export const lngLatToKms = ({ from, to }: { from: LatLng; to: LatLng }): number => {
   var R = 6371.071 // Radius of the Earth in miles
   var rlat1 = from.lat * (Math.PI / 180) // Convert degrees to radians
   var rlat2 = to.lat * (Math.PI / 180) // Convert degrees to radians
@@ -348,19 +334,20 @@ export const lngLatToKms = ({
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+          Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)
       )
     )
   return d
 }
 
 export const getCompoundingTypeName = (str: CompoundingType) => {
-  return str === "compounding"
-    ? "Đi ghép"
-    : str === "one_way"
-    ? "Một chiều"
-    : "Hai chiều"
+  return str === "compounding" ? "Đi ghép" : str === "one_way" ? "Một chiều" : "Hai chiều"
+}
+
+export const compoundingStateToColor = (val: CompoundingCarCustomerState): string => {
+  return ""
+}
+
+export const subtractDateTimeToNumberOfHour = (dateTime: string, hour: number): string => {
+  return moment(dateTime).subtract(hour, "hours").format("YYYY-MM-DD HH:MM:SS")
 }

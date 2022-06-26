@@ -15,12 +15,12 @@ import {
   CARPOOLING_PRICE_PER_PASSENGER,
   CARPOOLING_TO_STATION,
   formatMoneyVND,
-  setToLocalStorage,
+  setToLocalStorage
 } from "@/helper"
 import {
   CreateCarpoolCompoundingNoToken,
   CreateCarpoolingCompoundingForm,
-  NumberSeatOptionModel,
+  NumberSeatOptionModel
 } from "@/models"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useRef, useState } from "react"
@@ -28,19 +28,14 @@ import { Controller, useForm } from "react-hook-form"
 import { HiOutlineLocationMarker } from "react-icons/hi"
 import { MdOutlineDateRange } from "react-icons/md"
 import { RiCarWashingLine } from "react-icons/ri"
+import { useDispatch } from "react-redux"
 import Select from "react-select"
+import { notify } from "reapop"
 import { useCompoundingForm } from "shared/hook"
-import {
-  InputCarType,
-  InputCheckbox,
-  InputDateTime,
-  InputStation,
-} from "../../inputs"
+import { InputCarType, InputCheckbox, InputDateTime, InputStation } from "../../inputs"
 
 interface CarpoolingCompoundingFormProps {
-  onSubmit: (
-    params: CreateCarpoolCompoundingNoToken & { mode: "update" | "create" }
-  ) => void
+  onSubmit: (params: CreateCarpoolCompoundingNoToken & { mode: "update" | "create" }) => void
   defaultValues?: CreateCarpoolingCompoundingForm
   mode?: "create" | "update"
   type?: "new" | "existed"
@@ -54,6 +49,7 @@ export const CarpoolingCompoundingForm = ({
   type = "new",
   limitNumberSeat,
 }: CarpoolingCompoundingFormProps) => {
+  const dispatch = useDispatch()
   const modeRef = useRef<"create" | "update">("create")
   const {
     register,
@@ -78,9 +74,7 @@ export const CarpoolingCompoundingForm = ({
     limitNumberSeat || getValues("car_id.number_seat")
   )
   const [distance, setDistance] = useState<number>(getValues("distance"))
-  const [price, setPrice] = useState<number>(
-    getValues("price_per_passenger") || 0
-  )
+  const [price, setPrice] = useState<number>(getValues("price_per_passenger") || 0)
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showMap, setShowMap] = useState<boolean>(false)
   const [isPickingFromStart, setPickingFromStart] = useState<boolean>()
@@ -118,8 +112,7 @@ export const CarpoolingCompoundingForm = ({
     const fromLocation = getValues("from_station")
     const toLocation = getValues("to_station")
     const carId = getValues("car_id")
-    if (!fromLocation?.province_id || !toLocation?.province_id || !carId?.value)
-      return
+    if (!fromLocation?.province_id || !toLocation?.province_id || !carId?.value) return
     calcPriceFromProvinceIds({
       params: {
         car_id: +carId.value,
@@ -257,9 +250,7 @@ export const CarpoolingCompoundingForm = ({
 
           <div className="rides__form-location-info">
             {price ? (
-              <p className="rides__form-location-info-price">
-                Giá: {formatMoneyVND(price || 0)}
-              </p>
+              <p className="rides__form-location-info-price">Giá: {formatMoneyVND(price || 0)}</p>
             ) : null}
             {distance ? (
               <p className="rides__form-location-info-distance">
@@ -291,6 +282,10 @@ export const CarpoolingCompoundingForm = ({
                 label="Chọn loại xe"
                 onBlur={onBlur}
                 onChange={(option) => {
+                  if (getValues("number_seat")?.value >= (option as any).number_seat) {
+                    setValue("number_seat", undefined as any)
+                    dispatch(notify("Vui lòng chọn lại số hành khách", "error"))
+                  }
                   setNumberSeat((option as any).number_seat)
                   setToLocalStorage(CARPOOLING_CAR_ID, option)
                   onChange(option)
@@ -321,6 +316,7 @@ export const CarpoolingCompoundingForm = ({
                   setToLocalStorage(CARPOOLING_EXPECTED_GOING_ON_DATE, val)
                   onChange(val)
                 }}
+                subtractHoursToSeven
                 isError={!!errors?.expected_going_on_date}
               />
             )}
@@ -331,19 +327,15 @@ export const CarpoolingCompoundingForm = ({
         <div className="form-item">
           <label htmlFor={"number_seat"} className="form-item-label">
             <RiCarWashingLine />
-            Số hành khách
+            Số ghế
           </label>
           <Controller
             control={control}
             name={"number_seat"}
             render={({ field: { onChange, onBlur } }) => (
               <Select
-                placeholder="Số hành khách"
-                options={
-                  numberSeat
-                    ? (seats(numberSeat) as NumberSeatOptionModel[])
-                    : undefined
-                }
+                placeholder="Số ghế"
+                options={numberSeat ? (seats(numberSeat) as NumberSeatOptionModel[]) : undefined}
                 onChange={(val) => {
                   if (!val?.value) return
                   setToLocalStorage(CARPOOLING_NUMBER_SEAT, val)
@@ -353,18 +345,14 @@ export const CarpoolingCompoundingForm = ({
                 onBlur={onBlur}
                 defaultValue={getValues("number_seat")}
                 id={"number_seat"}
-                className={`${
-                  errors?.number_seat ? "form-item-select-error" : ""
-                }`}
+                className={`${errors?.number_seat ? "form-item-select-error" : ""}`}
               />
             )}
             rules={{ required: true }}
           />
 
           {errors?.number_seat ? (
-            <p className="form-item-input-text-error">
-              Vui lòng nhập trường này
-            </p>
+            <p className="form-item-input-text-error">Vui lòng nhập trường này</p>
           ) : null}
         </div>
 
@@ -396,9 +384,7 @@ export const CarpoolingCompoundingForm = ({
             render={({ field: { onChange, onBlur } }) => (
               <div
                 className={`form-item-label-policy ${
-                  errors?.is_checked_policy
-                    ? "form-item-label-policy-error"
-                    : ""
+                  errors?.is_checked_policy ? "form-item-label-policy-error" : ""
                 }`}
               >
                 <InputCheckbox
@@ -411,9 +397,7 @@ export const CarpoolingCompoundingForm = ({
                 />
                 <span
                   className={`form-item-label-policy-text ${
-                    errors?.is_checked_policy
-                      ? "form-item-label-policy-text-error"
-                      : ""
+                    errors?.is_checked_policy ? "form-item-label-policy-text-error" : ""
                   }`}
                   onClick={() => {
                     onBlur()
@@ -453,9 +437,7 @@ export const CarpoolingCompoundingForm = ({
                   onSubmitHandler(data)
                 })
               }}
-              className={`btn-primary rides__form-submit ${
-                !isValid ? "btn-not-allowed" : ""
-              }`}
+              className={`btn-primary rides__form-submit ${!isValid ? "btn-not-allowed" : ""}`}
             >
               {mode === "create" ? "Tiếp tục" : "Xác nhận"}
             </button>
@@ -479,10 +461,10 @@ export const CarpoolingCompoundingForm = ({
         <Modal onClose={() => setShowMap(false)} title="Chọn điểm đón tại">
           <Map
             defaultLocation={{
-              address: getValues("from_station").address,
-              lat: +getValues("from_station").lat,
-              lng: +getValues("from_station").lng,
-              province_id: getValues("from_station").province_id,
+              address: getValues("from_station.address"),
+              lat: +getValues("from_station.lat"),
+              lng: +getValues("from_station.lng"),
+              province_id: getValues("from_station.province_id"),
             }}
             prevProvinceId={getValues("to_station.province_id")}
             onChooseLocation={(location) => {

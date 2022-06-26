@@ -1,10 +1,10 @@
 import { RootState } from "@/core/store"
 import { isObjectHasValue } from "@/helper"
-import { AttachmentRes, Channel, ChannelSearch } from "@/models"
+import { AttachmentRes, Channel } from "@/models"
 import {
   addChannel,
   confirmReadMessageInChannel,
-  setChannelLoading,
+  setChannelLoading
 } from "@/modules"
 import { chatApi } from "@/services"
 import { useState } from "react"
@@ -167,3 +167,4 @@ const useChatChannel = (shouldFetch = true): ChatRes => {
 }
 
 export { useChatChannel }
+

@@ -1,13 +1,57 @@
+.activities__page {
+  & .activity__list {
+    grid-gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    @include responsive(md-screen) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  & .activity__filter {
+    margin-bottom: 20px;
+
+    &-list {
+      @include flex(flex-start, center);
+      overflow: auto;
+      @include hide-scrollbar;
+      flex-wrap: wrap;
+
+      &-item {
+        cursor: pointer;
+        @include style-text(1.2rem, 500, 1.8rem, $text-color);
+        white-space: nowrap;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 4px 8px;
+        background-color: $gray-color-1;
+        border-radius: 16px;
+        @include flex-center;
+        transition: all 0.2s linear;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &-active {
+          background-color: $primary-color;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
 .activity__item {
   padding-block: 8px;
-  @include flex(flex-start, center);
+  // @include flex(flex-start, center);
   border: 1px solid $gray-color-1;
   padding: 16px;
   margin-bottom: 10px;
   border-radius: 16px;
 
   &-content {
-    margin-right: 10px;
+    margin-bottom: 10px;
     flex: 1;
 
     & strong {

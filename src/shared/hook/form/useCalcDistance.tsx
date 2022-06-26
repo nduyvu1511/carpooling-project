@@ -20,6 +20,7 @@ export const useCalcDistance = (): Res => {
     onErr?: Function
   ) => {
     const { origin, destination } = params
+    if (!window?.google) return
 
     var service = new google.maps.DistanceMatrixService()
     try {

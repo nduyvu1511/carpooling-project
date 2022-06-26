@@ -1,126 +1,99 @@
 import { CountdownCompounding, ItemSelect } from "@/components"
 import { RideContainer } from "@/container"
-import {
-  COMPOUNDING_VNPAY_CODE,
-  formatMoneyVND,
-  setToSessionStorage,
-} from "@/helper"
-import { CreateCompoundingCarRes, PaymentRes } from "@/models"
-import { ridesApi } from "@/services"
-import moment from "moment"
+import { COMPOUNDING_VNPAY_CODE, formatMoneyVND, setToSessionStorage } from "@/helper"
 import { useRouter } from "next/router"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useRef } from "react"
 import { RiLoader4Line } from "react-icons/ri"
-import { useToken } from "shared/hook"
-import { usePayment } from "shared/hook/user/usePayment"
-import useSWR from "swr"
+import { useDispatch } from "react-redux"
+import { notify } from "reapop"
+import {
+  useCustomerCheckout,
+  useFetchCompoundingCarCustomerDetail,
+  usePayment,
+  useToken,
+} from "shared/hook"
 
 const CustomerCheckout = () => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const { token } = useToken()
+  const secondRef = useRef<boolean>(false)
   const { compounding_car_customer_id } = router.query
-
-  const { data: compoundingCar, isValidating } =
-    useSWR<CreateCompoundingCarRes>(
-      "compounding_car_customer_checkout",
-      token && compounding_car_customer_id
-        ? () =>
-            ridesApi
-              .getDetailCompoundingCarCustomer({
-                token,
-                compounding_car_customer_id: Number(
-                  compounding_car_customer_id
-                ),
-              })
-              .then((res: any) => res?.result?.data)
-              .catch((err) => console.log(err))
-        : null,
-      {
-        dedupingInterval: 1000,
-      }
-    )
+  const { paymentList, isLoading, currentSelectPayment, setCurrentSelectPayment } = usePayment()
+  const { createPayment } = useCustomerCheckout()
+  const { data: compoundingCar, isValidating } = useFetchCompoundingCarCustomerDetail(
+    "get_compounding_car_detail_customer_checkout"
+  )
 
   useEffect(() => {
-    if (!compoundingCar?.state) return
-    if (compoundingCar?.state !== "deposit") return
-
-    router.push("/customer/checkout-success")
-  }, [compoundingCar, router])
-
-  const {
-    data: paymentList,
-    createPayment,
-    isValidating: paymentLoading,
-  } = usePayment(true)
-  const [currentPayment, setCurrentPayment] = useState<PaymentRes>()
-  // const { getDetailCompoundingCarCustomer } = useCreateRides()
-
-  const targetDate = useMemo(() => {
-    return moment(new Date(), "DD/MM/YYYY hh:mm:ss")
-      .add(compoundingCar?.second_remains, "seconds")
-      .toString()
+    if (!secondRef?.current) {
+      secondRef.current = true
+      return
+    }
+    if (compoundingCar?.state === "deposit") {
+      router.push(
+        `/customer/checkout-success?compounding_car_customer_id=${compounding_car_customer_id}`
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [compoundingCar])
 
-  const handleConfirmTransaction = () => {
+  const handleCreatePayment = () => {
     if (
-      !currentPayment?.acquirer_id ||
+      !token ||
+      !currentSelectPayment?.acquirer_id ||
       !compoundingCar?.compounding_car_customer_id
     )
       return
 
     createPayment({
       params: {
-        acquirer_id: currentPayment.acquirer_id,
-        returned_url: `http://localhost:3000/customer/confirmed-checkout?compounding_car_customer_id=${compounding_car_customer_id}`,
+        acquirer_id: currentSelectPayment.acquirer_id,
+        returned_url: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/customer/checking-deposit-status?compounding_car_customer_id=${compounding_car_customer_id}`,
         compounding_car_customer_id: compoundingCar.compounding_car_customer_id,
-        token: "",
+        token,
       },
       onSuccess: (data) => {
-        window
-          .open(data.vnpay_payment_url, "name", "height=600,width=800")
-          ?.focus()
+        window.open(data.vnpay_payment_url, "name", "height=600,width=800")?.focus()
         setToSessionStorage(COMPOUNDING_VNPAY_CODE, data.vnpay_code)
       },
     })
   }
 
   if (!compoundingCar) return null
-
   return (
     <RideContainer heading="Đặt cọc cho chuyến đi">
       <div className="rides__checkout">
         <div className="content-container px-24">
           <div className="rides__checkout-header">
             <h3 className="rides__checkout-header-title">
-              Vui lòng đặt cọc số tiền{" "}
-              <span>{formatMoneyVND(compoundingCar.down_payment)}</span> để hoàn
-              tất giao dịch
+              Vui lòng đặt cọc số tiền <span>{formatMoneyVND(compoundingCar.down_payment)}</span> để
+              hoàn tất giao dịch
             </h3>
 
             <div className="rides__checkout-header-remains px-24">
-              <span className="rides__checkout-header-remains-l">
-                Thời gian còn lại:
-              </span>
+              <span className="rides__checkout-header-remains-l">Thời gian còn lại:</span>
               {compoundingCar.state !== "deposit" ? (
                 <CountdownCompounding
-                  type={compoundingCar.compounding_type}
-                  targetDate={targetDate}
+                  secondsRemains={compoundingCar.second_remains}
+                  onExpiredCoundown={() => {
+                    dispatch(notify("Hết hạn phiên giao dịch, vui lòng thử lại sau", "warning"))
+                    router.push("/")
+                  }}
                 />
               ) : null}
             </div>
 
-            {!paymentLoading ? (
+            {!isLoading ? (
               <>
                 <div className="rides__checkout-list py-12">
                   {paymentList?.length > 0 &&
                     paymentList.map((item) => (
                       <ItemSelect
                         key={item.acquirer_id}
-                        isChecked={
-                          item.acquirer_id === currentPayment?.acquirer_id
-                        }
+                        isChecked={item.acquirer_id === currentSelectPayment?.acquirer_id}
                         onCheck={() => {
-                          setCurrentPayment(item)
+                          setCurrentSelectPayment(item)
                         }}
                         title={item.name}
                       />
@@ -128,9 +101,9 @@ const CustomerCheckout = () => {
                 </div>
 
                 <button
-                  onClick={handleConfirmTransaction}
+                  onClick={handleCreatePayment}
                   className={`btn-primary rides__checkout-checkout-btn ${
-                    currentPayment?.acquirer_id ? "" : "btn-not-allowed"
+                    currentSelectPayment?.acquirer_id ? "" : "btn-not-allowed"
                   } `}
                 >
                   Tiến hành thanh toán

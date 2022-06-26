@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // export const API_URL = "https://quanly.exxe.vn"
-const API_LINK = "192.168.1.22"
+const API_LINK = "192.168.1.38"
 export const API_URL = `http://${API_LINK}:1234`
 // export const IMAGE_URL = API_URL
 

@@ -1,12 +1,7 @@
 import { getProvinceName, GOOGLE_MAP_API_KEY } from "@/helper"
 import { FromLocation, LatLng, LatlngAddress, LocationLatLng } from "@/models"
 import { setOpenLocationFormModal } from "@/modules"
-import {
-  DirectionsRenderer,
-  GoogleMap,
-  Marker,
-  useLoadScript,
-} from "@react-google-maps/api"
+import { DirectionsRenderer, GoogleMap, Marker, useLoadScript } from "@react-google-maps/api"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Geocode from "react-geocode"
 import { BiCurrentLocation } from "react-icons/bi"
@@ -46,17 +41,10 @@ export const Map = ({
     googleMapsApiKey: GOOGLE_MAP_API_KEY,
     libraries: ["geometry", "places"],
   })
-
   const dispatch = useDispatch()
   const mapRef = useRef<GoogleMap>()
-
-  const options = useMemo<MapOptions>(
-    () => ({ disableDefaultUI: true, clickableIcons: false }),
-    []
-  )
-
+  const options = useMemo<MapOptions>(() => ({ disableDefaultUI: true, clickableIcons: false }), [])
   const { getProvinceId } = useAddressOptions()
-
   const [currentLocation, setCurrenLocation] = useState<LatLngLiteral>()
   const [markerPosition, setMarkerPosition] = useState<LatLngLiteral>()
   const [currentAddress, setCurrentAddress] = useState<LatlngAddress>()
@@ -90,24 +78,22 @@ export const Map = ({
       })
   }
   useEffect(() => {
-    if (defaultLocation?.province_id) {
+    if (defaultLocation?.province_id && defaultLocation?.lat) {
       setCurrentAddress(defaultLocation)
       setCurrenLocation(defaultLocation)
       return
     }
 
     if (navigator?.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => {
-          setCurrenLocation({ lat: latitude, lng: longitude })
-          getLocationFromLatlng({
-            params: { lat: latitude, lng: longitude },
-            onSuccess: (address) => {
-              setCurrentAddress(address)
-            },
-          })
-        }
-      )
+      navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+        setCurrenLocation({ lat: latitude, lng: longitude })
+        getLocationFromLatlng({
+          params: { lat: latitude, lng: longitude },
+          onSuccess: (address) => {
+            setCurrentAddress(address)
+          },
+        })
+      })
     }
   }, [defaultLocation])
 
@@ -237,10 +223,7 @@ export const Map = ({
                 <TiLocation />
               </span>
 
-              <button
-                onClick={pantoCurrentLocation}
-                className="btn-reset map-current-btn"
-              >
+              <button onClick={pantoCurrentLocation} className="btn-reset map-current-btn">
                 <BiCurrentLocation />
               </button>
 
@@ -250,9 +233,7 @@ export const Map = ({
                     <h3>
                       <TiLocation />
                       <span>
-                        {centerMapLoading
-                          ? "Đang tải..."
-                          : currentAddress?.address || ""}
+                        {centerMapLoading ? "Đang tải..." : currentAddress?.address || ""}
                       </span>
                     </h3>
                   </div>

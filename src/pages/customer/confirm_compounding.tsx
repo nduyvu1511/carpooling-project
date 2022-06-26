@@ -24,10 +24,8 @@ const ConfirmCompounding = () => {
   } = useCreateRides()
   const { compounding_car_customer_id } = router.query
   const [compoundingCar, setCompoundingCar] = useState<CompoundingCarCustomer>()
-  const {
-    clearCarpoolingWayCompoundingCar,
-    compoundingCarCustomerResToCarpoolingForm,
-  } = useCompoundingForm()
+  const { clearCarpoolingWayCompoundingCar, compoundingCarCustomerResToCarpoolingForm } =
+    useCompoundingForm()
 
   useEffect(() => {
     if (!compounding_car_customer_id || !token) return
@@ -46,9 +44,7 @@ const ConfirmCompounding = () => {
     confirmExistedCompoundingCarCustomer({
       params: { compounding_car_customer_id },
       onSuccess: () => {
-        router.push(
-          `/customer/checkout?compounding_car_customer_id=${compounding_car_customer_id}`
-        )
+        router.push(`/customer/checkout?compounding_car_customer_id=${compounding_car_customer_id}`)
       },
     })
     clearCarpoolingWayCompoundingCar()
@@ -103,9 +99,7 @@ const ConfirmCompounding = () => {
                   </p>
 
                   <p className="rides__confirm-location-item-r">
-                    {getCompoundingTypeName(
-                      compoundingCar?.compounding_type || "one_way"
-                    )}
+                    {getCompoundingTypeName(compoundingCar?.compounding_type || "one_way")}
                   </p>
                 </li>
 
@@ -185,35 +179,27 @@ const ConfirmCompounding = () => {
             </div>
 
             <div className="rides__confirm-item">
-              <h3 className="rides__confirm-item-title">
-                Ghi chú cho chuyến đi
-              </h3>
+              <h3 className="rides__confirm-item-title">Ghi chú cho chuyến đi</h3>
 
               <div className="rides__confirm-note">
                 <div className="rides__confirm-note-icon">
                   <FaRegEdit />
                 </div>
-                <p className="rides__confirm-note-content">
-                  {compoundingCar.note}
-                </p>
+                <p className="rides__confirm-note-content">{compoundingCar.note}</p>
               </div>
             </div>
 
             <div className="rides__confirm-item">
               <CarpoolingCompoundingForm
-                limitNumberSeat={compoundingCar.number_seat}
+                limitNumberSeat={compoundingCar.number_available_seat}
                 mode="update"
                 type="existed"
-                defaultValues={compoundingCarCustomerResToCarpoolingForm(
-                  compoundingCar
-                )}
+                defaultValues={compoundingCarCustomerResToCarpoolingForm(compoundingCar)}
                 onSubmit={(data) => {
                   if (data.mode === "update") {
                     handleUpdateCompoundingCar(data)
                   } else {
-                    handleConfirmCompoundingCar(
-                      compoundingCar.compounding_car_customer_id
-                    )
+                    handleConfirmCompoundingCar(compoundingCar.compounding_car_customer_id)
                   }
                 }}
               />

@@ -6,10 +6,7 @@ import { useRef, useState } from "react"
 import { MdOutlineLocationOff } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import { useAddressOptions, useClickOutside } from "shared/hook"
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng
-} from "use-places-autocomplete"
+import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete"
 import { Input } from "../inputs"
 import { LocationItem, LocationItemHistory } from "../location"
 
@@ -20,27 +17,21 @@ interface MapSearchProps {
 export const MapSearch = ({ onSelect }: MapSearchProps) => {
   const { getProvinceId } = useAddressOptions()
   const dispatch = useDispatch()
-  const { searchHistory } = useSelector(
-    (state: RootState) => state.locationHistory
-  )
+  const { searchHistory } = useSelector((state: RootState) => state.locationHistory)
   const {
     ready,
     value: searchValues,
     setValue,
     suggestions: { data: locations, loading, status },
     clearSuggestions,
-  } = usePlacesAutocomplete()
-
+  } = usePlacesAutocomplete({ requestOptions: { componentRestrictions: { country: ["vi"] } } })
   const [showSearchResult, setShowSearchResult] = useState<boolean>()
-
   const searchRef = useRef<HTMLDivElement>(null)
   useClickOutside([searchRef], () => {
     setShowSearchResult(false)
   })
 
-  const getLocationFromSearchResult = (
-    location: google.maps.places.AutocompletePrediction
-  ) => {
+  const getLocationFromSearchResult = (location: google.maps.places.AutocompletePrediction) => {
     getGeocode({ address: location.description }).then((results) => {
       const { lat, lng } = getLatLng(results?.[0])
       const locationName = getProvinceName(location?.description)
@@ -54,13 +45,13 @@ export const MapSearch = ({ onSelect }: MapSearchProps) => {
         province_id: 0,
       }
 
-      dispatch(
-        addLocationSearchHistory({ ...newLocation, id: location.place_id })
-      )
+      dispatch(addLocationSearchHistory({ ...newLocation, id: location.place_id }))
       onSelect && onSelect(newLocation)
       setShowSearchResult(false)
     })
   }
+
+  console.log(searchValues)
 
   return (
     <div ref={searchRef} className="location__search">
@@ -83,11 +74,7 @@ export const MapSearch = ({ onSelect }: MapSearchProps) => {
               {loading ? (
                 <div className="px-12 py-12">
                   {Array.from({ length: 4 }).map((_, index) => (
-                    <LocationItem
-                      key={index}
-                      location={null as any}
-                      isLoading={true}
-                    />
+                    <LocationItem key={index} location={null as any} isLoading={true} />
                   ))}
                 </div>
               ) : null}
@@ -112,8 +99,7 @@ export const MapSearch = ({ onSelect }: MapSearchProps) => {
                     Không tìm được vị trí
                   </p>
                   <p className="location__no-result-desc">
-                    Kiểm tra lại chính tả hoặc chọn vị trí trên bản đồ để xác
-                    định vị trí của bạn
+                    Kiểm tra lại chính tả hoặc chọn vị trí trên bản đồ để xác định vị trí của bạn
                   </p>
                 </div>
               ) : null}

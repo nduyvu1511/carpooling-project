@@ -329,6 +329,7 @@ export const TwoWayCompoundingForm = ({
                 setToLocalStorage(TWO_WAY_EXPECTED_GOING_ON_DATE, val)
                 onChange(val)
               }}
+              subtractHoursToSeven
               isError={!!errors?.expected_going_on_date}
             />
           )}

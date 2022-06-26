@@ -95,9 +95,9 @@ export const useCompoundingForm = (): Res => {
 
   const seats = (limit: number) =>
     Array.from({
-      length: limit - 1,
+      length: limit,
     }).map((_, index) => ({
-      label: `${index + 1} hành khách`,
+      label: `${index + 1} ghế`,
       value: index + 1 + "",
     }))
 
@@ -110,9 +110,7 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(ONE_WAY_NOTE, undefined)
     setToLocalStorage(ONE_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(ONE_WAY_PRICE, undefined)
-    dispatch(
-      setCurrentCompoundingCarCustomer({ key: "one_way", value: undefined })
-    )
+    dispatch(setCurrentCompoundingCarCustomer({ key: "one_way", value: undefined }))
   }
 
   const clearTwoWayCompoundingCar = () => {
@@ -127,9 +125,7 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(TWO_WAY_HOUR_OF_WAIT_TIME, undefined)
     setToLocalStorage(TWO_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(TWO_WAY_EXPECTED_PICKING_UP_DATE, undefined)
-    dispatch(
-      setCurrentCompoundingCarCustomer({ key: "two_way", value: undefined })
-    )
+    dispatch(setCurrentCompoundingCarCustomer({ key: "two_way", value: undefined }))
   }
 
   const clearCarpoolingWayCompoundingCar = () => {
@@ -144,9 +140,7 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(CARPOOLING_PRICE_PER_PASSENGER, undefined)
     setToLocalStorage(CARPOOLING_NUMBER_SEAT, undefined)
     setToLocalStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
-    dispatch(
-      setCurrentCompoundingCarCustomer({ key: "compounding", value: undefined })
-    )
+    dispatch(setCurrentCompoundingCarCustomer({ key: "compounding", value: undefined }))
     setToSessionStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
   }
 
@@ -200,10 +194,8 @@ export const useCompoundingForm = (): Res => {
         address: compoundingCar.from_address,
         lat: compoundingCar.from_pick_up_station.latitude + "",
         lng: compoundingCar.from_pick_up_station.longitude + "",
-        province_name:
-          compoundingCar.from_pick_up_station.province_id.province_name,
-        province_id:
-          compoundingCar.from_pick_up_station.province_id.province_id,
+        province_name: compoundingCar.from_pick_up_station.province_id.province_name,
+        province_id: compoundingCar.from_pick_up_station.province_id.province_id,
         station_id: compoundingCar.from_pick_up_station.station_id,
         station_name: compoundingCar.from_pick_up_station.station_name,
       },
@@ -211,14 +203,13 @@ export const useCompoundingForm = (): Res => {
         address: compoundingCar.to_address,
         lat: compoundingCar.to_pick_up_station.latitude + "",
         lng: compoundingCar.to_pick_up_station.longitude + "",
-        province_name:
-          compoundingCar.to_pick_up_station.province_id.province_name,
+        province_name: compoundingCar.to_pick_up_station.province_id.province_name,
         province_id: compoundingCar.to_pick_up_station.province_id.province_id,
         station_id: compoundingCar.to_pick_up_station.station_id,
         station_name: compoundingCar.to_pick_up_station.station_name,
       },
       number_seat: {
-        label: `${compoundingCar.number_seat} hành khách`,
+        label: `${compoundingCar.number_seat} ghế`,
         value: compoundingCar.number_seat,
       },
     }
@@ -257,8 +248,7 @@ export const useCompoundingForm = (): Res => {
     return {
       ...commonCompoundingParams(compoundingCar),
       is_a_day_tour: compoundingCar.is_a_day_tour,
-      expected_picking_up_date: (compoundingCar?.expected_picking_up_date ||
-        undefined) as string,
+      expected_picking_up_date: (compoundingCar?.expected_picking_up_date || undefined) as string,
       hour_of_wait_time: hoursBackList.find(
         (item) => item.value === compoundingCar.hour_of_wait_time
       ),
@@ -286,8 +276,8 @@ export const useCompoundingForm = (): Res => {
       station_name: compoundingCar.from_pick_up_station.station_name,
     },
     number_seat: {
-      label: `${compoundingCar.number_available_seat} Hành khách`,
-      value: compoundingCar.number_available_seat,
+      label: `1 ghế`,
+      value: 1,
     },
     price_per_passenger: compoundingCar.price_unit.price_unit,
     car_id: {
@@ -310,51 +300,40 @@ export const useCompoundingForm = (): Res => {
     distance: compoundingCar.distance,
   })
 
-  const carpoolingCompoundingFormFromLocalStorage =
-    (): CreateCarpoolingCompoundingForm => ({
-      car_id: getFromLocalStorage(CARPOOLING_CAR_ID),
-      distance: getFromLocalStorage(CARPOOLING_DISTANCE),
-      expected_going_on_date: getFromLocalStorage(
-        CARPOOLING_EXPECTED_GOING_ON_DATE
-      ),
-      from_station: getFromLocalStorage(CARPOOLING_FROM_STATION),
-      to_station: getFromLocalStorage(CARPOOLING_TO_STATION),
-      is_checked_policy: getFromLocalStorage(CARPOOLING_IS_CHECKED_POLICY),
-      note: getFromLocalStorage(CARPOOLING_NOTE),
-      number_seat: getFromLocalStorage(CARPOOLING_NUMBER_SEAT),
-      price_per_passenger: getFromLocalStorage(CARPOOLING_PRICE_PER_PASSENGER),
-    })
+  const carpoolingCompoundingFormFromLocalStorage = (): CreateCarpoolingCompoundingForm => ({
+    car_id: getFromLocalStorage(CARPOOLING_CAR_ID),
+    distance: getFromLocalStorage(CARPOOLING_DISTANCE),
+    expected_going_on_date: getFromLocalStorage(CARPOOLING_EXPECTED_GOING_ON_DATE),
+    from_station: getFromLocalStorage(CARPOOLING_FROM_STATION),
+    to_station: getFromLocalStorage(CARPOOLING_TO_STATION),
+    is_checked_policy: getFromLocalStorage(CARPOOLING_IS_CHECKED_POLICY),
+    note: getFromLocalStorage(CARPOOLING_NOTE),
+    number_seat: getFromLocalStorage(CARPOOLING_NUMBER_SEAT),
+    price_per_passenger: getFromLocalStorage(CARPOOLING_PRICE_PER_PASSENGER),
+  })
 
-  const twoWayCompoundingCarFormFromLocalStorage =
-    (): CreateTwoWayCompoundingForm => ({
-      car_id: getFromLocalStorage(TWO_WAY_CAR_ID),
-      distance: getFromLocalStorage(TWO_WAY_DISTANCE),
-      expected_going_on_date: getFromLocalStorage(
-        TWO_WAY_EXPECTED_GOING_ON_DATE
-      ),
-      from_location: getFromLocalStorage(TWO_WAY_FROM_LOCATION),
-      to_location: getFromLocalStorage(TWO_WAY_TO_LOCATION),
-      is_checked_policy: getFromLocalStorage(TWO_WAY_IS_CHECKED_POLICY),
-      note: getFromLocalStorage(TWO_WAY_NOTE),
-      is_a_day_tour: getFromLocalStorage(TWO_WAY_IS_A_DAY_TOUR),
-      expected_picking_up_date: getFromLocalStorage(
-        TWO_WAY_EXPECTED_PICKING_UP_DATE
-      ),
-      hour_of_wait_time: getFromLocalStorage(TWO_WAY_HOUR_OF_WAIT_TIME),
-    })
+  const twoWayCompoundingCarFormFromLocalStorage = (): CreateTwoWayCompoundingForm => ({
+    car_id: getFromLocalStorage(TWO_WAY_CAR_ID),
+    distance: getFromLocalStorage(TWO_WAY_DISTANCE),
+    expected_going_on_date: getFromLocalStorage(TWO_WAY_EXPECTED_GOING_ON_DATE),
+    from_location: getFromLocalStorage(TWO_WAY_FROM_LOCATION),
+    to_location: getFromLocalStorage(TWO_WAY_TO_LOCATION),
+    is_checked_policy: getFromLocalStorage(TWO_WAY_IS_CHECKED_POLICY),
+    note: getFromLocalStorage(TWO_WAY_NOTE),
+    is_a_day_tour: getFromLocalStorage(TWO_WAY_IS_A_DAY_TOUR),
+    expected_picking_up_date: getFromLocalStorage(TWO_WAY_EXPECTED_PICKING_UP_DATE),
+    hour_of_wait_time: getFromLocalStorage(TWO_WAY_HOUR_OF_WAIT_TIME),
+  })
 
-  const oneWayCompoundingCarFormFromLocalStorage =
-    (): CreateOneWayCompoundingForm => ({
-      car_id: getFromLocalStorage(ONE_WAY_CAR_ID),
-      distance: getFromLocalStorage(ONE_WAY_DISTANCE),
-      expected_going_on_date: getFromLocalStorage(
-        ONE_WAY_EXPECTED_GOING_ON_DATE
-      ),
-      from_location: getFromLocalStorage(ONE_WAY_FROM_LOCATION),
-      to_location: getFromLocalStorage(ONE_WAY_TO_LOCATION),
-      is_checked_policy: getFromLocalStorage(ONE_WAY_IS_CHECKED_POLICY),
-      note: getFromLocalStorage(ONE_WAY_NOTE),
-    })
+  const oneWayCompoundingCarFormFromLocalStorage = (): CreateOneWayCompoundingForm => ({
+    car_id: getFromLocalStorage(ONE_WAY_CAR_ID),
+    distance: getFromLocalStorage(ONE_WAY_DISTANCE),
+    expected_going_on_date: getFromLocalStorage(ONE_WAY_EXPECTED_GOING_ON_DATE),
+    from_location: getFromLocalStorage(ONE_WAY_FROM_LOCATION),
+    to_location: getFromLocalStorage(ONE_WAY_TO_LOCATION),
+    is_checked_policy: getFromLocalStorage(ONE_WAY_IS_CHECKED_POLICY),
+    note: getFromLocalStorage(ONE_WAY_NOTE),
+  })
 
   const calculateDistanceBetweenTwoCoordinates = (
     _params: UseParams<CalculateDistanceBetweenTwoCoordinatesParams, number>

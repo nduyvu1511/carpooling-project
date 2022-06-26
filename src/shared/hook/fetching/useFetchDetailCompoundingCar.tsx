@@ -1,27 +1,27 @@
 import { SWRConfig } from "@/helper"
-import { CompoundingCarCustomer } from "@/models"
+import { CompoundingCarRes } from "@/models"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import useSWR from "swr"
 import { useToken } from "../user"
 
 interface Res {
-  data: CompoundingCarCustomer | undefined
+  data: CompoundingCarRes | undefined
   isValidating: boolean
 }
 
-export const useFetchCompoundingCarCustomer = (key: string): Res => {
+export const useFetchDetailCompoundingCar = (key: string): Res => {
   const router = useRouter()
   const { token } = useToken()
-  const { compounding_car_customer_id } = router.query
+  const { compounding_car_id } = router.query
 
-  const { isValidating, data } = useSWR<CompoundingCarCustomer, any>(
+  const { isValidating, data } = useSWR<CompoundingCarRes, any>(
     key,
-    compounding_car_customer_id && token
+    compounding_car_id && token
       ? () =>
           ridesApi
-            .getDetailCompoundingCarCustomer({
-              compounding_car_customer_id: Number(compounding_car_customer_id),
+            .getDetailCompoundingCar({
+              compounding_car_id: Number(compounding_car_id),
               token,
             })
             .then((res: any) => res?.result?.data)

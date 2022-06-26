@@ -4,7 +4,7 @@ import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
-import { useToken } from "../user/useToken"
+import { useToken } from "./useToken"
 
 interface Res {
   data: CompoundingCarRes[]

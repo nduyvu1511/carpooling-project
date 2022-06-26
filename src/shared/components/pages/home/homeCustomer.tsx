@@ -181,7 +181,7 @@ export const HomeCustomer = () => {
                   dataLength={carpoolingList.length}
                   next={handleFetchMoreRides}
                   hasMore={!isLimit}
-                  loader={<h4>Loading...</h4>}
+                  loader={isFetchingMore ? <h4>Loading...</h4> : null}
                 >
                   <div className="home-customer__rides grid grid-col-1 grid-col-sm-2 grid-col-lg-2 grid-col-2xl-3">
                     {carpoolingList.map((item, index) => (
