@@ -24,6 +24,11 @@ interface UsePasswordRes {
     onErr?: Function
   ) => void
   confirmDepositLoading: boolean
+  confirmPayFullForCompoundingCarCustomer: (
+    compounding_car_customer_id: number,
+    cb: Function,
+    onErr?: Function
+  ) => void
 }
 
 export const useCustomerCheckout = (): UsePasswordRes => {
@@ -117,11 +122,38 @@ export const useCustomerCheckout = (): UsePasswordRes => {
     }
   }
 
+  const confirmPayFullForCompoundingCarCustomer = async (
+    compounding_car_customer_id: number,
+    cb: Function,
+    onErr?: Function
+  ) => {
+    if (!token) return
+    try {
+      setConfirmDepositLoading(true)
+      const res: any = await ridesApi.customerConfirmPayFullCompoundingCar({
+        compounding_car_customer_id,
+        token,
+      })
+      setConfirmDepositLoading(false)
+      const result: CreateCompoundingCarRes = res?.result?.data
+      if (result?.state === "confirm_paid") {
+        cb && cb()
+      } else {
+        onErr && onErr()
+      }
+    } catch (err) {
+      setConfirmDepositLoading(false)
+      onErr && onErr()
+      console.log(err)
+    }
+  }
+
   return {
     confirmTransaction,
     createPayment,
     getCompoundingCarCustomerDetail,
     confirmDepositCompoundingCarCustomer,
     confirmDepositLoading,
+    confirmPayFullForCompoundingCarCustomer,
   }
 }

@@ -58,4 +58,4 @@ const useCompoundingCarProcess = (): Res => {
   }
 }
 
-export default useCompoundingCarProcess
+export { useCompoundingCarProcess }

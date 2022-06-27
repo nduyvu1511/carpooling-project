@@ -5,6 +5,6 @@ module.exports = withImages({
   reactStrictMode: true,
   images: {
     disableStaticImages: true,
-    domains: ["quanly.exxe.vn"],
+    domains: ["quanly.exxe.vn", "192.168.1.3"],
   },
 })

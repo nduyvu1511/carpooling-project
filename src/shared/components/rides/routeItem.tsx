@@ -19,15 +19,15 @@ export const RouteItem = ({
 }: RouteItemProps) => {
   return (
     <div className="route__item">
-      {/* <div className="route__item-time">
+      <div className="route__item-time">
         <div className="route__item-time-start">
-          <p className="route__item-time-start-date">{fromDate}</p>
-          <p className="route__item-time-start-duration">4h30</p>
+          <p className="route__item-time-start-date">Đi từ:</p>
+          {/* <p className="route__item-time-start-duration">4h30</p> */}
         </div>
         <div className="route__item-time-end">
-          <p className="route__item-time-end-date">{toDate}</p>
+          <p className="route__item-time-end-date">Đến tại:</p>
         </div>
-      </div> */}
+      </div>
 
       <div className="route__item-location">
         <div className="route__item-line"></div>

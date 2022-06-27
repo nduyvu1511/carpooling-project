@@ -1,12 +1,13 @@
 import { CompoundingFilterForm, RidesItem } from "@/components"
 import { RideContainer } from "@/container"
+import { CompoundingCarRes } from "@/models"
 import { useRouter } from "next/router"
-import React from "react"
-import { useCompoundingCarDriverList } from "shared/hook"
+import InfiniteScroll from "react-infinite-scroll-component"
+import useDriverSchedules from "shared/hook/user/useDriverSchedules"
 
 const Schedules = () => {
   const router = useRouter()
-  const { data: carpoolingList, isLimit } = useCompoundingCarDriverList({})
+  const { data: carpoolingList, hasMore, fetchMore, isValidating } = useDriverSchedules()
 
   return (
     <RideContainer heading="Lịch trình sắp tới">
@@ -20,17 +21,41 @@ const Schedules = () => {
               }}
             />
           </div>
-          <div className="schedules__inner-right">
-            {carpoolingList?.length > 0 &&
-              carpoolingList.map((item) => (
-                <RidesItem
-                  onClick={() => {
-                    router.push("/schedules/12")
-                  }}
-                  key={item.compounding_car_id}
-                  rides={item}
-                />
-              ))}
+          <div className="">
+            {isValidating ? (
+              <h3>Loading...</h3>
+            ) : (
+              <InfiniteScroll
+                hasMore={hasMore}
+                next={() => {
+                  fetchMore()
+                }}
+                dataLength={carpoolingList?.length || 0}
+                loader={<h3 style={{ textAlign: "center" }}>Loading...</h3>}
+              >
+                <div className="schedules__inner-right">
+                  {carpoolingList &&
+                    carpoolingList?.length > 0 &&
+                    carpoolingList.map((item) => (
+                      <RidesItem
+                        onClick={() => {
+                          router.push(`/schedules/${item.compounding_car_id}`)
+                        }}
+                        key={item.compounding_car_id}
+                        rides={
+                          {
+                            ...item,
+                            price_unit: {
+                              name: "",
+                              price_unit: item.amount_total,
+                            },
+                          } as any
+                        }
+                      />
+                    ))}
+                </div>
+              </InfiniteScroll>
+            )}
           </div>
         </div>
       </div>

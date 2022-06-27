@@ -316,6 +316,30 @@ export interface CompoundingCarRes {
   distance: number
 }
 
+export interface CompoundingCarDetailRes {
+  compounding_car_id: number
+  compounding_car_code: string
+  compounding_car_name: string
+  car_driver_id: CarDriverId
+  compounding_type: CompoundingType
+  from_province: ProvinceId
+  to_province: ProvinceId
+  expected_going_on_date: string
+  expected_picking_up_date: string
+  car: ActivityCarId
+  quality_car: string
+  number_seat_in_car: number
+  number_available_seat: number
+  state: CompoundingCarDriverState
+  price_unit: {
+    name: string
+    price_unit: number
+  }
+  note: string
+  second_remains: number
+  compounding_car_customers: CompoundingCarCustomer[]
+}
+
 export interface CompoundingCarCustomer {
   compounding_car_id: number
   compounding_car_customer_id: number
@@ -453,7 +477,7 @@ export type CompoundingCarCustomerStatus =
   | "in_process"
   | "done"
   | "customer_pay"
-  | "confirm_pay"
+  | "confirm_paid"
   | "cancel"
 
 export type CompoundingOrderField =
@@ -656,4 +680,33 @@ export interface DriverActivityItem {
   amount_due: number
   state: CompoundingCarDriverState
   second_remains: number
+}
+
+export interface GetDriverSchedulesParams {
+  token: string
+  offset?: number
+  limit?: number
+}
+
+export interface DriverSchedule {
+  compounding_car_id: number
+  compounding_car_code: string
+  compounding_car_name: string
+  compounding_type: CompoundingType
+  from_province: ProvinceId
+  to_province: ProvinceId
+  distance: 165
+  start_going_on_date: string
+  end_going_on_date: string
+  start_picking_up_date: string
+  end_picking_up_date: string
+  car: ActivityCarId
+  number_picked_seat: number
+  amount_total: number
+}
+
+export interface CreatePaymentMethodParams {
+  compounding_car_customer_id: number
+  payment_method: "cash" | "transfer"
+  token: string
 }

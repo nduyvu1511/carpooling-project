@@ -5,6 +5,7 @@ import {
   CreateCompoundinCarDriver,
   CreateCompoundingParams,
   CreatePaymentDriverParams,
+  CreatePaymentMethodParams,
   CreatePaymentParams,
   GetCompoundingCarCustomerList,
   GetCompoundingCarCustomerStateParams,
@@ -12,10 +13,11 @@ import {
   GetCompoundingListForDriver,
   GetDetailCompounding,
   GetDetailCompoundingCustomer,
+  GetDriverSchedulesParams,
   RidesDraftParams,
   UpdateCompoundingCar,
   UpdateCompoundingCarCustomer,
-  UpdateCompoundingCarDriver
+  UpdateCompoundingCarDriver,
 } from "@/models"
 import axiosClient from "."
 
@@ -109,6 +111,12 @@ const ridesApi = {
 
   confirmDepositCompoundingCarCustomer: (params: GetDetailCompoundingCustomer) => {
     return axiosClient.post("/compounding_car_controller/deposit_compounding_car_customer", {
+      params,
+    })
+  },
+
+  customerConfirmPayFullCompoundingCar: (params: GetDetailCompoundingCustomer) => {
+    return axiosClient.post("/compounding_car_controller/confirm_payment_compounding_car", {
       params,
     })
   },
@@ -208,8 +216,29 @@ const ridesApi = {
   },
 
   confirmDoneCompoundingCar: (params: GetDetailCompounding) => {
+    return axiosClient.post("/compounding_car_for_driver_controller/confirm_done_compounding_car", {
+      params,
+    })
+  },
+
+  getDriverSchedules: (params: GetDriverSchedulesParams) => {
     return axiosClient.post(
-      "/compounding_car_for_driver_controller/confirm_done_compounding_car",
+      "/compounding_car_for_driver_controller/get_plan_compounding_car_driver",
+      {
+        params,
+      }
+    )
+  },
+
+  payForRemainingAmount: (params: CreatePaymentMethodParams) => {
+    return axiosClient.post("/compounding_car_controller/payment_compounding_car_customer", {
+      params,
+    })
+  },
+
+  driverConfirmCustomerPayFullForCompoundingCar: (params: ConfirmCompoundingCar) => {
+    return axiosClient.post(
+      "/compounding_car_controller/confirm_cash_payment_compounding_car_customer",
       {
         params,
       }
@@ -218,4 +247,3 @@ const ridesApi = {
 }
 
 export { ridesApi }
-

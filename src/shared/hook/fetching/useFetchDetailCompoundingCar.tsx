@@ -29,7 +29,7 @@ export const useFetchDetailCompoundingCar = (key: string): Res => {
       : null,
     {
       ...SWRConfig,
-      dedupingInterval: 1000,
+      dedupingInterval: 100000,
     }
   )
 

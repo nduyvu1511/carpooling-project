@@ -549,3 +549,13 @@
     color: $primary-color;
   }
 }
+
+.loading-section {
+  @include flex-center;
+  padding-block: 30px;
+
+  & svg {
+    font-size: 2.4rem;
+    color: $gray-color-1;
+  }
+}

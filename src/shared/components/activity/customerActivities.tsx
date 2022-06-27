@@ -1,14 +1,14 @@
 import { RideContainer } from "@/container"
-import {
-  activityStates as activityStateData
-} from "@/helper"
-import { CompoundingCarCustomerState } from "@/models"
+import { activityStates as activityStateData } from "@/helper"
+import { CompoundingCarCustomerState, CompoundingType } from "@/models"
+import { useRouter } from "next/router"
 import { RiLoader4Line } from "react-icons/ri"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { useCustomerActivities } from "shared/hook"
 import { ActivityItem } from "./activityItem"
 
 export const CustomerActivities = () => {
+  const router = useRouter()
   const {
     data,
     isLoading,
@@ -20,6 +20,11 @@ export const CustomerActivities = () => {
 
   const handleFilter = (val: CompoundingCarCustomerState) => {
     filterCompoundingActivities(val)
+  }
+
+  const handleRedirect = (id: number, type: CompoundingCarCustomerState) => {
+    if (type !== "done") return
+    router.push(`/order-done/checkout-options?compounding_car_customer_id=${id}`)
   }
 
   return (
@@ -73,6 +78,7 @@ export const CustomerActivities = () => {
               {data.map((item, index) => (
                 <li key={index} className="activity__list-item">
                   <ActivityItem
+                    onClick={() => handleRedirect(item.compounding_car_customer_id, item.state)}
                     activity={{
                       amount_total: item.amount_total,
                       compounding_car_name: item.compounding_car_name,

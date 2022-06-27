@@ -43,6 +43,7 @@
 }
 
 .activity__item {
+  cursor: pointer;
   padding-block: 8px;
   // @include flex(flex-start, center);
   border: 1px solid $gray-color-1;

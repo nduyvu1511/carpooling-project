@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { HomeCustomer, HomeDriver, HomeGuest } from "@/components/pages"
-import { MainLayout } from "@/layout"
 import { useAuthorization } from "shared/hook"
 
 const Home = () => {

@@ -7,10 +7,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { AiFillStar } from "react-icons/ai"
 import { FaRegClock } from "react-icons/fa"
-import {
-  MdOutlineDirectionsCarFilled,
-  MdOutlinePriceChange,
-} from "react-icons/md"
+import { MdOutlineDirectionsCarFilled, MdOutlinePriceChange } from "react-icons/md"
 import { RouteItem } from "./routeItem"
 
 interface RidesItemProps {
@@ -20,12 +17,7 @@ interface RidesItemProps {
   onClick?: (params: number) => void
 }
 
-export const RidesItem = ({
-  rides,
-  type = "customer",
-  view = "item",
-  onClick,
-}: RidesItemProps) => {
+export const RidesItem = ({ rides, type = "customer", view = "item", onClick }: RidesItemProps) => {
   const router = useRouter()
 
   return (
@@ -64,9 +56,7 @@ export const RidesItem = ({
                 <FaRegClock /> <span>Ngày về:</span>
               </p>
               <p className="rides__item-info-item-r">
-                {moment(rides.expected_picking_up_date).format(
-                  "HH:MM, DD/MM/YYYY"
-                )}
+                {moment(rides.expected_picking_up_date).format("HH:MM, DD/MM/YYYY")}
               </p>
             </div>
           ) : null}
@@ -85,27 +75,23 @@ export const RidesItem = ({
             <p className="rides__item-info-item-l">
               <MdOutlineDirectionsCarFilled /> <span>Loại xe:</span>
             </p>
-            <p className="rides__item-info-item-r rides__item-info-item-price">
-              {rides.car.name}
-            </p>
+            <p className="rides__item-info-item-r rides__item-info-item-price">{rides.car.name}</p>
           </div>
 
           <div className="rides__item-info-item">
             <ul className="rides__item-info-passengers">
-              {Array.from({ length: rides.number_seat_in_car }).map(
-                (item, index) => (
-                  <li
-                    key={index}
-                    className={`rides__item-info-passengers-item ${
-                      index >= rides.number_available_seat
-                        ? "rides__item-info-passengers-item-active"
-                        : ""
-                    }`}
-                  >
-                    {menWalkIcon()}
-                  </li>
-                )
-              )}
+              {Array.from({ length: rides.number_seat_in_car }).map((item, index) => (
+                <li
+                  key={index}
+                  className={`rides__item-info-passengers-item ${
+                    index >= rides.number_available_seat
+                      ? "rides__item-info-passengers-item-active"
+                      : ""
+                  }`}
+                >
+                  {menWalkIcon()}
+                </li>
+              ))}
             </ul>
           </div>
         </div>

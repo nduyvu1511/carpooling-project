@@ -21,6 +21,11 @@ interface UsePasswordRes {
   cancelDepositCompoundingCarDriver: (compounding_car_id: number, cb?: Function) => void
   setDepositFailure: (params: DepositCompoundingCarDriverFailureRes | undefined) => void
   createPaymentForDriver: (props: UseParams<CreatePaymentDriverParams, CreatePaymentRes>) => void
+  confirmCustomerPayFullForCompoundingCar: (
+    compounding_car_customer_id: number,
+    onSuccess: Function,
+    onError?: Function
+  ) => void
 }
 
 export const useDriverCheckout = (): UsePasswordRes => {
@@ -115,6 +120,29 @@ export const useDriverCheckout = (): UsePasswordRes => {
     }
   }
 
+  const confirmCustomerPayFullForCompoundingCar = async (
+    compounding_car_customer_id: number,
+    onSuccess: Function,
+    onError?: Function
+  ) => {
+    if (!token) return
+    try {
+      const res: any = await ridesApi.driverConfirmCustomerPayFullForCompoundingCar({
+        token,
+        compounding_car_customer_id: Number(compounding_car_customer_id),
+      })
+      if (!res?.result?.success) {
+        onError && onError()
+        dispatch(notify(res?.result?.message || "Có lỗi xảy ra, vui lòng thử lại sau", "error"))
+        return
+      }
+      onSuccess()
+    } catch (error) {
+      onError && onError()
+      console.log(error)
+    }
+  }
+
   return {
     deposit,
     depositLoading,
@@ -123,5 +151,6 @@ export const useDriverCheckout = (): UsePasswordRes => {
     cancelDepositCompoundingCarDriver,
     createPaymentForDriver,
     setDepositFailure,
+    confirmCustomerPayFullForCompoundingCar
   }
 }

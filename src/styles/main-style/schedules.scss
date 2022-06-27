@@ -15,6 +15,21 @@
 }
 
 .schedule__detail {
+  &-progress {
+    height: 8px;
+    border-radius: 16px;
+    background-color: $gray-color-2;
+    position: relative;
+    overflow: hidden;
+
+    &-value {
+      background-color: $success;
+      width: 80%;
+      @include absolute(0, 0, 0, 0);
+      // height: 8px;
+    }
+  }
+
   &-map {
     height: 200px;
     margin-bottom: 10px;
@@ -32,9 +47,15 @@
     & .schedule__customer {
       cursor: pointer;
       padding-block: 16px;
+      @include flex(flex-start, center);
 
       &:hover {
         background-color: $gray-color-2;
+      }
+
+      &-l {
+        flex: 1;
+        margin-right: 10px;
       }
 
       &-info {
@@ -65,7 +86,12 @@
       }
 
       &-action {
-        @include flex(flex-start, center);
+        & .btn-primary {
+          padding: 10px 16px;
+          font-size: 1.3rem;
+          font-weight: 400;
+          margin-bottom: 6px;
+        }
       }
 
       &-address {

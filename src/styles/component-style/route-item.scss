@@ -3,7 +3,13 @@
   display: flex;
   position: relative;
   @include style-text(1.5rem, 600, 2.2rem, $text-color);
-  padding-left: 10px;
+
+  &-time {
+    @include flex(space-between, start);
+    flex-direction: column;
+    margin-right: 20px;
+    @include style-text(1.4rem, 500, 1.8rem, $text-color);
+  }
 
   &-line {
     position: relative;

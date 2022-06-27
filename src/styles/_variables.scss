@@ -2,9 +2,9 @@ $second-font: "Dosis", sans-serif;
 $main-font: "Open Sans", sans-serif;
 $header-container-width: 1280px;
 $container-width: 1280px;
-$content-container-width: 662px;
+$content-container-width: 800px;
 
-$header-height: 72px;
+$header-height: 65px;
 $header-mobile-height: 56px;
 
 $navigation-bottom: 50px;
@@ -36,10 +36,7 @@ $datepicker__muted-color: #ccc !default;
 $datepicker__selected-color: #216ba5 !default;
 $datepicker__text-color: #000 !default;
 $datepicker__header-color: #000 !default;
-$datepicker__navigation-disabled-color: lighten(
-  $datepicker__muted-color,
-  10%
-) !default;
+$datepicker__navigation-disabled-color: lighten($datepicker__muted-color, 10%) !default;
 
 $datepicker__border-radius: 0.3rem !default;
 $datepicker__day-margin: 0.166rem !default;
