@@ -1,4 +1,5 @@
 export * from "./auth"
+export * from "./rating"
 export * from "./driver"
 export * from "./password/changePasswordForm"
 export * from "./password/createPasswordForm"

@@ -1,9 +1,5 @@
 import { SWRConfig } from "@/helper"
-import {
-  CompoundingCarCustomerState,
-  CompoundingCarCustomerStatus,
-  CustomerActivityItem,
-} from "@/models"
+import { CompoundingCarCustomerState, CustomerActivityItem } from "@/models"
 import { ridesApi } from "@/services"
 import { useState } from "react"
 import useSWR from "swr"
@@ -51,7 +47,7 @@ export const useCustomerActivities = (): Res => {
 
   const getNewActivityStates = (
     val: CompoundingCarCustomerState
-  ): CompoundingCarCustomerStatus[] => {
+  ): CompoundingCarCustomerState[] => {
     if (activityStates.includes(val)) {
       return [...activityStates].filter((item) => item !== val)
     }

@@ -2,7 +2,7 @@ import { CountdownCompounding, ItemSelect } from "@/components"
 import { RideContainer } from "@/container"
 import { COMPOUNDING_VNPAY_CODE, formatMoneyVND, setToSessionStorage } from "@/helper"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { RiLoader4Line } from "react-icons/ri"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
@@ -10,14 +10,13 @@ import {
   useCustomerCheckout,
   useFetchCompoundingCarCustomerDetail,
   usePayment,
-  useToken,
+  useToken
 } from "shared/hook"
 
 const CustomerCheckout = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const { token } = useToken()
-  const secondRef = useRef<boolean>(false)
   const { compounding_car_customer_id } = router.query
   const { paymentList, isLoading, currentSelectPayment, setCurrentSelectPayment } = usePayment()
   const { createPayment } = useCustomerCheckout()
@@ -26,10 +25,6 @@ const CustomerCheckout = () => {
   )
 
   useEffect(() => {
-    if (!secondRef?.current) {
-      secondRef.current = true
-      return
-    }
     if (compoundingCar?.state === "deposit") {
       router.push(
         `/customer/checkout-success?compounding_car_customer_id=${compounding_car_customer_id}`

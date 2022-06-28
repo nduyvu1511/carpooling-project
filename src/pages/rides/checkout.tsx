@@ -4,17 +4,14 @@ import {
   COMPOUNDING_VNPAY_CODE,
   formatMoneyVND,
   isObjectHasValue,
-  setToSessionStorage
+  setToSessionStorage,
 } from "@/helper"
-import { CompoundingCarRes } from "@/models"
-import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line } from "react-icons/ri"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useDriverCheckout, usePayment, useToken } from "shared/hook"
-import useSWR from "swr"
+import { useDriverCheckout, useFetchCompoundingCarDetail, usePayment, useToken } from "shared/hook"
 
 const DriverCheckout = () => {
   const dispatch = useDispatch()
@@ -32,23 +29,10 @@ const DriverCheckout = () => {
   } = useDriverCheckout()
   const { paymentList, isLoading, currentSelectPayment, setCurrentSelectPayment } = usePayment()
   const [showAlert, setShowAlert] = useState<boolean>(false)
-
-  const { data: compoundingCar } = useSWR<CompoundingCarRes, any>(
-    "get_compounding_car_driver",
-    compounding_car_id && token && !isObjectHasValue(depositFailure)
-      ? () =>
-          ridesApi
-            .getDetailCompoundingCar({
-              compounding_car_id: Number(compounding_car_id),
-              token,
-            })
-            .then((res: any) => res?.result?.data)
-            .catch((err) => console.log(err))
-      : null,
-    {
-      dedupingInterval: 10,
-    }
-  )
+  const { data: compoundingCar } = useFetchCompoundingCarDetail({
+    key: "get_compounding_car_detail_to_deposit_driver",
+    type: "autoFocus",
+  })
 
   useEffect(() => {
     if (!secondRef?.current) {

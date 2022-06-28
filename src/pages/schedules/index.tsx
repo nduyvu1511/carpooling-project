@@ -39,7 +39,9 @@ const Schedules = () => {
                     carpoolingList.map((item) => (
                       <RidesItem
                         onClick={() => {
-                          router.push(`/schedules/${item.compounding_car_id}`)
+                          router.push(
+                            `/schedules/detail?compounding_car_id=${item.compounding_car_id}`
+                          )
                         }}
                         key={item.compounding_car_id}
                         rides={

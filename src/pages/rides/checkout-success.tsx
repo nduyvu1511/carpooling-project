@@ -1,13 +1,14 @@
 import { RideContainer } from "@/container"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useFetchDetailCompoundingCar } from "shared/hook"
+import { useFetchCompoundingCarDetail } from "shared/hook"
 
 const CheckoutSuccess = () => {
   const router = useRouter()
-  const { data: compoundingCar } = useFetchDetailCompoundingCar(
-    "get_compounding_car_detail_checkout"
-  )
+  const { data: compoundingCar } = useFetchCompoundingCarDetail({
+    key: "get_compounding_car_detail_checkout",
+    type: "once",
+  })
 
   if (compoundingCar?.state !== "confirm_deposit") return null
   return (

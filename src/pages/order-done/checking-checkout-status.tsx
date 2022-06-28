@@ -15,8 +15,10 @@ const CheckingCheckoutStatus = () => {
     if (!compounding_car_customer_id || !token) return
     if (router.query.vnp_ResponseCode !== "00") return
 
-    confirmPayFullForCompoundingCarCustomer(Number(compounding_car_customer_id), () => {
-      window.close()
+    confirmPayFullForCompoundingCarCustomer(Number(compounding_car_customer_id), (data) => {
+      if (data.state === "confirm_paid") {
+        window.close()
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, token])

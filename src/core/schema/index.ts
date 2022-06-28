@@ -1,10 +1,4 @@
-import {
-  DATE_REGEX,
-  DATE_SCHEMA,
-  PASSWORD_SCHEMA,
-  PHONE_SCHEMA,
-  YEAR_SCHEMA,
-} from "@/helper"
+import { DATE_REGEX, DATE_SCHEMA, PASSWORD_SCHEMA, PHONE_SCHEMA, YEAR_SCHEMA } from "@/helper"
 import * as Yup from "yup"
 
 export const phoneNumberSchema = Yup.object().shape({
@@ -13,28 +7,25 @@ export const phoneNumberSchema = Yup.object().shape({
     .required("Vui lòng nhập số điện thoại"),
 })
 
+export const ratingFormSchema = Yup.object().shape({
+  desc: Yup.string().required("Vui lòng nhập trường này"),
+  star: Yup.number()
+    .oneOf([1, 2, 3, 4, 5], "Vui lòng nhập số từ 1 đến 5")
+    .required("Vui lòng nhập số sao"),
+})
+
 export const createPasswordSchema = Yup.object().shape({
   password: Yup.string()
-    .matches(
-      PASSWORD_SCHEMA,
-      "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt"
-    )
+    .matches(PASSWORD_SCHEMA, "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt")
     .required("Vui lòng nhập mật khẩu"),
   re_password: Yup.string()
-    .oneOf(
-      [Yup.ref("password")],
-      "Mật khẩu xác nhận phải trùng với mật khẩu mới"
-    )
+    .oneOf([Yup.ref("password")], "Mật khẩu xác nhận phải trùng với mật khẩu mới")
     .required("Vui lòng nhập xác nhận mật khẩu"),
 })
 
 export const certificateRegistrationSchema = Yup.object().shape({
-  front_identity_card_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt trước"
-  ),
-  back_identity_card_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt sau"
-  ),
+  front_identity_card_image_url: Yup.string().required("Vui lòng chọn ảnh mặt trước"),
+  back_identity_card_image_url: Yup.string().required("Vui lòng chọn ảnh mặt sau"),
   car_brand_id: Yup.string().required("Vui lòng nhập thương hiệu xe"),
   car_id: Yup.string().required("Vui lòng nhập loại xe"),
   car_name: Yup.string().required("Vui lòng nhập tên xe"),
@@ -45,12 +36,8 @@ export const certificateRegistrationSchema = Yup.object().shape({
 })
 
 export const inspectionCertificateSchema = Yup.object().shape({
-  front_inspection_certificate_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt trước"
-  ),
-  back_inspection_certificate_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt sau"
-  ),
+  front_inspection_certificate_image_url: Yup.string().required("Vui lòng chọn ảnh mặt trước"),
+  back_inspection_certificate_image_url: Yup.string().required("Vui lòng chọn ảnh mặt sau"),
   identity_number: Yup.string().required("Vui lòng nhập số đăng kiểm"),
   date_of_expiry: Yup.string()
     .matches(DATE_SCHEMA, "Vui lòng nhập ngày hợp lệ")
@@ -59,22 +46,13 @@ export const inspectionCertificateSchema = Yup.object().shape({
 
 export const changePasswordSchema = Yup.object().shape({
   old_password: Yup.string()
-    .matches(
-      PASSWORD_SCHEMA,
-      "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt"
-    )
+    .matches(PASSWORD_SCHEMA, "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt")
     .required("Vui lòng nhập mật khẩu"),
   password: Yup.string()
-    .matches(
-      PASSWORD_SCHEMA,
-      "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt"
-    )
+    .matches(PASSWORD_SCHEMA, "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt")
     .required("Vui lòng nhập mật khẩu"),
   re_password: Yup.string()
-    .oneOf(
-      [Yup.ref("password")],
-      "Mật khẩu xác nhận phải trùng với mật khẩu mới"
-    )
+    .oneOf([Yup.ref("password")], "Mật khẩu xác nhận phải trùng với mật khẩu mới")
     .required("Vui lòng nhập mật khẩu xác nhận"),
 })
 
@@ -90,10 +68,7 @@ export const loginSchema = Yup.object().shape({
     .matches(PHONE_SCHEMA, "Vui lòng nhập số điện thoại hợp lệ")
     .required("Vui lòng nhập số điện thoại"),
   password: Yup.string()
-    .matches(
-      PASSWORD_SCHEMA,
-      "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt"
-    )
+    .matches(PASSWORD_SCHEMA, "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt")
     .required("Vui lòng nhập mật khẩu"),
 })
 
@@ -110,12 +85,8 @@ export const userFormSchema = Yup.object().shape({
 })
 
 export const identityCardSchema = Yup.object().shape({
-  front_identity_card_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt trước"
-  ),
-  back_identity_card_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt sau"
-  ),
+  front_identity_card_image_url: Yup.string().required("Vui lòng chọn ảnh mặt trước"),
+  back_identity_card_image_url: Yup.string().required("Vui lòng chọn ảnh mặt sau"),
   identity_number: Yup.string()
     .min(8, "Phải có ít nhất 8 đến 12 ký tự")
     .max(13, "Phải có ít nhất 8 đến 12 ký tự")
@@ -123,10 +94,7 @@ export const identityCardSchema = Yup.object().shape({
   date_of_issue: Yup.string()
     .matches(DATE_SCHEMA, "Vui lòng nhập ngày hợp lệ")
     .required("Vui lòng nhập ngày cấp"),
-  date_of_expiry: Yup.string().matches(
-    DATE_SCHEMA,
-    "Vui lòng nhập ngày hợp lệ"
-  ),
+  date_of_expiry: Yup.string().matches(DATE_SCHEMA, "Vui lòng nhập ngày hợp lệ"),
   place_of_issue: Yup.string().required("Vui lòng nhập địa chỉ"),
   province_id: Yup.string().required("Vui lòng nhập Tỉnh/Thành Phố"),
   district_id: Yup.string().required("Vui lòng nhập Quận/Huyện"),
@@ -135,9 +103,7 @@ export const identityCardSchema = Yup.object().shape({
 })
 
 export const insuranceShema = Yup.object().shape({
-  front_insurance_image_url: Yup.string().required(
-    "Vui lòng chọn ảnh mặt trước"
-  ),
+  front_insurance_image_url: Yup.string().required("Vui lòng chọn ảnh mặt trước"),
   back_insurance_image_url: Yup.string().required("Vui lòng chọn ảnh mặt sau"),
   identity_number: Yup.string()
     .min(8, "Phải có ít nhất 8 đến 12 ký tự")
@@ -159,10 +125,7 @@ export const drivingLicenseSchema = Yup.object().shape({
     .max(13, "Vui lòng nhập đúng số bằng lái xe")
     .required("Vui lòng nhập số bằng lái"),
   license_class: Yup.string()
-    .oneOf(
-      ["b1", "b2", "c", "d", "e", "f"],
-      "Vui lòng chọn loại bằng lái hợp lệ"
-    )
+    .oneOf(["b1", "b2", "c", "d", "e", "f"], "Vui lòng chọn loại bằng lái hợp lệ")
     .required("Vui lòng nhập hạng bằng lái"),
   date_of_issue: Yup.string()
     .matches(DATE_SCHEMA, "Vui lòng chọn ngày hợp lệ")
@@ -197,10 +160,7 @@ export const departureFormSchema = Yup.object().shape({
 
 export const createCompoundingCarSchema = Yup.object().shape({
   compounding_type: Yup.string()
-    .oneOf(
-      ["one_way", "two_way", "compounding"],
-      "Vui lòng nhập đúng định dạng loại chuyến đi"
-    )
+    .oneOf(["one_way", "two_way", "compounding"], "Vui lòng nhập đúng định dạng loại chuyến đi")
     .required("Vuilòng chọn loại chuyến đi"),
 
   from_province_id: Yup.string().required("Vui lòng nhập tỉnh đi"),
@@ -221,9 +181,7 @@ export const createCompoundingCarSchema = Yup.object().shape({
     .required("Vui lòng nhập số chỗ ngồi"),
   is_a_day_tour: Yup.boolean().nullable(),
   hour_of_wait_time: Yup.string().required("Vui lòng chọn số giờ"),
-  check_policy: Yup.boolean().required(
-    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
-  ),
+  check_policy: Yup.boolean().required("Vui lòng chấp nhận điều khoản trước khi tiếp tục"),
   description: Yup.string(),
 })
 
@@ -255,9 +213,7 @@ export const oneWayCompoundingCarSchema = Yup.object().shape({
       value: Yup.number().required(),
     })
     .required("Vui lòng nhập loại xe"),
-  is_checked_policy: Yup.boolean().required(
-    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
-  ),
+  is_checked_policy: Yup.boolean().required("Vui lòng chấp nhận điều khoản trước khi tiếp tục"),
   note: Yup.string().nullable(),
   distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
   price: Yup.number(),
@@ -291,9 +247,7 @@ export const twoWayCompoundingCarSchema = Yup.object().shape({
       value: Yup.number().required(),
     })
     .required("Vui lòng nhập loại xe"),
-  is_checked_policy: Yup.boolean().required(
-    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
-  ),
+  is_checked_policy: Yup.boolean().required("Vui lòng chấp nhận điều khoản trước khi tiếp tục"),
   note: Yup.string().nullable(),
   distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
   is_a_day_tour: Yup.boolean().required(),
@@ -349,9 +303,7 @@ export const carpoolingCompoundingCarSchema = Yup.object().shape({
       value: Yup.number().required(),
     })
     .required("Vui lòng nhập loại xe"),
-  is_checked_policy: Yup.boolean().required(
-    "Vui lòng chấp nhận điều khoản trước khi tiếp tục"
-  ),
+  is_checked_policy: Yup.boolean().required("Vui lòng chấp nhận điều khoản trước khi tiếp tục"),
   note: Yup.string().nullable(),
   distance: Yup.number().typeError("Vui lòng nhập khoảng cách").required(),
   number_seat: Yup.object()

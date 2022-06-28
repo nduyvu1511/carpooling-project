@@ -1,4 +1,3 @@
-import { SWRConfig } from "@/helper"
 import { CompoundingCarCustomer } from "@/models"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
@@ -16,23 +15,21 @@ export const useFetchCompoundingCarCustomerDetail = (key: string): Res => {
   const { compounding_car_customer_id } = router.query
 
   const { isValidating, data } = useSWR<CompoundingCarCustomer, any>(
-    key,
-    compounding_car_customer_id && token
-      ? () =>
-          ridesApi
-            .getDetailCompoundingCarCustomer({
-              compounding_car_customer_id: Number(compounding_car_customer_id),
-              token,
-            })
-            .then((res: any) => res?.result?.data)
-            .catch((err) => console.log(err))
-      : null,
+    compounding_car_customer_id && token ? key : null,
+    () =>
+      ridesApi
+        .getDetailCompoundingCarCustomer({
+          compounding_car_customer_id: Number(compounding_car_customer_id),
+          token,
+        })
+        .then((res: any) => res?.result?.data)
+        .catch((err) => console.log(err)),
     {
       dedupingInterval: 0,
       revalidateOnFocus: true,
     }
   )
-
+  
   return {
     isValidating,
     data,

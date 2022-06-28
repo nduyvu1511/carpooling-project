@@ -2,11 +2,11 @@
 import { logoIcon } from "@/assets"
 import { CompoundingFilterForm, HomeNav, Modal, RidesItem } from "@/components"
 import { HeaderAccount } from "@/components/header/headerAccount"
-import { isObjectHasValue, LIMIT_COMPOUNDING_LIST } from "@/helper"
+import { LIMIT_COMPOUNDING_LIST } from "@/helper"
 import {
   CompoundingCarCustomerFilterForm,
   CompoundingOrderField,
-  GetCompoundingCarCustomerList,
+  GetCompoundingCarCustomerList
 } from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -15,9 +15,8 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import {
   useCompoundingCarCustomerList,
   useScrollTop,
-  useToken,
+  useToken
 } from "shared/hook"
-import { number } from "yup"
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const height = useScrollTop()

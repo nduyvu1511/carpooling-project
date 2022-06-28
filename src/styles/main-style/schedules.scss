@@ -109,4 +109,13 @@
       }
     }
   }
+
+  &-footer {
+    @include fixed(0, 0, 0, unset);
+
+    & button {
+      width: 100%;
+      border-radius: 0;
+    }
+  }
 }

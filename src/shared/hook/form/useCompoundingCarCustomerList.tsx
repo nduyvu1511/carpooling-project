@@ -19,7 +19,7 @@ export const useCompoundingCarCustomerList = (
 ): Res => {
   const { token } = useToken()
   const { data, isValidating, mutate, error } = useSWR<CompoundingCarRes[]>(
-    "carpooling_list",
+  "carpooling_list",
     token
       ? () =>
           ridesApi

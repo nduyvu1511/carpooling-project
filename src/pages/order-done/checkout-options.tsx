@@ -3,23 +3,45 @@ import { RideContainer } from "@/container"
 import { setScreenLoading } from "@/modules"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useToken } from "shared/hook"
+import { useFetchCompoundingCarCustomerDetail, useToken } from "shared/hook"
 
 const CheckoutOptions = () => {
   const router = useRouter()
   const dispatch = useDispatch()
   const { token } = useToken()
   const { compounding_car_customer_id } = router.query
-  const [paymentType, setPaymentType] = useState<"cash" | "transfer">()
+  const [paymentType, setPaymentType] = useState<"cash" | "transfer" | undefined>()
+  const { data: compoundingCarCustomerDetail } = useFetchCompoundingCarCustomerDetail(
+    "order_done_checkout_option"
+  )
+
+  useEffect(() => {
+    if (
+      compoundingCarCustomerDetail?.payment_method !== "cash" &&
+      compoundingCarCustomerDetail?.payment_method !== "transfer"
+    )
+      return
+
+    setPaymentType(compoundingCarCustomerDetail?.payment_method)
+  }, [compoundingCarCustomerDetail])
+
+  // useEffect(() => {
+  //   if (compoundingCarCustomerDetail?.payment_method === "transfer") {
+  //     router.push(`/order-done/checkout?compounding_car_customer_id=${compounding_car_customer_id}`)
+  //   } else if (compoundingCarCustomerDetail?.payment_method === "cash") {
+  //     router.push("/")
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [compoundingCarCustomerDetail])
 
   const handleCheckoutMethod = async () => {
     if (!token || !paymentType) return
     try {
       dispatch(setScreenLoading(true))
-      const res: any = await ridesApi.payForRemainingAmount({
+      const res: any = await ridesApi.customerPayForRemainingAmount({
         compounding_car_customer_id: Number(compounding_car_customer_id),
         token,
         payment_method: paymentType,

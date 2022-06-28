@@ -282,47 +282,6 @@ export interface CompoundingCarRes {
   car_driver_id: CarDriverId
   compounding_type: CompoundingType
   from_province: ProvinceId
-  from_pick_up_station: StationPickUpParams
-  to_province: ProvinceId
-  to_pick_up_station: StationPickUpParams
-  expected_going_on_date: string
-  expected_picking_up_date: string
-  car: CarId
-  quality_car: QualityCarType
-  number_seat_in_car: number
-  number_available_seat: number
-  price_unit: {
-    name: string
-    price_unit: number
-  }
-  state:
-    | "draft"
-    | "waiting"
-    | "waiting_deposit"
-    | "confirm_deposit"
-    | "confirm"
-    | "start_running"
-    | "stop_picking"
-    | "done"
-    | "cancel"
-  note: string
-  second_remains: number
-  from_address: string
-  from_longitude: string
-  from_latitude: string
-  to_address: string
-  to_longitude: string
-  to_latitude: string
-  distance: number
-}
-
-export interface CompoundingCarDetailRes {
-  compounding_car_id: number
-  compounding_car_code: string
-  compounding_car_name: string
-  car_driver_id: CarDriverId
-  compounding_type: CompoundingType
-  from_province: ProvinceId
   to_province: ProvinceId
   expected_going_on_date: string
   expected_picking_up_date: string
@@ -362,8 +321,9 @@ export interface CompoundingCarCustomer {
   sale_order_id: SaleOrderCompoundingCar
   amount_total: number
   down_payment: number
+  payment_method: "cash" | "transfer" | false
   amount_due: number
-  state: CompoundingCarCustomerStatus
+  state: CompoundingCarCustomerState
   compounding_type: CompoundingType
   expected_going_on_date: string
   expected_picking_up_date: string
@@ -378,6 +338,7 @@ export interface CompoundingCarCustomer {
 }
 
 export interface PartnerCompoundingCar {
+  partner_id: number
   partner_name: string
   avatar_url: {
     image_id: number
@@ -467,18 +428,6 @@ export interface CreatePaymentRes {
   vnpay_payment_url: string
   vnpay_code: string
 }
-
-export type CompoundingCarCustomerStatus =
-  | "draft"
-  | "confirm"
-  | "deposit"
-  | "waiting"
-  | "assign"
-  | "in_process"
-  | "done"
-  | "customer_pay"
-  | "confirm_paid"
-  | "cancel"
 
 export type CompoundingOrderField =
   | "sort_by_lowest_price"
@@ -576,7 +525,7 @@ export type CompoundingCarCustomerState =
   | "in_process"
   | "done"
   | "customer_pay"
-  | "confirm_pay"
+  | "confirm_paid"
   | "cancel"
 
 export interface GetCompoundingCarCustomerStateParams {
@@ -709,4 +658,10 @@ export interface CreatePaymentMethodParams {
   compounding_car_customer_id: number
   payment_method: "cash" | "transfer"
   token: string
+}
+
+export interface DriverConfirmCompoundingCarCustomerParams {
+  token: string
+  compounding_car_customer_id: number
+  customer_id: number
 }

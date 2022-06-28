@@ -6,14 +6,9 @@ import { StarIcon } from "./starIcon"
  *
  * @returns `boolean`
  */
-const isTouchDevice = () =>
-  "ontouchstart" in window || navigator.maxTouchPoints > 0
+const isTouchDevice = () => "ontouchstart" in window || navigator.maxTouchPoints > 0
 
-function calculateCurrentPosition(
-  totalIcons: number,
-  positionX: number,
-  width: number
-) {
+function calculateCurrentPosition(totalIcons: number, positionX: number, width: number) {
   const iconWidth = width / totalIcons
   let currentValue = totalIcons
 
@@ -65,7 +60,7 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export interface Props {
+interface Props {
   onClick?: (value: number) => void
   initialValue?: number
   ratingValue: number
@@ -132,16 +127,12 @@ export function Star({
   })
 
   // re-render when ratingValue changes
-  React.useEffect(
-    () => dispatch({ type: "MouseClick", payload: ratingValue }),
-    [ratingValue]
-  )
+  React.useEffect(() => dispatch({ type: "MouseClick", payload: ratingValue }), [ratingValue])
 
   const onPointerMove = (event: React.PointerEvent<HTMLSpanElement>) => {
     const { clientX, currentTarget } = event
     // get main span element position and width
-    const { left, right, width } =
-      currentTarget.children[0].getBoundingClientRect()
+    const { left, right, width } = currentTarget.children[0].getBoundingClientRect()
 
     // set for RTL
     const positionX = rtl ? right - clientX : clientX - left
@@ -204,10 +195,7 @@ export function Star({
    * @returns `hover value` | `rating value` | `local rating`
    */
   const valuePercentage = useMemo(
-    () =>
-      (allowHover && hoverValue && hoverValue) ||
-      (defaultValue && defaultValue) ||
-      localRating,
+    () => (allowHover && hoverValue && hoverValue) || (defaultValue && defaultValue) || localRating,
     [allowHover, hoverValue, defaultValue, localRating]
   )
 
@@ -242,9 +230,7 @@ export function Star({
 
   // handle tooltip values
   const handleTooltip = (value: number) =>
-    tooltipArray.length > 0
-      ? tooltipArray[valueIndex(value)]
-      : renderValue(value) || 0
+    tooltipArray.length > 0 ? tooltipArray[valueIndex(value)] : renderValue(value) || 0
 
   return (
     <span
@@ -282,9 +268,7 @@ export function Star({
         >
           {[...Array(iconsCount)].map((_, index) => (
             <Fragment key={index}>
-              {customIcons[index]?.icon || emptyIcon || (
-                <StarIcon key={index} size={size} />
-              )}
+              {customIcons[index]?.icon || emptyIcon || <StarIcon key={index} size={size} />}
             </Fragment>
           ))}
         </span>
@@ -296,9 +280,7 @@ export function Star({
             top: 0,
             [rtl ? "right" : "left"]: 0,
             color:
-              (allowHover &&
-                hoverValue &&
-                fillColorArray[valueIndex(hoverValue)]) ||
+              (allowHover && hoverValue && fillColorArray[valueIndex(hoverValue)]) ||
               (defaultValue && fillColorArray[valueIndex(defaultValue)]) ||
               fillColor,
             overflow: "hidden",

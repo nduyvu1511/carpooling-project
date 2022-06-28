@@ -950,7 +950,7 @@ export const activityStates: {
   },
   {
     label: "Xác nhận thanh toán",
-    value: "confirm_pay",
+    value: "confirm_paid",
   },
   {
     label: "Đã hủy",

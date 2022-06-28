@@ -1,0 +1,111 @@
+.rating-container {
+  & .rating__inner {
+    & .rating__star {
+      @include flex-center;
+    }
+  }
+}
+
+.rating__form {
+  &-star {
+    @include flex-center;
+    margin-bottom: 10px;
+  }
+
+  &-desc {
+    margin-bottom: 20px;
+  }
+
+  &-action {
+    @include flex-center;
+  }
+
+  &-quickReview {
+    & .tag__list {
+      display: flex;
+      flex-wrap: wrap;
+
+      &-item {
+        border-radius: 16px;
+        background-color: $gray-color-2;
+        padding: 6px 12px;
+        @include style-text(1.3rem, 500, 1.6rem, $text-color);
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &-active {
+          color: $white;
+          background-color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+.rating__item {
+  padding-block: 8px;
+  @include flex(flex-start, flex-start);
+
+  &-l {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  &-r {
+    display: flex;
+
+    & button {
+      font-size: 1.6rem;
+      & svg {
+        color: $danger;
+      }
+    }
+  }
+
+  &-delete {
+    margin-right: 4px;
+
+    & svg {
+      color: $info !important;
+    }
+  }
+
+  &-author {
+    @include flex(flex-start, center);
+    margin-bottom: 4px;
+
+    &-avatar {
+      width: 44px;
+      height: 44px;
+      margin-right: 10px;
+
+      & img {
+        border-radius: 50%;
+      }
+    }
+
+    &-r {
+      flex: 1;
+    }
+
+    &-name {
+      @include style-text(1.4rem, 500, 2rem, $text-color);
+    }
+
+    &-date {
+      @include style-text(1.2rem, 400, 1.6rem, $text-color-2);
+    }
+  }
+
+  &-star {
+    margin-bottom: 8px;
+  }
+
+  &-content {
+    @include style-text(1.3rem, 500, 2rem, $text-color);
+  }
+}

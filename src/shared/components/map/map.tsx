@@ -9,7 +9,7 @@ import { RiLoader4Fill } from "react-icons/ri"
 import { TiLocation } from "react-icons/ti"
 import { useDispatch } from "react-redux"
 import { notify } from "reapop"
-import { useAddressOptions } from "shared/hook"
+import { useAddressOptions, useCurrentLocation } from "shared/hook"
 import { MapSearch } from "./mapSearch"
 
 type MapOptions = google.maps.MapOptions
@@ -43,6 +43,7 @@ export const Map = ({
   })
   const dispatch = useDispatch()
   const mapRef = useRef<GoogleMap>()
+  const { getCurrentLocation } = useCurrentLocation({})
   const options = useMemo<MapOptions>(() => ({ disableDefaultUI: true, clickableIcons: false }), [])
   const { getProvinceId } = useAddressOptions()
   const [currentLocation, setCurrenLocation] = useState<LatLngLiteral>()
@@ -84,17 +85,16 @@ export const Map = ({
       return
     }
 
-    if (navigator?.geolocation) {
-      navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-        setCurrenLocation({ lat: latitude, lng: longitude })
-        getLocationFromLatlng({
-          params: { lat: latitude, lng: longitude },
-          onSuccess: (address) => {
-            setCurrentAddress(address)
-          },
-        })
+    getCurrentLocation(({ lat, lng }) => {
+      setCurrenLocation({ lat, lng })
+      getLocationFromLatlng({
+        params: { lat, lng },
+        onSuccess: (address) => {
+          setCurrentAddress(address)
+        },
       })
-    }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultLocation])
 
   const pantoCurrentLocation = () => {

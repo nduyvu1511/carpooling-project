@@ -1,4 +1,5 @@
 import {
+  CompoundingCarRes,
   ConfirmTransactionParams,
   CreateCompoundingCarRes,
   CreatePaymentParams,
@@ -26,7 +27,7 @@ interface UsePasswordRes {
   confirmDepositLoading: boolean
   confirmPayFullForCompoundingCarCustomer: (
     compounding_car_customer_id: number,
-    cb: Function,
+    cb: (params: CreateCompoundingCarRes) => void,
     onErr?: Function
   ) => void
 }
@@ -124,7 +125,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
 
   const confirmPayFullForCompoundingCarCustomer = async (
     compounding_car_customer_id: number,
-    cb: Function,
+    cb: (params: CreateCompoundingCarRes) => void,
     onErr?: Function
   ) => {
     if (!token) return
@@ -137,7 +138,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
       setConfirmDepositLoading(false)
       const result: CreateCompoundingCarRes = res?.result?.data
       if (result?.state === "confirm_paid") {
-        cb && cb()
+        cb && cb(result)
       } else {
         onErr && onErr()
       }

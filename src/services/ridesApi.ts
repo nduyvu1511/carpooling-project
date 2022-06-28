@@ -7,6 +7,7 @@ import {
   CreatePaymentDriverParams,
   CreatePaymentMethodParams,
   CreatePaymentParams,
+  DriverConfirmCompoundingCarCustomerParams,
   GetCompoundingCarCustomerList,
   GetCompoundingCarCustomerStateParams,
   GetCompoundingCarDriverStateParams,
@@ -121,15 +122,6 @@ const ridesApi = {
     })
   },
 
-  confirmPaidForCompoundingCarCustomer: (params: GetDetailCompoundingCustomer) => {
-    return axiosClient.post(
-      "/compounding_car_controller/confirm_cash_payment_compounding_car_customer",
-      {
-        params,
-      }
-    )
-  },
-
   getPaymentMethods: (token: string) => {
     return axiosClient.post("/payment_controller/get_payment_method_in_app", {
       params: {
@@ -230,7 +222,7 @@ const ridesApi = {
     )
   },
 
-  payForRemainingAmount: (params: CreatePaymentMethodParams) => {
+  customerPayForRemainingAmount: (params: CreatePaymentMethodParams) => {
     return axiosClient.post("/compounding_car_controller/payment_compounding_car_customer", {
       params,
     })
@@ -243,6 +235,12 @@ const ridesApi = {
         params,
       }
     )
+  },
+
+  driverConfirmCompoundingCarCustomer: (params: DriverConfirmCompoundingCarCustomerParams) => {
+    return axiosClient.post("/compounding_car_controller/confirm_done_compounding_car_customer", {
+      params,
+    })
   },
 }
 

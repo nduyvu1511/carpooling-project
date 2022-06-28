@@ -23,8 +23,13 @@ export const CustomerActivities = () => {
   }
 
   const handleRedirect = (id: number, type: CompoundingCarCustomerState) => {
-    if (type !== "done") return
-    router.push(`/order-done/checkout-options?compounding_car_customer_id=${id}`)
+    if (type === "done") {
+      router.push(`/order-done/checkout-options?compounding_car_customer_id=${id}`)
+    } else if (type === "customer_pay") {
+      router.push(`/order-done/checkout?compounding_car_customer_id=${id}`)
+    } else if (type === "confirm_paid") {
+      router.push(`/rating?compounding_car_customer_id=${id}`)
+    }
   }
 
   return (
