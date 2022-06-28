@@ -1,13 +1,9 @@
 import {
-  CompoundingCarRes,
-  CompoundingCarCustomer,
-  CreateCarpoolCompoundingNoToken,
-  CreateCompoundingCarNoTokenParams,
-  CreateCompoundingCarRes,
-  CreateOneWayCompoundingNoToken,
+  CompoundingCarCustomer, CompoundingCarRes, CreateCarpoolCompoundingNoToken,
+  CreateCompoundingCarNoTokenParams, CreateOneWayCompoundingNoToken,
   CreateTwoWayCompoundingNoToken,
   UpdateCompoundingCar,
-  UseParams,
+  UseParams
 } from "@/models"
 import { setScreenLoading } from "@/modules"
 import { ridesApi } from "@/services"
@@ -22,14 +18,14 @@ interface UseCreateRidesRes {
       | CreateOneWayCompoundingNoToken
       | CreateTwoWayCompoundingNoToken
       | CreateCarpoolCompoundingNoToken,
-      CreateCompoundingCarRes
+      CompoundingCarCustomer
     >
   ) => void
   confirmCompounding: (
     _params: UseParams<{ compounding_car_customer_id: number }, any>
   ) => void
   updateCompounding: (
-    _params: UseParams<UpdateCompoundingCar, CreateCompoundingCarRes>
+    _params: UseParams<UpdateCompoundingCar, CompoundingCarCustomer>
   ) => void
   getDetailCompoundingCar: (
     _params: UseParams<{ compounding_car_id: number }, CompoundingCarRes>
@@ -41,7 +37,7 @@ interface UseCreateRidesRes {
     >
   ) => void
   createExistedCompoundingCar: (
-    _params: UseParams<CreateCarpoolCompoundingNoToken, CreateCompoundingCarRes>
+    _params: UseParams<CreateCarpoolCompoundingNoToken, CompoundingCarCustomer>
   ) => void
   compoundingCarCustomerResToRidesForm: (
     params: CompoundingCarCustomer
@@ -61,7 +57,7 @@ export const useCreateRides = (): UseCreateRidesRes => {
       | CreateCarpoolCompoundingNoToken
       | CreateOneWayCompoundingNoToken
       | CreateTwoWayCompoundingNoToken,
-      CreateCompoundingCarRes
+      CompoundingCarCustomer
     >
   ) => {
     if (!token) return
@@ -85,7 +81,7 @@ export const useCreateRides = (): UseCreateRidesRes => {
   }
 
   const createExistedCompoundingCar = async (
-    _params: UseParams<CreateCarpoolCompoundingNoToken, CreateCompoundingCarRes>
+    _params: UseParams<CreateCarpoolCompoundingNoToken, CompoundingCarCustomer>
   ) => {
     if (!token) return
     const { params, onSuccess, onError } = _params

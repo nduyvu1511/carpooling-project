@@ -1,7 +1,6 @@
 import { Alert, Map } from "@/components"
 import { RideContainer } from "@/container"
 import { isObjectHasValue } from "@/helper"
-import { CompoundingCarCustomer, CompoundingCarRes } from "@/models"
 import { setScreenLoading } from "@/modules"
 import { API_URL } from "@/services"
 import Image from "next/image"

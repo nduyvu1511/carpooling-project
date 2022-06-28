@@ -1,7 +1,7 @@
 import { CarpoolingCompoundingForm, Map } from "@/components"
 import { RideContainer } from "@/container"
 import { formatMoneyVND, getCompoundingTypeName } from "@/helper"
-import { CompoundingCarRes, CreateCompoundingCarRes, CreateCompoundingParams } from "@/models"
+import { CompoundingCarRes, CreateCompoundingParams } from "@/models"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsCalendar3 } from "react-icons/bs"

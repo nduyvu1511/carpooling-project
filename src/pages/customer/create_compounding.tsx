@@ -8,8 +8,7 @@ import { useCompoundingForm, useCreateRides } from "shared/hook"
 const CreateCompounding = () => {
   const router = useRouter()
   const { compounding_car_id } = router.query
-  const { getDetailCompoundingCar, createExistedCompoundingCar } =
-    useCreateRides()
+  const { getDetailCompoundingCar, createExistedCompoundingCar } = useCreateRides()
   const [compoundingCar, setCompoundingCar] = useState<CompoundingCarRes>()
   const { compoundingCarResToCarpoolingForm } = useCompoundingForm()
 
@@ -26,9 +25,7 @@ const CreateCompounding = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [compounding_car_id])
 
-  const handleCreateCompoundingCar = (
-    data: CreateCarpoolCompoundingNoToken
-  ) => {
+  const handleCreateCompoundingCar = (data: CreateCarpoolCompoundingNoToken) => {
     if (!compounding_car_id) return
     createExistedCompoundingCar({
       params: { ...data, compounding_car_id: Number(compounding_car_id) },

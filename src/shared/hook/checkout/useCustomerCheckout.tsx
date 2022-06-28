@@ -1,7 +1,6 @@
 import {
-  CompoundingCarRes,
   ConfirmTransactionParams,
-  CreateCompoundingCarRes,
+  CompoundingCarCustomer,
   CreatePaymentParams,
   CreatePaymentRes,
   UseParams,
@@ -17,7 +16,7 @@ interface UsePasswordRes {
   confirmTransaction: (props: UseParams<ConfirmTransactionParams, any>) => void
   getCompoundingCarCustomerDetail: (
     compounding_car_customer_id: number,
-    cb: (params: CreateCompoundingCarRes | undefined) => void
+    cb: (params: CompoundingCarCustomer | undefined) => void
   ) => void
   confirmDepositCompoundingCarCustomer: (
     compounding_car_customer_id: number,
@@ -27,7 +26,7 @@ interface UsePasswordRes {
   confirmDepositLoading: boolean
   confirmPayFullForCompoundingCarCustomer: (
     compounding_car_customer_id: number,
-    cb: (params: CreateCompoundingCarRes) => void,
+    cb: (params: CompoundingCarCustomer) => void,
     onErr?: Function
   ) => void
 }
@@ -85,7 +84,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
 
   const getCompoundingCarCustomerDetail = (
     compounding_car_customer_id: number,
-    cb: (params: CreateCompoundingCarRes | undefined) => void
+    cb: (params: CompoundingCarCustomer | undefined) => void
   ) => {
     if (!token) return
     ridesApi
@@ -110,7 +109,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
         token,
       })
       setConfirmDepositLoading(false)
-      const result: CreateCompoundingCarRes = res?.result?.data
+      const result: CompoundingCarCustomer = res?.result?.data
       if (result?.state === "deposit") {
         cb && cb()
       } else {
@@ -125,7 +124,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
 
   const confirmPayFullForCompoundingCarCustomer = async (
     compounding_car_customer_id: number,
-    cb: (params: CreateCompoundingCarRes) => void,
+    cb: (params: CompoundingCarCustomer) => void,
     onErr?: Function
   ) => {
     if (!token) return
@@ -136,7 +135,7 @@ export const useCustomerCheckout = (): UsePasswordRes => {
         token,
       })
       setConfirmDepositLoading(false)
-      const result: CreateCompoundingCarRes = res?.result?.data
+      const result: CompoundingCarCustomer = res?.result?.data
       if (result?.state === "confirm_paid") {
         cb && cb(result)
       } else {

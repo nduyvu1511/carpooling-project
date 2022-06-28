@@ -1,14 +1,14 @@
 import { SWRConfig } from "@/helper"
-import { CompoundingCarRes } from "@/models"
+import { CompoundingCarDriverRes } from "@/models"
 import { ridesApi } from "@/services"
 import { useRouter } from "next/router"
 import useSWR, { KeyedMutator } from "swr"
 import { useToken } from "../user"
 
 interface Res {
-  data: CompoundingCarRes | undefined
+  data: CompoundingCarDriverRes | undefined
   isValidating: boolean
-  mutate: KeyedMutator<CompoundingCarRes>
+  mutate: KeyedMutator<CompoundingCarDriverRes>
 }
 
 interface Props {
@@ -21,7 +21,7 @@ export const useFetchCompoundingCarDetail = ({ key, type }: Props): Res => {
   const { token } = useToken()
   const { compounding_car_id } = router.query
 
-  const { isValidating, data, mutate } = useSWR<CompoundingCarRes, any>(
+  const { isValidating, data, mutate } = useSWR<CompoundingCarDriverRes, any>(
     compounding_car_id && token ? key : null,
     () =>
       ridesApi

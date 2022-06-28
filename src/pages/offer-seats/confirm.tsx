@@ -2,7 +2,7 @@ import { Map, OneWayCompoundingForm, TwoWayCompoundingForm } from "@/components"
 import { CarpoolingCompoundingForm } from "@/components/form/compounding/carpoolingCompoundingForm"
 import { RideContainer } from "@/container"
 import { formatMoneyVND, getCompoundingTypeName } from "@/helper"
-import { CreateCompoundingCarRes, CreateCompoundingParams } from "@/models"
+import { CompoundingCarCustomer, CreateCompoundingParams } from "@/models"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsCalendar3 } from "react-icons/bs"
@@ -18,17 +18,13 @@ const Confirm = () => {
   const { token } = useToken()
   const router = useRouter()
   const dispatch = useDispatch()
-  const {
-    confirmCompounding,
-    updateCompounding,
-    getDetailCompoundingCarCustomer,
-  } = useCreateRides()
+  const { confirmCompounding, updateCompounding, getDetailCompoundingCarCustomer } =
+    useCreateRides()
   const { compounding_car_customer_id } = router.query
   // const { isValidating, data: compoundingCar } = useFetchCompoundingCarCustomer(
   //   "get_detail_compounding_car_customer_confirm"
   // )
-  const [compoundingCar, setCompoundingCar] =
-    useState<CreateCompoundingCarRes>()
+  const [compoundingCar, setCompoundingCar] = useState<CompoundingCarCustomer>()
   const {
     clearCarpoolingWayCompoundingCar,
     clearOneWayCompoundingCar,
@@ -119,9 +115,7 @@ const Confirm = () => {
                   </p>
 
                   <p className="rides__confirm-location-item-r">
-                    {getCompoundingTypeName(
-                      compoundingCar?.compounding_type || "one_way"
-                    )}
+                    {getCompoundingTypeName(compoundingCar?.compounding_type || "one_way")}
                   </p>
                 </li>
 
@@ -202,9 +196,7 @@ const Confirm = () => {
             </div>
 
             <div className="rides__confirm-item">
-              <h3 className="rides__confirm-item-title">
-                Ghi chú cho chuyến đi
-              </h3>
+              <h3 className="rides__confirm-item-title">Ghi chú cho chuyến đi</h3>
 
               <div className="rides__confirm-note">
                 <div className="rides__confirm-note-icon">
@@ -219,49 +211,37 @@ const Confirm = () => {
                 <>
                   {compoundingCar.compounding_type === "one_way" ? (
                     <OneWayCompoundingForm
-                      defaultValues={compoundingCarCustomerResToOneWayForm(
-                        compoundingCar
-                      )}
+                      defaultValues={compoundingCarCustomerResToOneWayForm(compoundingCar)}
                       mode="update"
                       onSubmit={(data) => {
                         if (data.mode === "update") {
                           handleUpdateCompoundingCar(data)
                         } else {
-                          handleConfirmCompoundingCar(
-                            compoundingCar.compounding_car_customer_id
-                          )
+                          handleConfirmCompoundingCar(compoundingCar.compounding_car_customer_id)
                         }
                       }}
                     />
                   ) : compoundingCar.compounding_type === "two_way" ? (
                     <TwoWayCompoundingForm
-                      defaultValues={compoundingCarCustomerResToTwoWayForm(
-                        compoundingCar
-                      )}
+                      defaultValues={compoundingCarCustomerResToTwoWayForm(compoundingCar)}
                       mode="update"
                       onSubmit={(data) => {
                         if (data.mode === "update") {
                           handleUpdateCompoundingCar(data)
                         } else {
-                          handleConfirmCompoundingCar(
-                            compoundingCar.compounding_car_customer_id
-                          )
+                          handleConfirmCompoundingCar(compoundingCar.compounding_car_customer_id)
                         }
                       }}
                     />
                   ) : (
                     <CarpoolingCompoundingForm
                       mode="update"
-                      defaultValues={compoundingCarCustomerResToCarpoolingForm(
-                        compoundingCar
-                      )}
+                      defaultValues={compoundingCarCustomerResToCarpoolingForm(compoundingCar)}
                       onSubmit={(data) => {
                         if (data.mode === "update") {
                           handleUpdateCompoundingCar(data)
                         } else {
-                          handleConfirmCompoundingCar(
-                            compoundingCar.compounding_car_customer_id
-                          )
+                          handleConfirmCompoundingCar(compoundingCar.compounding_car_customer_id)
                         }
                       }}
                     />

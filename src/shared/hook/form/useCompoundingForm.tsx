@@ -39,10 +39,10 @@ import {
 import {
   CalculateDistanceBetweenTwoCoordinatesParams,
   CarIdType,
+  CompoundingCarCustomer,
   CompoundingCarRes,
   CreateCarpoolingCompoundingForm,
   CreateCommonCompoundingForm,
-  CreateCompoundingCarRes,
   CreateOneWayCompoundingForm,
   CreateTwoWayCompoundingForm,
   OptionModel,
@@ -51,8 +51,8 @@ import {
 import { setCurrentCompoundingCarCustomer } from "@/modules"
 import { vehicleApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
-import { useCalcDistance } from "./useCalcDistance"
 import { useToken } from "../user/useToken"
+import { useCalcDistance } from "./useCalcDistance"
 
 export interface CalcPriceParams {
   params: { to_province_id: number; from_province_id: number; car_id: number }
@@ -68,13 +68,13 @@ interface Res {
   clearCarpoolingWayCompoundingCar: Function
   calcPriceFromProvinceIds: (params: CalcPriceParams) => void
   compoundingCarCustomerResToCarpoolingForm: (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ) => CreateCarpoolingCompoundingForm
   compoundingCarCustomerResToTwoWayForm: (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ) => CreateTwoWayCompoundingForm
   compoundingCarCustomerResToOneWayForm: (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ) => CreateOneWayCompoundingForm
   carpoolingCompoundingFormFromLocalStorage: () => CreateCarpoolingCompoundingForm
   twoWayCompoundingCarFormFromLocalStorage: () => CreateTwoWayCompoundingForm
@@ -171,7 +171,7 @@ export const useCompoundingForm = (): Res => {
   }
 
   const compoundingCarCustomerResToCarpoolingForm = (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ): CreateCarpoolingCompoundingForm => {
     return {
       car_id: {
@@ -209,14 +209,14 @@ export const useCompoundingForm = (): Res => {
         station_name: compoundingCar.to_pick_up_station.station_name,
       },
       number_seat: {
-        label: `${compoundingCar.number_seat} ghế`,
-        value: compoundingCar.number_seat,
+        label: `${compoundingCar.number_available_seat} ghế`,
+        value: compoundingCar.number_available_seat,
       },
     }
   }
 
   const commonCompoundingParams = (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ): CreateCommonCompoundingForm => {
     return {
       car_id: {
@@ -243,7 +243,7 @@ export const useCompoundingForm = (): Res => {
   }
 
   const compoundingCarCustomerResToTwoWayForm = (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ): CreateTwoWayCompoundingForm => {
     return {
       ...commonCompoundingParams(compoundingCar),
@@ -256,7 +256,7 @@ export const useCompoundingForm = (): Res => {
   }
 
   const compoundingCarCustomerResToOneWayForm = (
-    compoundingCar: CreateCompoundingCarRes
+    compoundingCar: CompoundingCarCustomer
   ): CreateOneWayCompoundingForm => {
     return {
       ...commonCompoundingParams(compoundingCar),

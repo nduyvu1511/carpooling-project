@@ -2,7 +2,7 @@ import { ProvinceId, StationId, StationPickUpParams } from "./address"
 import { OptionModel } from "./common"
 import { FromLocation } from "./location"
 import { CarAccountType, GenderType, UserInfo } from "./user"
-import { CarId } from "./vehicle"
+import { CarId, VehicleTypeParams } from "./vehicle"
 
 export interface DepartureForm {
   date: string
@@ -273,8 +273,6 @@ export type CreateCompoundingCarCustomerParams = CreateCompoundingParams & {
   compounding_car_id: number
 }
 
-export interface CreateCompoundingCarRes extends CompoundingCarCustomer {}
-
 export interface CompoundingCarRes {
   compounding_car_id: number
   compounding_car_code: string
@@ -286,7 +284,7 @@ export interface CompoundingCarRes {
   expected_going_on_date: string
   expected_picking_up_date: string
   car: ActivityCarId
-  quality_car: string
+  quality_car: VehicleTypeParams
   number_seat_in_car: number
   number_available_seat: number
   state: CompoundingCarDriverState
@@ -296,6 +294,18 @@ export interface CompoundingCarRes {
   }
   note: string
   second_remains: number
+  from_pick_up_station: StationPickUpParams
+  from_address: string
+  from_longitude: string
+  from_latitude: string
+  to_pick_up_station: StationPickUpParams
+  to_address: string
+  to_longitude: string
+  to_latitude: string
+  distance: number
+}
+
+export interface CompoundingCarDriverRes extends CompoundingCarRes {
   compounding_car_customers: CompoundingCarCustomer[]
 }
 
