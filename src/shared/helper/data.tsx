@@ -62,7 +62,7 @@ export const passwordFormData: PasswordFormDataProps[] = [
   {
     label: "Xác nhận mật khẩu",
     name: "reNewPassword",
-  },
+  },  
 ]
 
 export const navLinks = [
@@ -221,22 +221,6 @@ export const drivingClassList: {
     label: "Bằng F",
     value: "f",
   },
-]
-
-export const models = [
-  { label: "Hyundai", value: "Hyundai" },
-  { label: "Ford", value: "Ford" },
-  { label: "Toyota", value: "Toyota" },
-  { label: "Suzuki", value: "Suzuki" },
-  { label: "Isuzu", value: "Isuzu" },
-  { label: "KIA", value: "KIA" },
-  { label: "Mercedes Benz", value: "Mercedes Benz" },
-]
-
-export const ratings = [
-  { label: "5 sao", value: 5 },
-  { label: "4 sao", value: 4 },
-  { label: "3 sao", value: 3 },
 ]
 
 export const idCardFormFields: {
@@ -533,65 +517,6 @@ export const genderList: {
   { value: "female", label: "Nữ" },
 ]
 
-export const seats = [
-  { label: "1", value: "1" },
-  { label: "2", value: "2" },
-  { label: "3", value: "3" },
-  { label: "4", value: "4" },
-  { label: "5", value: "5" },
-  { label: "6", value: "6" },
-  { label: "7", value: "7" },
-  { label: "8", value: "8" },
-  { label: "9", value: "9" },
-  { label: "10", value: "10" },
-  { label: "11", value: "11" },
-  { label: "12", value: "12" },
-  { label: "13", value: "13" },
-  { label: "14", value: "14" },
-  { label: "15", value: "15" },
-  { label: "16", value: "16" },
-]
-
-interface DepartureForm {
-  type?: "date" | "select" | "text"
-  placeholder: string
-  name: DepartureFormKey
-  isRequired: boolean
-}
-
-export const waitingTimes = [
-  {
-    label: "30 Phút",
-    value: "30 minutes",
-  },
-  {
-    label: "1 Tiếng",
-    value: "1 hour",
-  },
-  {
-    label: "1 Tiếng 30 phút",
-    value: "1.5 hours",
-  },
-  {
-    label: "2 Tiếng",
-    value: "2 hours",
-  },
-
-  {
-    label: "3 Tiếng",
-    value: "3 hours",
-  },
-
-  {
-    label: "4 Tiếng",
-    value: "4 hours",
-  },
-  {
-    label: "5 Tiếng",
-    value: "5 hours",
-  },
-]
-
 export const userInfoFormfields: {
   name: UserInfoFormKey
   placeholder: string
@@ -711,7 +636,7 @@ export const dashboardAccounts: {
   // },
   {
     name: "Đánh giá",
-    path: "/dashboard/ratings/given",
+    path: "/rating/list",
     icon: <HiStar />,
     type: "both",
   },
@@ -766,72 +691,6 @@ export const ridesFormFields: {
     placeholder: "Mặt Trước",
     isRequired: true,
   },
-]
-
-interface CreateRidesOneWayFormFieldsParams {
-  label: string
-  isRequired: boolean
-  name: RidesFormFieldKey
-  type: "select" | "date" | "text"
-  icon?: ReactNode
-  childs?: CreateRidesOneWayFormFieldsParams[]
-}
-
-export const createRidesOneWayFormFields: CreateRidesOneWayFormFieldsParams[] = [
-  {
-    name: "from_pick_up_station_id",
-    isRequired: true,
-    label: "Chọn điểm đi",
-    type: "text",
-    icon: <HiOutlineLocationMarker />,
-  },
-
-  {
-    name: "to_pick_up_station_id",
-    isRequired: true,
-    label: "Chọn điểm đến",
-    type: "text",
-    icon: <HiOutlineLocationMarker />,
-  },
-  {
-    name: "expected_going_on_date",
-    isRequired: true,
-    label: "Chọn ngày đi",
-    type: "date",
-    icon: <MdOutlineDateRange />,
-    childs: [
-      {
-        name: "expected_going_on_date",
-        isRequired: true,
-        label: "Chọn ngày đi",
-        type: "date",
-      },
-      {
-        name: "expected_going_on_date",
-        isRequired: true,
-        label: "Chọn giờ đi",
-        type: "text",
-      },
-    ],
-  },
-  {
-    name: "car_id",
-    isRequired: true,
-    label: "Chọn loại xe",
-    type: "select",
-    icon: <RiCarWashingLine />,
-  },
-  {
-    name: "number_seat",
-    isRequired: true,
-    label: "Chọn số ghế",
-    type: "select",
-    icon: <RiCarWashingLine />,
-  },
-]
-
-export const CreateRidesTwoWayFormFields: CreateRidesOneWayFormFieldsParams[] = [
-  ...createRidesOneWayFormFields,
 ]
 
 export const hoursBackList: { label: string; value: HourWaitTimeType }[] = [

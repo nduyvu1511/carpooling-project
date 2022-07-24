@@ -18,20 +18,20 @@ const Rating = () => {
   const handleAddRating = (params: CreateRatingFormParams) => {
     if (!compounding_car_customer_id || !token) return
     dispatch(setScreenLoading(true))
-    addRating(
-      {
+    addRating({
+      params: {
         ...params,
         token,
         compounding_car_customer_id: Number(compounding_car_customer_id),
       },
-      () => {
+      onSuccess: (data) => {
         dispatch(setScreenLoading(false))
         dispatch(notify("Thêm đánh giá thành công", "success"))
       },
-      () => {
+      onError: () => {
         dispatch(setScreenLoading(false))
-      }
-    )
+      },
+    })
   }
 
   return (

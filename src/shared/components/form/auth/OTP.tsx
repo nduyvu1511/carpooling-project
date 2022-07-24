@@ -85,9 +85,7 @@ export const OTP = ({ onVerifyOTP, heading, type }: LoginOtpProps) => {
       },
       () => {
         type === "register"
-          ? dispatch(
-              notify("SĐT đã tồn tại, vui lòng thử đăng nhập!", "warning")
-            )
+          ? dispatch(notify("SĐT đã tồn tại, vui lòng thử đăng nhập!", "warning"))
           : dispatch(notify("Không tìm thấy SĐT, vui lòng thử lại", "warning"))
       }
     )
@@ -107,9 +105,7 @@ export const OTP = ({ onVerifyOTP, heading, type }: LoginOtpProps) => {
               {arrowIcon2()}
             </button>
           ) : null}
-          <h1 className="page-heading">
-            {expandForm ? "Lấy mã xác thực" : heading}
-          </h1>
+          <h1 className="page-heading">{expandForm ? "Lấy mã xác thực" : heading}</h1>
         </div>
       ) : null}
 

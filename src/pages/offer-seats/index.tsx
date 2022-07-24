@@ -45,10 +45,7 @@ const OfferSeat = () => {
   }
 
   const handleCreateCompoundingCar = (params: CreateCompoundingParams) => {
-    if (
-      params.compounding_type === "compounding" &&
-      currentCarpoolingCompoundingCarCustomer
-    ) {
+    if (params.compounding_type === "compounding" && currentCarpoolingCompoundingCarCustomer) {
       handleUpdateCompoundingCar({
         ...params,
         token,
@@ -56,10 +53,7 @@ const OfferSeat = () => {
       })
       return
     }
-    if (
-      params.compounding_type === "one_way" &&
-      currentOneWayCompoundingCarCustomer
-    ) {
+    if (params.compounding_type === "one_way" && currentOneWayCompoundingCarCustomer) {
       handleUpdateCompoundingCar({
         ...params,
         token,
@@ -67,10 +61,7 @@ const OfferSeat = () => {
       })
       return
     }
-    if (
-      params.compounding_type === "two_way" &&
-      currentTwoWayCompoundingCarCustomer
-    ) {
+    if (params.compounding_type === "two_way" && currentTwoWayCompoundingCarCustomer) {
       handleUpdateCompoundingCar({
         ...params,
         token,

@@ -12,6 +12,8 @@ const ConfirmCheckoutDriver = () => {
   const { token } = useToken()
   const [loading, setLoading] = useState<boolean>(false)
 
+  console.log("hello there")
+
   useEffect(() => {
     const { compounding_car_id } = router.query
     if (!compounding_car_id || !token) return
@@ -22,7 +24,7 @@ const ConfirmCheckoutDriver = () => {
       .confirmDepositForDriver({
         compounding_car_id: Number(compounding_car_id),
         token,
-      })  
+      })
       .then((res: any) => {
         setLoading(false)
         if ((res?.result?.data as CompoundingCarRes)?.state === "confirm_deposit") {

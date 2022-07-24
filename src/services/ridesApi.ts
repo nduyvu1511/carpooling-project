@@ -131,7 +131,7 @@ const ridesApi = {
   },
 
   createPayment: (params: CreatePaymentParams) => {
-    return axiosClient.post("/vpnay_for_compounding_car_app_controller/create_payment", {
+    return axiosClient.post("/vnpay_for_compounding_car_app_controller/create_payment", {
       params,
     })
   },
@@ -150,7 +150,7 @@ const ridesApi = {
 
   createPaymentForDriver: (params: CreatePaymentDriverParams) => {
     return axiosClient.post(
-      "/vpnay_for_compounding_car_app_controller/create_payment_for_car_driver",
+      "/vnpay_for_compounding_car_app_controller/create_payment_for_car_driver",
       {
         params,
       }

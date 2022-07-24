@@ -25,9 +25,7 @@ interface UploadImagesProps {
 const useUploadAttachment = (): UseUploadAttachmentRes => {
   const dispatch = useDispatch()
   const { token } = useSelector((state: RootState) => state.user)
-  const { verifiedRegisterToken } = useSelector(
-    (state: RootState) => state.auth
-  )
+  const { verifiedRegisterToken } = useSelector((state: RootState) => state.auth)
   const [isUploading, setUploading] = useState<boolean>(false)
 
   const uploadImages = async ({

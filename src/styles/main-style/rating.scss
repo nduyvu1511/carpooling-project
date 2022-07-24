@@ -51,8 +51,11 @@
   @include flex(flex-start, flex-start);
 
   &-l {
-    flex: 1;
     margin-right: 10px;
+  }
+
+  &-content {
+    flex: 1;
   }
 
   &-r {

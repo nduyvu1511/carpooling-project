@@ -1,9 +1,7 @@
-import { CompoundingType } from "@/models"
 import moment from "moment"
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
 import { useDispatch } from "react-redux"
-import { notify } from "reapop"
 import { useCountdown } from "shared/hook"
 
 interface CountdownCompoundingProps {

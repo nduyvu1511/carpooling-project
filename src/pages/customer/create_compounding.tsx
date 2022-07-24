@@ -1,29 +1,19 @@
 import { CarpoolingCompoundingForm } from "@/components"
 import { RideContainer } from "@/container"
-import { CompoundingCarRes, CreateCarpoolCompoundingNoToken } from "@/models"
+import { CreateCarpoolCompoundingNoToken } from "@/models"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { useCompoundingForm, useCreateRides } from "shared/hook"
+import { useCompoundingForm, useCreateRides, useFetchCompoundingCarDetail } from "shared/hook"
 
 const CreateCompounding = () => {
   const router = useRouter()
   const { compounding_car_id } = router.query
-  const { getDetailCompoundingCar, createExistedCompoundingCar } = useCreateRides()
-  const [compoundingCar, setCompoundingCar] = useState<CompoundingCarRes>()
+  const { createExistedCompoundingCar } = useCreateRides()
   const { compoundingCarResToCarpoolingForm } = useCompoundingForm()
 
-  useEffect(() => {
-    if (!compounding_car_id) return
-    getDetailCompoundingCar({
-      params: {
-        compounding_car_id: Number(compounding_car_id),
-      },
-      onSuccess: (data) => {
-        setCompoundingCar(data)
-      },
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [compounding_car_id])
+  const { data: compoundingCar, isValidating } = useFetchCompoundingCarDetail({
+    key: "get_carpooling_compounding_car",
+    type: "once",
+  })
 
   const handleCreateCompoundingCar = (data: CreateCarpoolCompoundingNoToken) => {
     if (!compounding_car_id) return
@@ -36,15 +26,16 @@ const CreateCompounding = () => {
       },
     })
   }
+  console.log(compoundingCar)
 
-  if (!compoundingCar) return null
+  if (!compoundingCar?.number_available_seat) return null
   return (
     <RideContainer heading="Tạo suất đi ghép">
       <div className="content-container px-24">
         <CarpoolingCompoundingForm
           type="existed"
           onSubmit={(data) => handleCreateCompoundingCar(data)}
-          defaultValues={compoundingCarResToCarpoolingForm(compoundingCar)}
+          defaultValues={{ ...compoundingCarResToCarpoolingForm(compoundingCar) }}
           limitNumberSeat={compoundingCar.number_available_seat}
         />
       </div>

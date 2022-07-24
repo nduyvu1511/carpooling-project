@@ -1,7 +1,11 @@
+import { RootState } from "@/core/store"
 import { LIMIT_COMPOUNDING_LIST, SWRConfig } from "@/helper"
 import { CompoundingCarRes, CompoundingListDriverParams } from "@/models"
+import { setCurrentCompoundingCustomerListOffset } from "@/modules"
 import { ridesApi } from "@/services"
+import { useRouter } from "next/router"
 import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import useSWR from "swr"
 import { useToken } from "../user/useToken"
 
@@ -14,16 +18,19 @@ interface Res {
   fetchMoreRides: (params: CompoundingListDriverParams) => void
 }
 
-export const useCompoundingCarCustomerList = (
-  params: CompoundingListDriverParams
-): Res => {
+export const useCompoundingCarCustomerList = (params: CompoundingListDriverParams): Res => {
+  const dispatch = useDispatch()
   const { token } = useToken()
+  const router = useRouter()
+  const { currentcompoundingCustomerListOffset } = useSelector(
+    (state: RootState) => state.currentOffset
+  )
   const { data, isValidating, mutate, error } = useSWR<CompoundingCarRes[]>(
-  "carpooling_list",
+    router.isReady ? "carpooling_list" : null,
     token
       ? () =>
           ridesApi
-            .getCompoundingCarListForCustomer({ ...params, token })
+            .getCompoundingCarListForCustomer({ ...params, token, offset: 0 })
             .then((res: any) => {
               const list = res?.result?.data || []
               checkLimit(list.length)
@@ -44,10 +51,8 @@ export const useCompoundingCarCustomerList = (
     setLimit(!length || length < limit)
   }
 
-  const checkFetchMore = (
-    offset?: number | undefined,
-    limit?: number | undefined
-  ) => offset || 0 >= (limit || LIMIT_COMPOUNDING_LIST)
+  const checkFetchMore = (offset?: number | undefined, limit?: number | undefined) =>
+    offset || 0 >= (limit || LIMIT_COMPOUNDING_LIST)
 
   const filterRides = async (params: CompoundingListDriverParams) => {
     if (!token) return
@@ -57,7 +62,9 @@ export const useCompoundingCarCustomerList = (
         ...params,
         limit: params.limit || LIMIT_COMPOUNDING_LIST,
         token,
+        offset: 0,
       })
+      dispatch(setCurrentCompoundingCustomerListOffset(0))
       setLoading(false)
       const list: CompoundingCarRes[] = res?.result?.data || []
       checkLimit(list.length)
@@ -72,14 +79,17 @@ export const useCompoundingCarCustomerList = (
     if (!token) return
     try {
       setFetchingMore(true)
+      const offset = (currentcompoundingCustomerListOffset || 0) + LIMIT_COMPOUNDING_LIST
       const res: any = await ridesApi.getCompoundingCarListForCustomer({
         ...params,
         limit: params.limit || LIMIT_COMPOUNDING_LIST,
         token,
+        offset,
       })
       setFetchingMore(false)
       const list: CompoundingCarRes[] = res?.result?.data || []
       checkLimit(list.length, params?.limit)
+      dispatch(setCurrentCompoundingCustomerListOffset(offset))
       mutate([...(data || []), ...list], false)
     } catch (error) {
       setFetchingMore(false)

@@ -34,7 +34,7 @@ import {
   TWO_WAY_IS_CHECKED_POLICY,
   TWO_WAY_NOTE,
   TWO_WAY_PRICE,
-  TWO_WAY_TO_LOCATION,
+  TWO_WAY_TO_LOCATION
 } from "@/helper"
 import {
   CalculateDistanceBetweenTwoCoordinatesParams,
@@ -46,9 +46,8 @@ import {
   CreateOneWayCompoundingForm,
   CreateTwoWayCompoundingForm,
   OptionModel,
-  UseParams,
+  UseParams
 } from "@/models"
-import { setCurrentCompoundingCarCustomer } from "@/modules"
 import { vehicleApi } from "@/services"
 import { useDispatch, useSelector } from "react-redux"
 import { useToken } from "../user/useToken"
@@ -110,7 +109,6 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(ONE_WAY_NOTE, undefined)
     setToLocalStorage(ONE_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(ONE_WAY_PRICE, undefined)
-    dispatch(setCurrentCompoundingCarCustomer({ key: "one_way", value: undefined }))
   }
 
   const clearTwoWayCompoundingCar = () => {
@@ -125,7 +123,6 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(TWO_WAY_HOUR_OF_WAIT_TIME, undefined)
     setToLocalStorage(TWO_WAY_IS_CHECKED_POLICY, undefined)
     setToLocalStorage(TWO_WAY_EXPECTED_PICKING_UP_DATE, undefined)
-    dispatch(setCurrentCompoundingCarCustomer({ key: "two_way", value: undefined }))
   }
 
   const clearCarpoolingWayCompoundingCar = () => {
@@ -140,7 +137,6 @@ export const useCompoundingForm = (): Res => {
     setToLocalStorage(CARPOOLING_PRICE_PER_PASSENGER, undefined)
     setToLocalStorage(CARPOOLING_NUMBER_SEAT, undefined)
     setToLocalStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
-    dispatch(setCurrentCompoundingCarCustomer({ key: "compounding", value: undefined }))
     setToSessionStorage(CARPOOLING_IS_PICKING_UP_FROM_START, undefined)
   }
 

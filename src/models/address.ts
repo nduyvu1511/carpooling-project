@@ -1,14 +1,7 @@
 import { LatLng } from "./location"
 import { FromLocationRidesForm } from "./rides"
 
-export type GetAddressFormParams =
-  | { district_id: number }
-  | { state_id: number }
-
-// export interface AddressRes {
-//   id: number
-//   name: string
-// }
+export type GetAddressFormParams = { district_id: number } | { state_id: number }
 
 export interface ProvinceId {
   province_name: string

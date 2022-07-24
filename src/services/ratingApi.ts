@@ -41,6 +41,11 @@ const ratingApi = {
       },
     })
   },
+
+  reportRating: (params: DeleteRatingParams) => {
+    return axiosClient.post("/rating_controller/report_rating", {
+      params,
+    })
+  },
 }
 export { ratingApi }
-

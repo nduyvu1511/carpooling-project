@@ -1,8 +1,13 @@
-import { Map, OneWayCompoundingForm, TwoWayCompoundingForm } from "@/components"
-import { CarpoolingCompoundingForm } from "@/components/form/compounding/carpoolingCompoundingForm"
+import {
+  CarpoolingCompoundingForm,
+  Map,
+  OneWayCompoundingForm,
+  TwoWayCompoundingForm,
+} from "@/components"
 import { RideContainer } from "@/container"
 import { formatMoneyVND, getCompoundingTypeName } from "@/helper"
 import { CompoundingCarCustomer, CreateCompoundingParams } from "@/models"
+import { setCurrentCompoundingCarCustomer } from "@/modules"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsCalendar3 } from "react-icons/bs"
@@ -48,9 +53,16 @@ const Confirm = () => {
   }, [compounding_car_customer_id])
 
   const handleConfirmCompoundingCar = (compounding_car_customer_id: number) => {
+    if (!compoundingCar) return
     confirmCompounding({
       params: { compounding_car_customer_id },
       onSuccess: () => {
+        dispatch(
+          setCurrentCompoundingCarCustomer({
+            key: compoundingCar.compounding_type,
+            value: undefined,
+          })
+        )
         router.push(
           `/offer-seats/checkout?compounding_car_customer_id=${compounding_car_customer_id}`
         )

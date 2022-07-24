@@ -2,34 +2,28 @@
 import { logoIcon } from "@/assets"
 import { CompoundingFilterForm, HomeNav, Modal, RidesItem } from "@/components"
 import { HeaderAccount } from "@/components/header/headerAccount"
-import { LIMIT_COMPOUNDING_LIST } from "@/helper"
+import { isObjectHasValue, LIMIT_COMPOUNDING_LIST } from "@/helper"
 import {
   CompoundingCarCustomerFilterForm,
   CompoundingOrderField,
-  GetCompoundingCarCustomerList
+  GetCompoundingCarCustomerList,
 } from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
-import {
-  useCompoundingCarCustomerList,
-  useScrollTop,
-  useToken
-} from "shared/hook"
+import { useCompoundingCarCustomerList, useScrollTop, useToken } from "shared/hook"
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const height = useScrollTop()
-  return (
-    <div className={`${height > 400 ? "rides__driver-filter-active" : ""}`}>
-      {children}
-    </div>
-  )
+  return <div className={`${height > 400 ? "rides__driver-filter-active" : ""}`}>{children}</div>
 }
 
 export const HomeCustomer = () => {
   const router = useRouter()
   const { token } = useToken()
+  const secondRef = useRef<boolean>(false)
+
   const {
     data: carpoolingList,
     isLimit,
@@ -59,11 +53,8 @@ export const HomeCustomer = () => {
     filterRides(getQueryParams(params))
   }
 
-  function getQueryParams(
-    params: CompoundingCarCustomerFilterForm
-  ): GetCompoundingCarCustomerList {
-    const { order_by, from_province_id, to_province_id, car_id, number_seat } =
-      params
+  function getQueryParams(params: CompoundingCarCustomerFilterForm): GetCompoundingCarCustomerList {
+    const { order_by, from_province_id, to_province_id, car_id, number_seat } = params
 
     let queryObj: GetCompoundingCarCustomerList = {
       ...params,
@@ -94,34 +85,15 @@ export const HomeCustomer = () => {
   }
 
   const handleFetchMoreRides = () => {
-    const offset = (Number(router.query?.offset) || 0) + LIMIT_COMPOUNDING_LIST
-
-    router.push(
-      {
-        query: {
-          ...router.query,
-          offset,
-        },
-      },
-      undefined,
-      {
-        shallow: true,
-        scroll: false,
-      }
-    )
+    fetchMoreRides(getQueryParams(router.query))
   }
 
   useEffect(() => {
-    if (!router.isReady) return
-    const offset = Number(router.query?.offset)
-    if (offset) {
-      fetchMoreRides({
-        ...getQueryParams(router.query),
-        offset: offset + LIMIT_COMPOUNDING_LIST,
-      })
-    } else {
-      filterRides(getQueryParams(router.query))
+    if (!secondRef?.current) {
+      secondRef.current = true
+      return
     }
+    filterRides(getQueryParams(router.query))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query])
 
@@ -161,9 +133,7 @@ export const HomeCustomer = () => {
                     onChange={(data) => {
                       router.push(
                         {
-                          query: data
-                            ? { ...router.query, ...data, offset: 0 }
-                            : {},
+                          query: data ? { ...router.query, ...data, offset: 0 } : {},
                         },
                         undefined,
                         {
@@ -186,9 +156,7 @@ export const HomeCustomer = () => {
                     {carpoolingList.map((item, index) => (
                       <RidesItem
                         onClick={(id) =>
-                          router.push(
-                            `/customer/create_compounding?compounding_car_id=${id}`
-                          )
+                          router.push(`/customer/create_compounding?compounding_car_id=${id}`)
                         }
                         type="customer"
                         rides={item}
@@ -201,10 +169,7 @@ export const HomeCustomer = () => {
             </div>
 
             <div className="rides__filter-mobile">
-              <button
-                onClick={() => handleCloseFilter(true)}
-                className="btn-primary"
-              >
+              <button onClick={() => handleCloseFilter(true)} className="btn-primary">
                 Lọc
               </button>
               {showFilter ? (

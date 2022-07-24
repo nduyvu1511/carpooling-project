@@ -1,12 +1,14 @@
 import { RideContainer } from "@/container"
 import { driveractivityStates } from "@/helper"
 import { CompoundingCarDriverState } from "@/models"
+import { useRouter } from "next/router"
 import { RiLoader4Line } from "react-icons/ri"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { useDriverActivities } from "shared/hook/user/useDriverActivities"
 import { ActivityItem } from "./activityItem"
 
 export const DriverActivities = () => {
+  const router = useRouter()
   const {
     data,
     isLoading,
@@ -73,6 +75,9 @@ export const DriverActivities = () => {
               {data.map((item, index) => (
                 <li key={index} className="activity__list-item">
                   <ActivityItem
+                    onClick={() =>
+                      router.push(`/schedules/detail?compounding_car_id=${item.compounding_car_id}`)
+                    }
                     activity={{
                       amount_total: item.amount_total,
                       compounding_car_name: item.compounding_car_name,

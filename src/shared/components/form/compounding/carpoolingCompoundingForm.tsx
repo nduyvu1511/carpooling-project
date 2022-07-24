@@ -335,7 +335,7 @@ export const CarpoolingCompoundingForm = ({
             render={({ field: { onChange, onBlur } }) => (
               <Select
                 placeholder="Số ghế"
-                options={numberSeat ? (seats(numberSeat) as NumberSeatOptionModel[]) : undefined}
+                options={seats(limitNumberSeat || numberSeat || 0) as NumberSeatOptionModel[]}
                 onChange={(val) => {
                   if (!val?.value) return
                   setToLocalStorage(CARPOOLING_NUMBER_SEAT, val)

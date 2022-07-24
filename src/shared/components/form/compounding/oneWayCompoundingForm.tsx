@@ -10,7 +10,7 @@ import {
   ONE_WAY_NOTE,
   ONE_WAY_PRICE,
   ONE_WAY_TO_LOCATION,
-  setToLocalStorage
+  setToLocalStorage,
 } from "@/helper"
 import { CreateOneWayCompoundingForm, CreateOneWayCompoundingNoToken } from "@/models"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -49,8 +49,8 @@ export const OneWayCompoundingForm = ({
   })
   const { vehicleTypeOptions, calcPriceFromProvinceIds, calculateDistanceBetweenTwoCoordinates } =
     useCompoundingForm()
-  const [distance, setDistance] = useState<number>(getValues("distance"))
-  const [price, setPrice] = useState<number>(getValues("price") || 0)
+  const [distance, setDistance] = useState<number>(getValues("distance") || 1000)
+  const [price, setPrice] = useState<number>(getValues("price") || 10)
 
   // Get Distance
   const calcDistance = () => {
@@ -132,41 +132,44 @@ export const OneWayCompoundingForm = ({
       })}
       className="rides__form"
     >
-      <div className="rides__form-location">
-        <label className="form-item-label">
-          <HiOutlineLocationMarker />
-          Địa điểm
-        </label>
+      <div className="">
+        <div className="form-item">
+          <label className="form-item-label">
+            <HiOutlineLocationMarker />
+            Điểm đi (*)
+          </label>
 
-        <div className="rides__form-location-item">
-          <Controller
-            control={control}
-            name={"from_location"}
-            render={({ field: { onChange, onBlur } }) => (
-              <InputLocation
-                defaultLocation={getValues("from_location")}
-                isError={!!errors?.from_location?.province_id}
-                type="from"
-                onBlur={onBlur}
-                value={
-                  getValues("from_location")?.address || defaultValues?.from_location?.address || ""
-                }
-                label="Điểm đi"
-                onChange={(location) => {
-                  setToLocalStorage(ONE_WAY_FROM_LOCATION, location)
-                  onChange(location)
-                  calcDistance()
-                  calcPrice()
-                }}
-                prevProvinceId={getValues("to_location.province_id")}
-              />
-            )}
-            rules={{ required: true }}
-          />
+          <div className="-item">
+            <Controller
+              control={control}
+              name={"from_location"}
+              render={({ field: { onChange, onBlur } }) => (
+                <InputLocation
+                  defaultLocation={getValues("from_location")}
+                  isError={!!errors?.from_location?.province_id}
+                  type="from"
+                  onBlur={onBlur}
+                  value={
+                    getValues("from_location")?.address ||
+                    defaultValues?.from_location?.address ||
+                    ""
+                  }
+                  label="Điểm đi"
+                  onChange={(location) => {
+                    setToLocalStorage(ONE_WAY_FROM_LOCATION, location)
+                    onChange(location)
+                    calcDistance()
+                    calcPrice()
+                  }}
+                  prevProvinceId={getValues("to_location.province_id")}
+                />
+              )}
+              rules={{ required: true }}
+            />
+          </div>
         </div>
-        <br />
 
-        <div className="ridse__form-location-item">
+        <div className="form-item">
           <Controller
             control={control}
             name={"to_location"}
@@ -193,24 +196,13 @@ export const OneWayCompoundingForm = ({
           />
         </div>
 
-        <div className="rides__form-location-info">
-          {price ? (
-            <p className="rides__form-location-info-price">Giá: {formatMoneyVND(price)}</p>
-          ) : null}
-          {distance ? (
-            <p className="rides__form-location-info-distance">
-              Quãng đường: {distance.toFixed(2)}km
-            </p>
-          ) : null}
+        <div className="">
+          {price ? <p className="-info-price">Giá: {formatMoneyVND(price)}</p> : null}
+          {distance ? <p className="-info-distance">Quãng đường: {distance.toFixed(2)}km</p> : null}
         </div>
       </div>
 
       <div className="form-item">
-        <label htmlFor="car_id" className="form-item-label">
-          <RiCarWashingLine />
-          Loại xe
-        </label>
-
         <Controller
           control={control}
           name={"car_id"}

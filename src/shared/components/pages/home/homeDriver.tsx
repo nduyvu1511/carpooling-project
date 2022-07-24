@@ -5,7 +5,7 @@ import { compoundingTypeFilters, LIMIT_COMPOUNDING_LIST } from "@/helper"
 import {
   CompoundingFilterFormParams,
   CompoundingListDriverParams,
-  CompoundingOrderField,
+  CompoundingOrderField
 } from "@/models"
 import Link from "next/link"
 import { useRouter } from "next/router"

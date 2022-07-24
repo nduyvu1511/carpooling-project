@@ -2,17 +2,16 @@ import { ItemSelect } from "@/components/inputs"
 import { compoundingOrderList } from "@/helper"
 import {
   CompoundingCarCustomerFilterForm,
-  CompoundingFilterFormParams,
+  CompoundingFilterFormParams
 } from "@/models"
 import { setScreenLoading } from "@/modules"
 import { useRouter } from "next/router"
-import { useMemo } from "react"
 import { useDispatch } from "react-redux"
 import Select from "react-select"
 import {
   useAddressOptions,
   useCompoundingForm,
-  useInputText,
+  useInputText
 } from "shared/hook"
 
 type CompoundingFilterForm = CompoundingFilterFormParams &

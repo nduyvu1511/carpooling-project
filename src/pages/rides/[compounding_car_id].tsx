@@ -40,9 +40,7 @@ const CompoundingDetail = () => {
     <RideContainer heading="Chi tiết chuyến đi" btnLabel="Xác nhận đặt cọc">
       <section className="rides-driver__detail">
         <div className="px-24 content-container">
-          <h1 className="rides-driver__detail-title">
-            {ridesDetail.compounding_car_name}
-          </h1>
+          <h1 className="rides-driver__detail-title">{ridesDetail.compounding_car_name}</h1>
           <div className="rides-driver__detail-map">
             <Map viewOnly />
           </div>
@@ -55,9 +53,7 @@ const CompoundingDetail = () => {
           <div className="content-container px-24">
             <button
               onClick={() =>
-                router.push(
-                  `/rides/checkout?compounding_car_id=${ridesDetail.compounding_car_id}`
-                )
+                router.push(`/rides/checkout?compounding_car_id=${ridesDetail.compounding_car_id}`)
               }
               className="btn-primary"
             >

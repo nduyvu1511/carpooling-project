@@ -1,25 +1,22 @@
 import { Star } from "@/components/star"
-import { CreateRatingFormParams, RatingRangePost } from "@/models"
-import { useState } from "react"
+import { CreateRatingFormParams, RatingRangePost, RatingRes } from "@/models"
+import { useEffect, useState } from "react"
 import { useInputText } from "shared/hook"
 import { useFetchRatingTags } from "shared/hook/rating"
 
 interface RatingFormProps {
   onSubmit?: (params: CreateRatingFormParams) => void
-  ratingTags?: any
+  defaultValue?: RatingRes
 }
 
-const data = [
-  { value: "Tài xế chạy xe cẩn thận", id: 1 },
-  { value: "Tài xế vui tính", id: 2 },
-  { value: "Tài xế không hút thuốc", id: 3 },
-  { value: "Chất lượng xe tuyệt vời", id: 4 },
-]
-
-export const RatingForm = ({ onSubmit }: RatingFormProps) => {
-  const { clearValue, onChange, value } = useInputText()
-  const [tagsSelect, setTagsSelect] = useState<number[]>([])
-  const [ratingNumber, setRatingNumber] = useState<RatingRangePost>()
+export const RatingForm = ({ onSubmit, defaultValue }: RatingFormProps) => {
+  const [value, setValue] = useState(defaultValue?.rating_content || "")
+  const [tagsSelect, setTagsSelect] = useState<number[]>(
+    defaultValue?.rating_tag_ids?.map((item) => item.tag_id) || []
+  )
+  const [ratingNumber, setRatingNumber] = useState<RatingRangePost>(
+    defaultValue?.rating_number || 1
+  )
   const { ratingTags } = useFetchRatingTags(ratingNumber)
 
   const handleSubmit = () => {
@@ -45,9 +42,12 @@ export const RatingForm = ({ onSubmit }: RatingFormProps) => {
     <div className="rating__form">
       <div className="rating__form-star">
         <Star
-          initialValue={0}
-          onClick={(val) => setRatingNumber((val / 20) as RatingRangePost)}
-          ratingValue={20}
+          initialValue={(defaultValue?.rating_number || 0) * 20}
+          onClick={(val) => {
+            setRatingNumber((val / 20) as RatingRangePost)
+            setTagsSelect([])
+          }}
+          ratingValue={ratingNumber * 20}
           size={50}
         />
       </div>
@@ -73,7 +73,7 @@ export const RatingForm = ({ onSubmit }: RatingFormProps) => {
         <textarea
           className="form-textarea"
           placeholder="Nhập nội dung đánh giá..."
-          onChange={onChange}
+          onChange={(e) => setValue(e.target.value)}
           value={value}
           rows={5}
         ></textarea>

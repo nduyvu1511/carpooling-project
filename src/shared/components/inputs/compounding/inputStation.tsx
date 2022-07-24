@@ -32,9 +32,7 @@ export const InputStation = ({
     <>
       <div className="input__location">
         <div className="rides__form-location-input">
-          <span className="rides__form-location-input-type">
-            {type === "from" ? "Đi" : "Đến"}:
-          </span>
+          <span className="rides__form-location-input-type">{type === "from" ? "Đi" : "Đến"}:</span>
 
           <input
             onClick={() => {
@@ -42,17 +40,13 @@ export const InputStation = ({
               setShowStation(true)
             }}
             readOnly
-            className={`form-item-input ${
-              isError ? "form-item-input-error" : ""
-            }`}
+            className={`form-item-input ${isError ? "form-item-input-error" : ""}`}
             type="text"
             placeholder={label}
             value={value}
           />
         </div>
-        {isError ? (
-          <p className="form-item-input-text-error">Vui lòng nhập trường này</p>
-        ) : null}
+        {isError ? <p className="form-item-input-text-error">Vui lòng nhập trường này</p> : null}
       </div>
 
       {showStation ? (
@@ -66,12 +60,7 @@ export const InputStation = ({
           <Station
             onChooseStation={(val) => {
               if (prevProvinceId === val.province_id) {
-                dispatch(
-                  notify(
-                    "Vui lòng chọn địa điểm khác với tỉnh trước đó",
-                    "error"
-                  )
-                )
+                dispatch(notify("Vui lòng chọn địa điểm khác với tỉnh trước đó", "error"))
                 return
               }
               toggleBodyOverflow("unset")

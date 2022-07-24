@@ -1,4 +1,4 @@
-import { getFromSessionStorage, setToSessionStorage } from "@/helper"
+import { setToSessionStorage } from "@/helper"
 import { CarIdType, CompoundingType, ProvinceId } from "@/models"
 import { createSlice } from "@reduxjs/toolkit"
 
@@ -19,29 +19,27 @@ let initialState: CompoundingSlice = {
 }
 
 try {
-  initialState.currentCarpoolingCompoundingCarCustomer = getFromSessionStorage(
-    "currentCarpoolingCompoundingCarCustomer"
-  )
-  initialState.currentOneWayCompoundingCarCustomer = getFromSessionStorage(
-    "currentOneWayCompoundingCarCustomer"
-  )
-  initialState.currentTwoWayCompoundingCarCustomer = getFromSessionStorage(
-    "currentTwoWayCompoundingCarCustomer"
-  )
+  // initialState.currentCarpoolingCompoundingCarCustomer = getFromSessionStorage(
+  //   "currentCarpoolingCompoundingCarCustomer"
+  // )
+  // initialState.currentOneWayCompoundingCarCustomer = getFromSessionStorage(
+  //   "currentOneWayCompoundingCarCustomer"
+  // )
+  // initialState.currentTwoWayCompoundingCarCustomer = getFromSessionStorage(
+  //   "currentTwoWayCompoundingCarCustomer"
+  // )
   // initialState.vehicleTypes =
   //   getFromSessionStorage("compounding_vehicleTypes") || []
   // initialState.provinces = getFromSessionStorage("compounding_provinces") || []
 } catch (error) {}
 
-const locationSlice = createSlice({
-  name: "compounding",
+const compoundingCarDataSlice = createSlice({
+  name: "compounding_car_data_slice",
   initialState,
   reducers: {
     setCurrentCompoundingCarCustomer: (
       state,
-      {
-        payload,
-      }: { payload: { key: CompoundingType; value: number | undefined } }
+      { payload }: { payload: { key: CompoundingType; value: number | undefined } }
     ) => {
       const { key, value } = payload
       if (key === "compounding") {
@@ -79,10 +77,10 @@ const locationSlice = createSlice({
   },
 })
 
-export default locationSlice.reducer
+export default compoundingCarDataSlice.reducer
 export const {
   setCurrentCompoundingCarCustomer,
   clearAllCurrentCompoundingCarId,
   setProvinces,
   setVehicleTypes,
-} = locationSlice.actions
+} = compoundingCarDataSlice.actions
